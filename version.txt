@@ -129,6 +129,7 @@ todo: background uploading files/images
 9 nov 2023
 =======
 versie conflict niet opgelost
+-bezig met detailsave_transactions
 
 
 4 nov 2023
