@@ -202,7 +202,7 @@ class detailsave_transactionstypes extends TCRUDDetailSaveController
      */
     protected function getAuthorisationCategory() 
     {
-        return Mod_Transactions::PERM_CAT_TRANSACTIONTYPES;
+        return Mod_Transactions::PERM_CAT_TRANSACTIONSTYPES;
     }
     
     /**

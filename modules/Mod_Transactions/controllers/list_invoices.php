@@ -40,7 +40,7 @@ class list_invoices extends TCRUDListController
             TTransactions::FIELD_LOCKED,
             TTransactions::FIELD_LOCKEDSOURCE,
             TTransactions::FIELD_INVOICEDATE,            
-            TTransactions::FIELD_INVOICENUMBER,
+            TTransactions::FIELD_INCREMENTNUMBER,
             TTransactions::FIELD_META_TOTALPRICEINCLVAT,
                                     ));
        $objModel->select(array(
@@ -53,7 +53,7 @@ class list_invoices extends TCRUDListController
         //===show what?
         $arrTableColumnsShow = array(
             array('', TTransactions::FIELD_INVOICEDATE, transm($sCurrentModule, 'overview_column_'.TTransactions::FIELD_INVOICEDATE, 'Inv Date')),
-            array('', TTransactions::FIELD_INVOICENUMBER, transm($sCurrentModule, 'overview_column_'.TTransactions::FIELD_INVOICENUMBER, 'Inv No')),
+            array('', TTransactions::FIELD_INCREMENTNUMBER, transm($sCurrentModule, 'overview_column_'.TTransactions::FIELD_INCREMENTNUMBER, 'Inv No')),
             array(TSysContacts::getTable(), TSysContacts::FIELD_COMPANYNAME, transm($sCurrentModule, 'overview_column_'.TSysContacts::FIELD_FIRSTNAMEINITALS, 'Company')),
             array(TSysContacts::getTable(), TSysContacts::FIELD_LASTNAME, transm($sCurrentModule, 'overview_column_'.TSysContacts::FIELD_LASTNAME, 'Name')),
             array(TSysContacts::getTable(), TSysContacts::FIELD_EMAILADDRESSENCRYPTED, transm($sCurrentModule, 'overview_column_'.TSysContacts::FIELD_EMAILADDRESSENCRYPTED, 'Email')),
@@ -108,7 +108,7 @@ class list_invoices extends TCRUDListController
      */
     public function getAuthorisationCategory()
     {
-        return Mod_Transactions::PERM_CAT_INVOICES;
+        return Mod_Transactions::PERM_CAT_TRANSACTIONS;
     }
 
      /**

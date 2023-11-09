@@ -52,7 +52,7 @@ class TTransactions extends TModel
 	const FIELD_BUYERCONTACTID 			= 'iBuyerContactID'; //buyer: from contacts module
 	const FIELD_CREATEDBYCONTACTID 		= 'iCreatedByContactID'; //user who created the invoice (for weborder, it is the buyer itself): from contacts module
 	const FIELD_INVOICEDATE 			= 'dtInvoiceDate'; //date of the invoice (assigned only when not a finalized-state-invoice). For orders and offers the date is 0. It is possible that an order is created, but the invoice is made 2 days later. The invoice date is needed for tax reasons. 
-	const FIELD_INVOICENUMBER 			= 'sInvoiceNumber'; //invoice number (assigned only when in finalized-state-invoice) - this is a string because of extra formatting that can be added to the increment number from transaction-types
+	const FIELD_INCREMENTNUMBER 			= 'sInvoiceNumber'; //invoice number (assigned only when in finalized-state-invoice) - this is a string because of extra formatting that can be added to the increment number from transaction-types
 	const FIELD_ISFINALIZED				= 'bIsFinalized'; //a finalized invoice can not be changed. Only a finalized invoice has monetary significance for tax purposes
 	const FIELD_CURRENCYID 				= 'iCurrencyID'; //id of currency
 	const FIELD_PURCHASEORDERNUMBER 	= 'sPurchaseOrderNumber';//purchase order number of buyer (completely optional)
@@ -165,7 +165,7 @@ class TTransactions extends TModel
 	 */
 	public function getInvoiceNumber()
 	{
-		return $this->get(TTransactions::FIELD_INVOICENUMBER);
+		return $this->get(TTransactions::FIELD_INCREMENTNUMBER);
 	}
 	
 	/**
@@ -175,7 +175,7 @@ class TTransactions extends TModel
 	 */
 	public function setInvoiceNumber($sInvoiceNumber)
 	{
-		$this->set(TTransactions::FIELD_INVOICENUMBER, $sInvoiceNumber);
+		$this->set(TTransactions::FIELD_INCREMENTNUMBER, $sInvoiceNumber);
 	} 	
 		
 
@@ -572,24 +572,24 @@ class TTransactions extends TModel
 		$this->setFieldEncryptionDisabled(TTransactions::FIELD_INVOICEDATE);	
 			
 		//invoice number
-		$this->setFieldDefaultValue(TTransactions::FIELD_INVOICENUMBER, '');
-		$this->setFieldType(TTransactions::FIELD_INVOICENUMBER, CT_VARCHAR);
-		$this->setFieldLength(TTransactions::FIELD_INVOICENUMBER, 50);
-		$this->setFieldDecimalPrecision(TTransactions::FIELD_INVOICENUMBER, 0);
-		$this->setFieldPrimaryKey(TTransactions::FIELD_INVOICENUMBER, false);
-		$this->setFieldNullable(TTransactions::FIELD_INVOICENUMBER, true);
-		$this->setFieldEnumValues(TTransactions::FIELD_INVOICENUMBER, null);
-		$this->setFieldUnique(TTransactions::FIELD_INVOICENUMBER, false); 
-		$this->setFieldIndexed(TTransactions::FIELD_INVOICENUMBER, true); 
-		$this->setFieldForeignKeyClass(TTransactions::FIELD_INVOICENUMBER, null);
-		$this->setFieldForeignKeyTable(TTransactions::FIELD_INVOICENUMBER, null);
-		$this->setFieldForeignKeyField(TTransactions::FIELD_INVOICENUMBER, null);
-		$this->setFieldForeignKeyJoin(TTransactions::FIELD_INVOICENUMBER, null);
-		$this->setFieldForeignKeyActionOnUpdate(TTransactions::FIELD_INVOICENUMBER, null);
-		$this->setFieldForeignKeyActionOnDelete(TTransactions::FIELD_INVOICENUMBER, null);
-		$this->setFieldAutoIncrement(TTransactions::FIELD_INVOICENUMBER, false);
-		$this->setFieldUnsigned(TTransactions::FIELD_INVOICENUMBER, false);
-        $this->setFieldEncryptionDisabled(TTransactions::FIELD_INVOICENUMBER);	
+		$this->setFieldDefaultValue(TTransactions::FIELD_INCREMENTNUMBER, '');
+		$this->setFieldType(TTransactions::FIELD_INCREMENTNUMBER, CT_VARCHAR);
+		$this->setFieldLength(TTransactions::FIELD_INCREMENTNUMBER, 50);
+		$this->setFieldDecimalPrecision(TTransactions::FIELD_INCREMENTNUMBER, 0);
+		$this->setFieldPrimaryKey(TTransactions::FIELD_INCREMENTNUMBER, false);
+		$this->setFieldNullable(TTransactions::FIELD_INCREMENTNUMBER, true);
+		$this->setFieldEnumValues(TTransactions::FIELD_INCREMENTNUMBER, null);
+		$this->setFieldUnique(TTransactions::FIELD_INCREMENTNUMBER, false); 
+		$this->setFieldIndexed(TTransactions::FIELD_INCREMENTNUMBER, true); 
+		$this->setFieldForeignKeyClass(TTransactions::FIELD_INCREMENTNUMBER, null);
+		$this->setFieldForeignKeyTable(TTransactions::FIELD_INCREMENTNUMBER, null);
+		$this->setFieldForeignKeyField(TTransactions::FIELD_INCREMENTNUMBER, null);
+		$this->setFieldForeignKeyJoin(TTransactions::FIELD_INCREMENTNUMBER, null);
+		$this->setFieldForeignKeyActionOnUpdate(TTransactions::FIELD_INCREMENTNUMBER, null);
+		$this->setFieldForeignKeyActionOnDelete(TTransactions::FIELD_INCREMENTNUMBER, null);
+		$this->setFieldAutoIncrement(TTransactions::FIELD_INCREMENTNUMBER, false);
+		$this->setFieldUnsigned(TTransactions::FIELD_INCREMENTNUMBER, false);
+        $this->setFieldEncryptionDisabled(TTransactions::FIELD_INCREMENTNUMBER);	
 		
 		//is finalized
 		$this->setFieldDefaultValue(TTransactions::FIELD_ISFINALIZED, false);
@@ -632,7 +632,7 @@ class TTransactions extends TModel
         $this->setFieldEncryptionDisabled(TTransactions::FIELD_CURRENCYID);	
 		
 		//purchase order number
-		$this->setFieldCopyProps(TTransactions::FIELD_PURCHASEORDERNUMBER, TTransactions::FIELD_INVOICENUMBER);
+		$this->setFieldCopyProps(TTransactions::FIELD_PURCHASEORDERNUMBER, TTransactions::FIELD_INCREMENTNUMBER);
 
 		//reminderssent
 		$this->setFieldDefaultValue(TTransactions::FIELD_PAYMENTREMINDERSSENT, 0);
@@ -775,7 +775,7 @@ class TTransactions extends TModel
 	{
 		return array(TTransactions::FIELD_CREATEDBYCONTACTID, 
 					TTransactions::FIELD_INVOICEDATE,
-					TTransactions::FIELD_INVOICENUMBER,
+					TTransactions::FIELD_INCREMENTNUMBER,
 					TTransactions::FIELD_ISFINALIZED,
 					TTransactions::FIELD_CURRENCYID,
 					TTransactions::FIELD_PURCHASEORDERNUMBER,
@@ -923,7 +923,7 @@ class TTransactions extends TModel
 	*/
 	public function getGUIItemName()
 	{
-		return $this->get(TTransactions::FIELD_INVOICENUMBER).' - '.$this->getMetaTotalPriceInclVat()->getValueFormatted().'';
+		return $this->get(TTransactions::FIELD_INCREMENTNUMBER).' - '.$this->getMetaTotalPriceInclVat()->getValueFormatted().'';
 	}
 	
 	
@@ -946,7 +946,7 @@ class TTransactions extends TModel
 			$this->get(TTransactions::FIELD_BUYERCONTACTID).
 			$this->get(TTransactions::FIELD_CREATEDBYCONTACTID).
 			'isnietgek'.
-			$this->get(TTransactions::FIELD_INVOICENUMBER).
+			$this->get(TTransactions::FIELD_INCREMENTNUMBER).
 			$this->get(TTransactions::FIELD_CURRENCYID).
 			$this->get(TTransactions::FIELD_PSPTRANSACTIONID).
 			$this->getMetaTotalPriceInclVat()->getValueInternal().

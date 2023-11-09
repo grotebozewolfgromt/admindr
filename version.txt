@@ -130,6 +130,9 @@ todo: background uploading files/images
 =======
 versie conflict niet opgelost
 -bezig met detailsave_transactions
+-rename getForm() -> getFormGenerator() in TCRUDDetailSaveController
+-rename permission category invoices -> permission category transactions
+-rename database field: transactions: invoicenumber -> incrementnumber
 
 
 4 nov 2023

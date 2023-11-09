@@ -19,8 +19,8 @@ use dr\modules\Mod_Transactions\models\TTransactionsTypes;
  */
 class Mod_Transactions extends TModuleAbstract
 {
-    const PERM_CAT_INVOICES = 'invoices';
-    const PERM_CAT_TRANSACTIONTYPES = 'transaction-types';
+    const PERM_CAT_TRANSACTIONS = 'transactions';
+    const PERM_CAT_TRANSACTIONSTYPES = 'transactions-types';
 
     public function getIsSystemModule() 
     {
@@ -64,8 +64,8 @@ class Mod_Transactions extends TModuleAbstract
     public function getTabsheets()
     {
         return array(
-            array('list_invoices', Mod_Transactions::PERM_CAT_INVOICES, 'Transactions', 'Manage all invoices and orders'),
-            array('list_transactionstypes', Mod_Transactions::PERM_CAT_INVOICES, 'Trans. Types', 'Manage types of transactions')
+            array('list_invoices', Mod_Transactions::PERM_CAT_TRANSACTIONS, 'Transactions', 'Manage all invoices and orders'),
+            array('list_transactionstypes', Mod_Transactions::PERM_CAT_TRANSACTIONS, 'Trans. Types', 'Manage types of transactions')
         );
     } 
 
@@ -94,14 +94,14 @@ class Mod_Transactions extends TModuleAbstract
     public function getPermissions()
     {
         return array(
-            Mod_Transactions::PERM_CAT_INVOICES => array (  TModuleAbstract::PERM_OP_VIEW,
+            Mod_Transactions::PERM_CAT_TRANSACTIONS => array (  TModuleAbstract::PERM_OP_VIEW,
                                                 TModuleAbstract::PERM_OP_DELETE,
                                                 TModuleAbstract::PERM_OP_CHANGE,
                                                 TModuleAbstract::PERM_OP_CREATE,
                                                 TModuleAbstract::PERM_OP_LOCKUNLOCK,
                                                 TModuleAbstract::PERM_OP_CHECKINOUT
                                             ),
-            Mod_Transactions::PERM_CAT_TRANSACTIONTYPES => array (  TModuleAbstract::PERM_OP_VIEW,
+            Mod_Transactions::PERM_CAT_TRANSACTIONSTYPES => array (  TModuleAbstract::PERM_OP_VIEW,
                                                 TModuleAbstract::PERM_OP_DELETE,
                                                 TModuleAbstract::PERM_OP_CHANGE,
                                                 TModuleAbstract::PERM_OP_CREATE

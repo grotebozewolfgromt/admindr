@@ -106,7 +106,7 @@ class list_transactionstypes extends TCRUDListController
      */
     public function getAuthorisationCategory()
     {
-        return Mod_Transactions::PERM_CAT_INVOICES;
+        return Mod_Transactions::PERM_CAT_TRANSACTIONS;
     }
 
      /**
