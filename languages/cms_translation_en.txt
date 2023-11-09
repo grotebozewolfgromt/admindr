@@ -36,3 +36,11 @@ overview_bulkactions_button_execute;execute;execute
 paginator_showingXtoYofZ;Showing [start] to [finish] of [total] entries;Showing [start] to [finish] of [total] entries
 form_error_notavaliddate;This not a valid date;This not a valid date
 form_error_notavalidtime;[time] is not a valid time;[time] is not a valid time
+overview_bulkactions_success;bulk actions completed succesfully;bulk actions completed succesfully
+message_noitemstodisplay;[ no items to display ];[ no items to display ]
+paginator_showingXtoYofZ_noentries;Showing 0 entries;Showing 0 entries
+form_error_onlynumbersallowed;Only numbers are allowed;Only numbers are allowed
+form_error_alphabetic;Only alphabetical characters allowed;Only alphabetical characters allowed
+form_error_onlynumeric;Only numeric allowed;Only numeric allowed
+overview_bulkactions_uninstall;uninstall;uninstall
+overview_bulkactions;Bulk actions;Bulk actions

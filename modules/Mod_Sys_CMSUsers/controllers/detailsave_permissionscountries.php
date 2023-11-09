@@ -59,7 +59,7 @@ class detailsave_permissionscountries extends TCRUDDetailSaveController
         //country
         $this->objOptCountry = new Select();
         $this->objOptCountry->setNameAndID('optCountry');
-        $this->getForm()->add($this->objOptCountry, '', transm($this->getModule(), 'form_field_country', 'country'));        
+        $this->getFormGenerator()->add($this->objOptCountry, '', transm($this->getModule(), 'form_field_country', 'country'));        
     }
 
     /**

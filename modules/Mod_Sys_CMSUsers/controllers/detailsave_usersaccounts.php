@@ -86,17 +86,17 @@ class detailsave_usersaccounts extends TCRUDDetailSaveController
         $this->objEdtCustomIdentifier->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtCustomIdentifier->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtCustomIdentifier, '', transm($this->getModule(), 'form_field_customidentifier', 'Label (used to identify this account just to you)'));
+        $this->getFormGenerator()->add($this->objEdtCustomIdentifier, '', transm($this->getModule(), 'form_field_customidentifier', 'Label (used to identify this account just to you)'));
 
         //contact id
         $this->objSelContactID = new Select();
         $this->objSelContactID->setNameAndID('optContactID');
-        $this->getForm()->add($this->objSelContactID, '', transm($this->getModule(), 'form_field_contactid', 'Contact'));
+        $this->getFormGenerator()->add($this->objSelContactID, '', transm($this->getModule(), 'form_field_contactid', 'Contact'));
         
         //login enabled
         $this->objChkLoginEnabled = new InputCheckbox();
         $this->objChkLoginEnabled->setNameAndID('edtLoginEnabled');
-        $this->getForm()->add($this->objChkLoginEnabled, '', transm($this->getModule(), 'form_field_enabled', 'able to log in (users in this account)'));         
+        $this->getFormGenerator()->add($this->objChkLoginEnabled, '', transm($this->getModule(), 'form_field_enabled', 'able to log in (users in this account)'));         
 
 
         //login expires 
@@ -112,7 +112,7 @@ class detailsave_usersaccounts extends TCRUDDetailSaveController
             $objValidator = new Time(transcms('form_error_notavalidtime', '[time] is not a valid time', 'time', $this->objEdtLoginExpiresTime->getContentsSubmitted()->getValueAsString()), $this->getTimeFormatDefault(),  true, $this->getTimeFormatDefault());
             $this->objEdtLoginExpiresTime->addValidator($objValidator);                        
             
-            $this->getForm()->addArray(array($this->objEdtLoginExpiresDate, $this->objEdtLoginExpiresTime), '', transm($this->getModule(), 'form_field_loginexpires', 'Login expires after (users in account can\'t log in after this date, empty = no expiration)'));        
+            $this->getFormGenerator()->addArray(array($this->objEdtLoginExpiresDate, $this->objEdtLoginExpiresTime), '', transm($this->getModule(), 'form_field_loginexpires', 'Login expires after (users in account can\'t log in after this date, empty = no expiration)'));        
         
         //scheduled for deletion after
             //date
@@ -127,7 +127,7 @@ class detailsave_usersaccounts extends TCRUDDetailSaveController
             $objValidator = new Time(transcms('form_error_notavalidtime', '[time] is not a valid time', 'time', $this->objEdtDeleteAfterTime->getContentsSubmitted()->getValueAsString()), $this->getTimeFormatDefault(),  true, $this->getTimeFormatDefault());
             $this->objEdtDeleteAfterTime->addValidator($objValidator);                        
             
-            $this->getForm()->addArray(array($this->objEdtDeleteAfterDate, $this->objEdtDeleteAfterTime), '', transm($this->getModule(), 'form_field_deleteafter', 'Auto delete account after (also deleting ALL users in account, empty = no deletion)'));                                             
+            $this->getFormGenerator()->addArray(array($this->objEdtDeleteAfterDate, $this->objEdtDeleteAfterTime), '', transm($this->getModule(), 'form_field_deleteafter', 'Auto delete account after (also deleting ALL users in account, empty = no deletion)'));                                             
 
 
         //users in account
@@ -271,7 +271,7 @@ class detailsave_usersaccounts extends TCRUDDetailSaveController
         if ($this->getModel()->getNew()) //existing record
         {
             $this->objLblHintUsersInAccount->setText(transm($this->getModule(), 'section_useraccounts_detail_usersinaccount_newrecordnousers', 'Create account first before you can assign users'));        
-            $this->getForm()->add($this->objLblHintUsersInAccount, $sTransSectionUsersInAccount);        
+            $this->getFormGenerator()->add($this->objLblHintUsersInAccount, $sTransSectionUsersInAccount);        
         }
         else
         {
@@ -283,7 +283,7 @@ class detailsave_usersaccounts extends TCRUDDetailSaveController
     
 
             $this->objLblHintUsersInAccount->setText(transm($this->getModule(), 'section_useraccounts_detail_usersinaccount_explanation', '[amount] user(s) are part of this account:', 'amount', $objUsers->count()));        
-            $this->getForm()->add($this->objLblHintUsersInAccount, $sTransSectionUsersInAccount);        
+            $this->getFormGenerator()->add($this->objLblHintUsersInAccount, $sTransSectionUsersInAccount);        
 
 
 
@@ -292,7 +292,7 @@ class detailsave_usersaccounts extends TCRUDDetailSaveController
             {             
                 $objLblUserLine = new Label();
                 $objLblUserLine->setText('-'.$objUsers->getUsername());        
-                $this->getForm()->add($objLblUserLine, $sTransSectionUsersInAccount);        
+                $this->getFormGenerator()->add($objLblUserLine, $sTransSectionUsersInAccount);        
     
 
         //         $objCheckbox->setNameAndID('chkSession'.$objSessions->getRandomID());
@@ -307,7 +307,7 @@ class detailsave_usersaccounts extends TCRUDDetailSaveController
         //         $sTempTextCheckbox.= $objSessions->getBrowser().', '.$objSessions->getOperatingSystem().' ('.$objSessions->getSessionStarted()->getDateTimeAsString($this->getDateTimeFormatDefault()).')';
 
 
-        //         $this->getForm()->add($objCheckbox, $sTransSectionSessions, $sTempTextCheckbox);
+        //         $this->getFormGenerator()->add($objCheckbox, $sTransSectionSessions, $sTempTextCheckbox);
         //         unset($objCheckbox);//I don't save the checkboxes in an array or something, when we need them, we create new ones
             }   
             

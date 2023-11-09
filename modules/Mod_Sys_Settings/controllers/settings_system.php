@@ -109,14 +109,14 @@ class settings_system extends TCRUDDetailSaveController
         $this->objEdtEmailSysAdmin->setMaxLength(255);
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '255'), 255);
         $this->objEdtEmailSysAdmin->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtEmailSysAdmin, $sTransSectionSystem, transm($this->getModule(), 'form_field_emailsysadmin', 'Email address system administrator (whole system, all sites, all login controllers etc'));
+        $this->getFormGenerator()->add($this->objEdtEmailSysAdmin, $sTransSectionSystem, transm($this->getModule(), 'form_field_emailsysadmin', 'Email address system administrator (whole system, all sites, all login controllers etc'));
 
             //max results paginator
         $this->objEdtPaginatorMaxResult = new InputNumber();
         $this->objEdtPaginatorMaxResult->setNameAndID('edtMaxResultsPaginator');
         $this->objEdtPaginatorMaxResult->setClass('fullwidthtag');   
         $this->objEdtPaginatorMaxResult->setRequired(true);   
-        $this->getForm()->add($this->objEdtPaginatorMaxResult, $sTransSectionCMS, transm($this->getModule(), 'form_field_paginatormaxresultsperpage', '# Records shown per page'));
+        $this->getFormGenerator()->add($this->objEdtPaginatorMaxResult, $sTransSectionCMS, transm($this->getModule(), 'form_field_paginatormaxresultsperpage', '# Records shown per page'));
 
             //emailbot from email address
         $this->objEdtMailbotFromEmailaddress = new InputText();
@@ -126,7 +126,7 @@ class settings_system extends TCRUDDetailSaveController
         $this->objEdtMailbotFromEmailaddress->setMaxLength(255);
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '255'), 255);
         $this->objEdtMailbotFromEmailaddress->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtMailbotFromEmailaddress, $sTransSectionCMS, transm($this->getModule(), 'form_field_mailbot_from_emailaddress', 'FROM Email address mailbot (i.e. used for password recovery)'));
+        $this->getFormGenerator()->add($this->objEdtMailbotFromEmailaddress, $sTransSectionCMS, transm($this->getModule(), 'form_field_mailbot_from_emailaddress', 'FROM Email address mailbot (i.e. used for password recovery)'));
     
             //emailbot from email name
         $this->objEdtMailbotFromName = new InputText();
@@ -136,25 +136,25 @@ class settings_system extends TCRUDDetailSaveController
         $this->objEdtMailbotFromName->setMaxLength(255);
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '255'), 255);
         $this->objEdtMailbotFromName->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtMailbotFromName, $sTransSectionCMS, transm($this->getModule(), 'form_field_mailbot_from_name', 'FROM name mailbot (i.e. used for password recovery)'));
+        $this->getFormGenerator()->add($this->objEdtMailbotFromName, $sTransSectionCMS, transm($this->getModule(), 'form_field_mailbot_from_name', 'FROM name mailbot (i.e. used for password recovery)'));
     
 
             //anyone can make user account (option in config.php supersedes this one)
         // $this->objChkAnyoneCanRegister = new InputCheckbox();
         // $this->objChkAnyoneCanRegister->setNameAndID('chkAnyoneCanRegister');
-        // $this->getForm()->add($this->objChkAnyoneCanRegister, $sTransSectionCMSMemberships, transm($this->getModule(), 'form_field_anyonecanregister', 'anyone can register'));         
+        // $this->getFormGenerator()->add($this->objChkAnyoneCanRegister, $sTransSectionCMSMemberships, transm($this->getModule(), 'form_field_anyonecanregister', 'anyone can register'));         
 
             //user groupid
         $this->objOptNewUserRegisterGroupID = new Select();
         $this->objOptNewUserRegisterGroupID->setNameAndID('optDefaultUsergroupID');
-        $this->getForm()->add($this->objOptNewUserRegisterGroupID, $sTransSectionCMSMemberships, transm($this->getModule(), 'form_field_usergroup', 'new user default role'));
+        $this->getFormGenerator()->add($this->objOptNewUserRegisterGroupID, $sTransSectionCMSMemberships, transm($this->getModule(), 'form_field_usergroup', 'new user default role'));
 
             //auto expire password days
         $this->objEdtUserPasswordExpiresDays = new InputNumber();
         $this->objEdtUserPasswordExpiresDays->setNameAndID('edtUserPasswordExpiresDays');
         $this->objEdtUserPasswordExpiresDays->setClass('fullwidthtag');   
         $this->objEdtUserPasswordExpiresDays->setRequired(true);   
-        $this->getForm()->add($this->objEdtUserPasswordExpiresDays, $sTransSectionCMSMemberships, transm($this->getModule(), 'form_field_userpasswordexpiresdays', 'Users need to change password after X days (0 = never, 1 = 1 day, 2 = 2 days etc.)'));
+        $this->getFormGenerator()->add($this->objEdtUserPasswordExpiresDays, $sTransSectionCMSMemberships, transm($this->getModule(), 'form_field_userpasswordexpiresdays', 'Users need to change password after X days (0 = never, 1 = 1 day, 2 = 2 days etc.)'));
 
     }
 

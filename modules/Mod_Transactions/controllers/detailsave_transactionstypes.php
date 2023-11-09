@@ -91,37 +91,37 @@ class detailsave_transactionstypes extends TCRUDDetailSaveController
         $this->objEdtName->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtName->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtName, '', transm($this->getModule(), 'form_field_name', 'Name'));
+        $this->getFormGenerator()->add($this->objEdtName, '', transm($this->getModule(), 'form_field_name', 'Name'));
 
  
         //stock managed
         $this->objChkStock = new InputCheckbox();
         $this->objChkStock->setNameAndID('chkIsStock');
-        $this->getForm()->add($this->objChkStock, '', transm($this->getModule(), 'form_field_isstock', 'Stock managing transaction (stock reduced or increased when transaction completed)'));         
+        $this->getFormGenerator()->add($this->objChkStock, '', transm($this->getModule(), 'form_field_isstock', 'Stock managing transaction (stock reduced or increased when transaction completed)'));         
 
 
         //financial transaction
         $this->objChkFinancial = new InputCheckbox();
         $this->objChkFinancial->setNameAndID('chkIsFinancial');
-        $this->getForm()->add($this->objChkFinancial, '', transm($this->getModule(), 'form_field_isfinancial', 'Is financial transaction'));         
+        $this->getFormGenerator()->add($this->objChkFinancial, '', transm($this->getModule(), 'form_field_isfinancial', 'Is financial transaction'));         
 
 
         //default selected
         $this->objChkDefaultSelected = new InputCheckbox();
         $this->objChkDefaultSelected->setNameAndID('chkIsDefaultSelected');
-        $this->getForm()->add($this->objChkDefaultSelected, '', transm($this->getModule(), 'form_field_isdefaultselected', 'Is selected by default (in user interface elements)'));         
+        $this->getFormGenerator()->add($this->objChkDefaultSelected, '', transm($this->getModule(), 'form_field_isdefaultselected', 'Is selected by default (in user interface elements)'));         
 
 
         //default invoice
         $this->objChkDefaultInvoice = new InputCheckbox();
         $this->objChkDefaultInvoice->setNameAndID('chkIsDefaultInvoice');
-        $this->getForm()->add($this->objChkDefaultInvoice, '', transm($this->getModule(), 'form_field_isdefaultinvoice', 'Is default invoice (when an invoice (in webshop) is needed, this type is selected)'));         
+        $this->getFormGenerator()->add($this->objChkDefaultInvoice, '', transm($this->getModule(), 'form_field_isdefaultinvoice', 'Is default invoice (when an invoice (in webshop) is needed, this type is selected)'));         
 
 
         //default order
         $this->objChkDefaultOrder = new InputCheckbox();
         $this->objChkDefaultOrder->setNameAndID('chkIsDefaultOrder');
-        $this->getForm()->add($this->objChkDefaultOrder, '', transm($this->getModule(), 'form_field_isdefaultorder', 'Is default order (when an order (in webshop) is needed, this type is selected)'));         
+        $this->getFormGenerator()->add($this->objChkDefaultOrder, '', transm($this->getModule(), 'form_field_isdefaultorder', 'Is default order (when an order (in webshop) is needed, this type is selected)'));         
         
         
             //foreground color
@@ -134,7 +134,7 @@ class detailsave_transactionstypes extends TCRUDDetailSaveController
         $this->objEdtColorForeground->addValidator($objValidator);    
         $objValidator = new ColorHex(transcms('form_error_colorinvalid', 'Color needs to in Hex values (from #00000 to #FFFFFF), [value] given.', 'value', $this->objEdtColorForeground->getContentsSubmitted()->getValueAsString()), true, true);
         $this->objEdtColorForeground->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtColorForeground, '', transm($this->getModule(), 'form_field_colorforeground', 'Foreground color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)'));
+        $this->getFormGenerator()->add($this->objEdtColorForeground, '', transm($this->getModule(), 'form_field_colorforeground', 'Foreground color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)'));
     
             //background color
         $this->objEdtColorBackground = new InputColor();
@@ -146,7 +146,7 @@ class detailsave_transactionstypes extends TCRUDDetailSaveController
         $this->objEdtColorBackground->addValidator($objValidator);    
         $objValidator = new ColorHex(transcms('form_error_colorinvalid', 'Color needs to in Hex values (from #00000 to #FFFFFF), [value] given.', 'value', $this->objEdtColorBackground->getContentsSubmitted()->getValueAsString()), true, true);
         $this->objEdtColorBackground->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtColorBackground, '', transm($this->getModule(), 'form_field_colorbackground', 'Background color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)'));
+        $this->getFormGenerator()->add($this->objEdtColorBackground, '', transm($this->getModule(), 'form_field_colorbackground', 'Background color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)'));
             
 
             //new incremented number
@@ -159,7 +159,7 @@ class detailsave_transactionstypes extends TCRUDDetailSaveController
         $this->objEdtNewNumber->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtNewNumber->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtNewNumber, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
+        $this->getFormGenerator()->add($this->objEdtNewNumber, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
 
 
             //address seller
@@ -169,7 +169,7 @@ class detailsave_transactionstypes extends TCRUDDetailSaveController
         $this->objTxtAddress->setRequired(false);   
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '1000'), 1000);
         $this->objTxtAddress->addValidator($objValidator);    
-        $this->getForm()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
+        $this->getFormGenerator()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
 
             //vat no
         $this->objEdtVatNo = new InputText();
@@ -181,7 +181,7 @@ class detailsave_transactionstypes extends TCRUDDetailSaveController
         $this->objEdtVatNo->addValidator($objValidator);    
         // $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         // $this->objEdtVatNo->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtVatNo, '', transm($this->getModule(), 'form_field_vatno', 'VAT number seller'));
+        $this->getFormGenerator()->add($this->objEdtVatNo, '', transm($this->getModule(), 'form_field_vatno', 'VAT number seller'));
 
             //payment within days
         $this->objEdtPaymentDays = new InputNumber();
@@ -193,7 +193,7 @@ class detailsave_transactionstypes extends TCRUDDetailSaveController
         $this->objEdtPaymentDays->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtPaymentDays->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtPaymentDays, '', transm($this->getModule(), 'form_field_paymentwithindays', 'Must be payed within (amount of days)'));
+        $this->getFormGenerator()->add($this->objEdtPaymentDays, '', transm($this->getModule(), 'form_field_paymentwithindays', 'Must be payed within (amount of days)'));
 
     }
 

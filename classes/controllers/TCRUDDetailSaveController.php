@@ -60,7 +60,7 @@ abstract class TCRUDDetailSaveController
     private $arrCommandPanel = array();//array of elements to put in form generator. We use it twice: once on the top and once on the bottom
     
     
-    private $objForm = null;//dr\classes\dom\FormGenerator
+    private $objFormGenerator = null;//dr\classes\dom\FormGenerator
     private $objSubmit = null;//dr\classes\dom\tag\form\InputSubmit
     // private $objSubmitClose = null;//dr\classes\dom\tag\form\InputSubmit
     private $objCancel = null;//dr\classes\dom\tag\form\InputButton
@@ -105,8 +105,8 @@ abstract class TCRUDDetailSaveController
             $this->modelToForm();     
             
             //add commandpanel at the bottom
-            $this->objForm->addArray($this->arrCommandPanel, 'commands_bottom');  
-            $this->objForm->assignCSSClassSection('commands_bottom', 'div_commandpanel');               
+            $this->objFormGenerator->addArray($this->arrCommandPanel, 'commands_bottom');  
+            $this->objFormGenerator->assignCSSClassSection('commands_bottom', 'div_commandpanel');               
 
             //render
             $this->render();
@@ -137,7 +137,7 @@ abstract class TCRUDDetailSaveController
         $arrVars['sHTMLMetaDescription'] = $arrVars['sTitle'];
         $arrVars['objModel'] = $this->getModel();
         $arrVars['objCRUD'] = $this;
-        $arrVars['objForm'] = $this->getForm();
+        $arrVars['objFormGenerator'] = $this->getFormGenerator();
         if ($this->showTabs())
             $arrVars['arrTabsheets'] = $objCurrentModule->getTabsheets(); 
         $arrVars = array_merge($GLOBALS, $arrVars); //ORDER OF PARAMETERS IS IMPORTANT -> we pick $GLOBALS as base and overwrite them with the variables from execute()
@@ -210,9 +210,9 @@ abstract class TCRUDDetailSaveController
      * 
      * @return dr\classes\dom\FormGenerator
      */
-    public function getForm()
+    public function getFormGenerator()
     {
-        return $this->objForm;
+        return $this->objFormGenerator;
     }
     
     /**
@@ -252,7 +252,7 @@ abstract class TCRUDDetailSaveController
      */
     protected function populateInternal()
     {
-        $this->objForm = new FormGenerator('detailsave', $this->sURLThisScript);
+        $this->objFormGenerator = new FormGenerator('detailsave', $this->sURLThisScript);
         $bAllowedChange = auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE);
         $bAllowedCreate = auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CREATE);        
     
@@ -288,8 +288,8 @@ abstract class TCRUDDetailSaveController
         $this->arrCommandPanel[] = $this->objCancel;
 
         //removed command panel at the top on 1-6-2023
-        //$this->objForm->addArray($this->arrCommandPanel, 'commands_top');
-        //$this->objForm->assignCSSClassSection('commands_top', 'div_commandpanel');          
+        //$this->objFormGenerator->addArray($this->arrCommandPanel, 'commands_top');
+        //$this->objFormGenerator->assignCSSClassSection('commands_top', 'div_commandpanel');          
         
         
         //populate child class
@@ -360,7 +360,7 @@ abstract class TCRUDDetailSaveController
     protected function handleSubmitted()
     {
 
-       if ($this->objForm->isFormSubmitted())
+       if ($this->objFormGenerator->isFormSubmitted())
        {
             //check for max_vars
             if ((int)ini_get('max_input_vars') ==  count($_POST))  
@@ -374,7 +374,7 @@ abstract class TCRUDDetailSaveController
         
            $this->formToModel(); //--> if there is an error on the form we want to be able to correct it with all the values filled in
                 
-           if ($this->objForm->isValid()) //========== SAVE to database =========
+           if ($this->objFormGenerator->isValid()) //========== SAVE to database =========
            {
                if ($this->onSavePre())
                {               
@@ -448,7 +448,7 @@ abstract class TCRUDDetailSaveController
            }
 
            //====== putting submitted data in the form
-        //    $this->objForm->setSubmittedValuesAsValues();
+        //    $this->objFormGenerator->setSubmittedValuesAsValues();
 
 
        }        

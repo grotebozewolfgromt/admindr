@@ -84,13 +84,13 @@ class detailsave_transactions extends TCRUDDetailSaveController
         $this->objSelTransactionsType = new Select();
         $this->objSelTransactionsType->setNameAndID('edtTransactionsType');
         // $this->objSelTransactionsType->setClass('fullwidthtag');
-        // $this->getForm()->add($this->objSelTransactionsType, '', transm($this->getModule(), 'form_field_name', 'Name'));
+        // $this->getFormGenerator()->add($this->objSelTransactionsType, '', transm($this->getModule(), 'form_field_name', 'Name'));
 
 
         //currency
         $this->objSelCurrency = new InputCheckbox();
         $this->objSelCurrency->setNameAndID('edtCurrency');
-        // $this->getForm()->add($this->objSelCurrency, '', transm($this->getModule(), 'form_field_isstock', 'Stock managing transaction (stock reduced or increased when transaction completed)'));
+        // $this->getFormGenerator()->add($this->objSelCurrency, '', transm($this->getModule(), 'form_field_isstock', 'Stock managing transaction (stock reduced or increased when transaction completed)'));
 
 
         //purchase order number
@@ -100,7 +100,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
         $this->objEdtPurchaseOrderNo->setMaxLength(50);
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtPurchaseOrderNo->addValidator($objValidator);
-        // $this->getForm()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
+        // $this->getFormGenerator()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
 
 
         //internal notes
@@ -108,14 +108,14 @@ class detailsave_transactions extends TCRUDDetailSaveController
         $this->objTxtNotesInternal->setNameAndID('txtInternalNotes');
         // $this->objTxtNotesInternal->setClass('fullwidthtag');   
         $this->objTxtNotesInternal->addValidator($objValidator);
-        // $this->getForm()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
+        // $this->getFormGenerator()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
 
          //external notes
          $this->objTxtNotesExternal = new Textarea();
          $this->objTxtNotesExternal->setNameAndID('txtInternalNotes');
          // $this->objTxtNotesExternal->setClass('fullwidthtag');   
          $this->objTxtNotesExternal->addValidator($objValidator);
-         // $this->getForm()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
+         // $this->getFormGenerator()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
  
     }
 

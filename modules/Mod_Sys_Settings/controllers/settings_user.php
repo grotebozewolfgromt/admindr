@@ -78,7 +78,7 @@ class settings_user extends TCRUDDetailSaveController
         $this->objEdtUsername->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtUsername->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtUsername, '', transm($this->getModule(), 'form_field_username', 'username'));
+        $this->getFormGenerator()->add($this->objEdtUsername, '', transm($this->getModule(), 'form_field_username', 'username'));
 
             //username public
         $this->objEdtUsernamePublic = new InputText();
@@ -88,7 +88,7 @@ class settings_user extends TCRUDDetailSaveController
         $this->objEdtUsernamePublic->setMaxLength(255);
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '255'), 255);
         $this->objEdtUsernamePublic->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtUsernamePublic, '', transm($this->getModule(), 'form_field_usernamepublic', 'public username (published on websites etc)'));        
+        $this->getFormGenerator()->add($this->objEdtUsernamePublic, '', transm($this->getModule(), 'form_field_usernamepublic', 'public username (published on websites etc)'));        
     
 
             //password old
@@ -101,7 +101,7 @@ class settings_user extends TCRUDDetailSaveController
         $this->objEdtPasswordOld->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         if (!$this->getModel()->getNew())//existing record
-            $this->getForm()->add($this->objEdtPasswordOld, '', transm($this->getModule(), 'form_field_passwordold', 'current password').$sPassHint); 
+            $this->getFormGenerator()->add($this->objEdtPasswordOld, '', transm($this->getModule(), 'form_field_passwordold', 'current password').$sPassHint); 
 
             //password new
         $sPassHint = '';
@@ -112,7 +112,7 @@ class settings_user extends TCRUDDetailSaveController
         $this->objEdtPasswordNew->setClass('fullwidthtag');   
         $this->objEdtPasswordNew->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
-        $this->getForm()->add($this->objEdtPasswordNew, '', transm($this->getModule(), 'form_field_passwordnew', 'new password').$sPassHint); 
+        $this->getFormGenerator()->add($this->objEdtPasswordNew, '', transm($this->getModule(), 'form_field_passwordnew', 'new password').$sPassHint); 
 
             //password repeat
         $sPassRepeatHint = '';
@@ -123,7 +123,7 @@ class settings_user extends TCRUDDetailSaveController
         $this->objEdtPasswordRepeat->setClass('fullwidthtag');   
         $this->objEdtPasswordRepeat->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
-        $this->getForm()->add($this->objEdtPasswordRepeat, '', transm($this->getModule(), 'form_field_passwordnewrepeat', 'repeat new password').$sPassHint); 
+        $this->getFormGenerator()->add($this->objEdtPasswordRepeat, '', transm($this->getModule(), 'form_field_passwordnewrepeat', 'repeat new password').$sPassHint); 
         
         
              //email (can be empty)
@@ -135,13 +135,13 @@ class settings_user extends TCRUDDetailSaveController
         $this->objEdtEmail->addValidator($objValidator);    
         $objValidator = new Emailaddress(transcms('form_error_notavalidemailaddress', 'This not a valid email address'), true);
         $this->objEdtEmail->addValidator($objValidator);            
-        $this->getForm()->add($this->objEdtEmail, '', transm($this->getModule(), 'form_field_emailaddress', 'email address'));
+        $this->getFormGenerator()->add($this->objEdtEmail, '', transm($this->getModule(), 'form_field_emailaddress', 'email address'));
 
         
         //language
         $this->objOptLanguage = new Select();
         $this->objOptLanguage->setNameAndID('optLanguage');
-        $this->getForm()->add($this->objOptLanguage, '', transm($this->getModule(), 'form_field_language', 'language'));
+        $this->getFormGenerator()->add($this->objOptLanguage, '', transm($this->getModule(), 'form_field_language', 'language'));
         
         //sessions
         //done in modelToForm()        
@@ -366,9 +366,9 @@ class settings_user extends TCRUDDetailSaveController
             {
                 $this->objLblHintSessions1->setText(transm($this->getModule(), 'form_label_sessions_nosessions', 'User isn\'t logged in anywhere'));
             }
-            $this->getForm()->add($this->objLblHintSessions1, $sTransSectionSessions);        
-            $this->getForm()->add($this->objLblHintSessions2, $sTransSectionSessions);        
-            $this->getForm()->add($this->objLblHintSessions3, $sTransSectionSessions);        
+            $this->getFormGenerator()->add($this->objLblHintSessions1, $sTransSectionSessions);        
+            $this->getFormGenerator()->add($this->objLblHintSessions2, $sTransSectionSessions);        
+            $this->getFormGenerator()->add($this->objLblHintSessions3, $sTransSectionSessions);        
 
             //display sessions
             $objSessions->resetRecordpointer();
@@ -387,7 +387,7 @@ class settings_user extends TCRUDDetailSaveController
                 $sTempTextCheckbox.= $objSessions->getBrowser().', '.$objSessions->getOperatingSystem().' ('.$objSessions->getSessionStarted()->getDateTimeAsString($this->getDateTimeFormatDefault()).')';
 
 
-                $this->getForm()->add($objCheckbox, $sTransSectionSessions, $sTempTextCheckbox);
+                $this->getFormGenerator()->add($objCheckbox, $sTransSectionSessions, $sTempTextCheckbox);
                 unset($objCheckbox);//I don't save the checkboxes in an array or something, when we need them, we create new ones
             }   
             

@@ -54,7 +54,7 @@ class detailsave_websites extends TCRUDDetailSaveController
         $this->objEdtWebsiteName->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtWebsiteName->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtWebsiteName, '', transm($this->getModule(), 'form_field_websitename', 'website name'));
+        $this->getFormGenerator()->add($this->objEdtWebsiteName, '', transm($this->getModule(), 'form_field_websitename', 'website name'));
 
             //url
         $this->objEdtURL = new InputText();
@@ -66,12 +66,12 @@ class detailsave_websites extends TCRUDDetailSaveController
         $this->objEdtURL->addValidator($objValidator);        
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtURL->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtURL, '', transm($this->getModule(), 'form_field_url', 'url')); 
+        $this->getFormGenerator()->add($this->objEdtURL, '', transm($this->getModule(), 'form_field_url', 'url')); 
         
         //language
         $this->objOptDefaultLanguage = new Select();
         $this->objOptDefaultLanguage->setNameAndID('optDefaultLanguage');
-        $this->getForm()->add($this->objOptDefaultLanguage, '', transm($this->getModule(), 'form_field_defaultlanguage', 'default language'));        
+        $this->getFormGenerator()->add($this->objOptDefaultLanguage, '', transm($this->getModule(), 'form_field_defaultlanguage', 'default language'));        
 
     }
 

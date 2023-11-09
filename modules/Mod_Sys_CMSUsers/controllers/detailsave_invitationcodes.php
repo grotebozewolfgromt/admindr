@@ -62,7 +62,7 @@ class detailsave_invitationcodes extends TCRUDDetailSaveController
         $this->objEdtName->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtName->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtName, '', transm($this->getModule(), 'form_field_namecode', 'name (only you can see it)'));
+        $this->getFormGenerator()->add($this->objEdtName, '', transm($this->getModule(), 'form_field_namecode', 'name (only you can see it)'));
 
             //code
         $this->objEdtCode = new InputText();
@@ -76,7 +76,7 @@ class detailsave_invitationcodes extends TCRUDDetailSaveController
         $this->objEdtCode->addValidator($objValidator);       
         $objValidator = new Characterwhitelist(transcms('form_error_charactersnotallowed', 'Some characters are not allowed'), TSysCMSInvitationCodes::ALLOWEDCHARSCODE);
         $this->objEdtCode->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtCode, '', transm($this->getModule(), 'form_field_invitationcode', 'Invitation code (allowed: [allowed])','allowed',  TSysCMSInvitationCodes::ALLOWEDCHARSCODE)); 
+        $this->getFormGenerator()->add($this->objEdtCode, '', transm($this->getModule(), 'form_field_invitationcode', 'Invitation code (allowed: [allowed])','allowed',  TSysCMSInvitationCodes::ALLOWEDCHARSCODE)); 
    
             //current redeems
         $this->objEdtRedeems = new InputNumber();
@@ -89,7 +89,7 @@ class detailsave_invitationcodes extends TCRUDDetailSaveController
         $this->objEdtRedeems->addValidator($objValidator);       
         $objValidator = new Onlynumeric(transcms('form_error_onlynumbersallowed', 'Only numbers are allowed'));
         $this->objEdtRedeems->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtRedeems, '', transm($this->getModule(), 'form_field_currentredeems', 'Amount of times code is redeemed')); 
+        $this->getFormGenerator()->add($this->objEdtRedeems, '', transm($this->getModule(), 'form_field_currentredeems', 'Amount of times code is redeemed')); 
         
             //max redeems
         $this->objEdtMaxRedeems = new InputNumber();
@@ -102,7 +102,7 @@ class detailsave_invitationcodes extends TCRUDDetailSaveController
         $this->objEdtMaxRedeems->addValidator($objValidator);       
         $objValidator = new Onlynumeric(transcms('form_error_onlynumbersallowed', 'Only numbers are allowed'));
         $this->objEdtMaxRedeems->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtMaxRedeems, '', transm($this->getModule(), 'form_field_maxredeems', 'Limit redemptions (0=unlimited)')); 
+        $this->getFormGenerator()->add($this->objEdtMaxRedeems, '', transm($this->getModule(), 'form_field_maxredeems', 'Limit redemptions (0=unlimited)')); 
     
             //==== start date+time
             //date
@@ -118,7 +118,7 @@ class detailsave_invitationcodes extends TCRUDDetailSaveController
             $objValidator = new Time(transcms('form_error_notavalidtime', '[time] is not a valid time', 'time', $this->objEdtStartTime->getContentsSubmitted()->getValueAsString()), $this->getTimeFormatDefault(),  true, $this->getTimeFormatDefault());
             $this->objEdtStartTime->addValidator($objValidator);                        
             
-            $this->getForm()->addArray(array($this->objEdtStartDate, $this->objEdtStartTime), '', transm($this->getModule(), 'form_field_invitationcodes_startdatetime', 'Start date'));        
+            $this->getFormGenerator()->addArray(array($this->objEdtStartDate, $this->objEdtStartTime), '', transm($this->getModule(), 'form_field_invitationcodes_startdatetime', 'Start date'));        
 
             //==== end date+time
             //date
@@ -134,14 +134,14 @@ class detailsave_invitationcodes extends TCRUDDetailSaveController
             $objValidator = new Time(transcms('form_error_notavalidtime', '[time] is not a valid time', 'time', $this->objEdtEndTime->getContentsSubmitted()->getValueAsString()), $this->getTimeFormatDefault(),  true, $this->getTimeFormatDefault());
             $this->objEdtEndTime->addValidator($objValidator);                        
             
-            $this->getForm()->addArray(array($this->objEdtEndDate, $this->objEdtEndTime), '', transm($this->getModule(), 'form_field_invitationcodes_enddatetime', 'End date'));        
+            $this->getFormGenerator()->addArray(array($this->objEdtEndDate, $this->objEdtEndTime), '', transm($this->getModule(), 'form_field_invitationcodes_enddatetime', 'End date'));        
 
 
 
             //is enabled
         $this->objChkEnabled = new InputCheckbox();
         $this->objChkEnabled->setNameAndID('chkEnabled');
-        $this->getForm()->add($this->objChkEnabled, '', transm($this->getModule(), 'form_field_invitationcode_isenabled', 'Enabled'));           
+        $this->getFormGenerator()->add($this->objChkEnabled, '', transm($this->getModule(), 'form_field_invitationcode_isenabled', 'Enabled'));           
     }
 
     /**

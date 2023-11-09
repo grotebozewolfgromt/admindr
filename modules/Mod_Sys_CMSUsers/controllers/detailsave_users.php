@@ -95,7 +95,7 @@ class detailsave_users extends TCRUDDetailSaveController
         $this->objEdtUsername->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtUsername->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtUsername, '', transm($this->getModule(), 'userdetail_form_field_username', 'username'));
+        $this->getFormGenerator()->add($this->objEdtUsername, '', transm($this->getModule(), 'userdetail_form_field_username', 'username'));
 
             //username public
         $this->objEdtUsernamePublic = new InputText();
@@ -105,7 +105,7 @@ class detailsave_users extends TCRUDDetailSaveController
         $this->objEdtUsernamePublic->setMaxLength(255);
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '255'), 255);
         $this->objEdtUsernamePublic->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtUsernamePublic, '', transm($this->getModule(), 'userdetail_form_field_usernamepublic', 'public username (published on websites etc)'));        
+        $this->getFormGenerator()->add($this->objEdtUsernamePublic, '', transm($this->getModule(), 'userdetail_form_field_usernamepublic', 'public username (published on websites etc)'));        
 
             //password old
         $sPassHint = '';
@@ -117,7 +117,7 @@ class detailsave_users extends TCRUDDetailSaveController
         $this->objEdtPasswordOld->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         if (!$this->getModel()->getNew())//existing record
-            $this->getForm()->add($this->objEdtPasswordOld, '', transm($this->getModule(), 'userdetail_form_field_passwordold', 'current password').$sPassHint); 
+            $this->getFormGenerator()->add($this->objEdtPasswordOld, '', transm($this->getModule(), 'userdetail_form_field_passwordold', 'current password').$sPassHint); 
 
             //password new
         $sPassHint = '';
@@ -128,7 +128,7 @@ class detailsave_users extends TCRUDDetailSaveController
         $this->objEdtPasswordNew->setClass('fullwidthtag');   
         $this->objEdtPasswordNew->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
-        $this->getForm()->add($this->objEdtPasswordNew, '', transm($this->getModule(), 'userdetail_form_field_passwordnew', 'new password').$sPassHint); 
+        $this->getFormGenerator()->add($this->objEdtPasswordNew, '', transm($this->getModule(), 'userdetail_form_field_passwordnew', 'new password').$sPassHint); 
 
             //password repeat
         $sPassRepeatHint = '';
@@ -139,7 +139,7 @@ class detailsave_users extends TCRUDDetailSaveController
         $this->objEdtPasswordRepeat->setClass('fullwidthtag');   
         $this->objEdtPasswordRepeat->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
-        $this->getForm()->add($this->objEdtPasswordRepeat, '', transm($this->getModule(), 'userdetail_form_field_passwordnewrepeat', 'repeat new password').$sPassHint); 
+        $this->getFormGenerator()->add($this->objEdtPasswordRepeat, '', transm($this->getModule(), 'userdetail_form_field_passwordnewrepeat', 'repeat new password').$sPassHint); 
         
         
              //email (can be empty)
@@ -151,7 +151,7 @@ class detailsave_users extends TCRUDDetailSaveController
         $this->objEdtEmail->addValidator($objValidator);    
         $objValidator = new Emailaddress(transcms('form_error_notavalidemailaddress', 'This not a valid email address'), true);
         $this->objEdtEmail->addValidator($objValidator);            
-        $this->getForm()->add($this->objEdtEmail, '', transm($this->getModule(), 'userdetail_form_field_emailaddress', 'email address'));
+        $this->getFormGenerator()->add($this->objEdtEmail, '', transm($this->getModule(), 'userdetail_form_field_emailaddress', 'email address'));
         
         //login expires 
         // if (auth($this->getModule(), $this->getAuthorisationCategory(), 'edit: date login expires'))
@@ -169,7 +169,7 @@ class detailsave_users extends TCRUDDetailSaveController
             $objValidator = new Time(transcms('form_error_notavalidtime', '[time] is not a valid time', 'time', $this->objEdtLoginExpiresTime->getContentsSubmitted()->getValueAsString()), $this->getTimeFormatDefault(),  true, $this->getTimeFormatDefault());
             $this->objEdtLoginExpiresTime->addValidator($objValidator);                        
             
-            $this->getForm()->addArray(array($this->objEdtLoginExpiresDate, $this->objEdtLoginExpiresTime), '', transm($this->getModule(), 'userdetail_form_field_loginexpires', 'login expires (user can\'t log in after this date) (leave empty for no expiration)'));        
+            $this->getFormGenerator()->addArray(array($this->objEdtLoginExpiresDate, $this->objEdtLoginExpiresTime), '', transm($this->getModule(), 'userdetail_form_field_loginexpires', 'login expires (user can\'t log in after this date) (leave empty for no expiration)'));        
         }
         
         //password expires 
@@ -188,7 +188,7 @@ class detailsave_users extends TCRUDDetailSaveController
             $this->objEdtPasswordExpiresTime->addValidator($objValidator);                        
             
             
-            $this->getForm()->addArray(array($this->objEdtPasswordExpiresDate, $this->objEdtPasswordExpiresTime), '', transm($this->getModule(), 'form_field_passwordexpires', 'password expires (prompts user to change password on login) (leave empty for no expiration)'));                                        
+            $this->getFormGenerator()->addArray(array($this->objEdtPasswordExpiresDate, $this->objEdtPasswordExpiresTime), '', transm($this->getModule(), 'form_field_passwordexpires', 'password expires (prompts user to change password on login) (leave empty for no expiration)'));                                        
         }        
 
         //scheduled for deletion after (and is delete in cron job afterwards)
@@ -205,7 +205,7 @@ class detailsave_users extends TCRUDDetailSaveController
             $this->objEdtAccountExpiresTime->addValidator($objValidator);                        
             
         
-        $this->getForm()->addArray(array($this->objEdtAccountExpiresDate, $this->objEdtAccountExpiresTime), '', transm($this->getModule(), 'userdetail_form_field_scheduleddeletion', 'Auto delete user after (deleted by cron job, leave empty for no expiration)'));                                        
+        $this->getFormGenerator()->addArray(array($this->objEdtAccountExpiresDate, $this->objEdtAccountExpiresTime), '', transm($this->getModule(), 'userdetail_form_field_scheduleddeletion', 'Auto delete user after (deleted by cron job, leave empty for no expiration)'));                                        
 
 
 
@@ -214,23 +214,23 @@ class detailsave_users extends TCRUDDetailSaveController
         {
             $this->objChkLoginEnabled = new InputCheckbox();
             $this->objChkLoginEnabled->setNameAndID('edtLoginEnabled');
-            $this->getForm()->add($this->objChkLoginEnabled, '', transm($this->getModule(), 'userdetail_form_field_enabled', 'able to log in'));         
+            $this->getFormGenerator()->add($this->objChkLoginEnabled, '', transm($this->getModule(), 'userdetail_form_field_enabled', 'able to log in'));         
         }
         
         //language
         $this->objOptLanguage = new Select();
         $this->objOptLanguage->setNameAndID('optLanguage');
-        $this->getForm()->add($this->objOptLanguage, '', transm($this->getModule(), 'userdetail_form_field_language', 'language'));
+        $this->getFormGenerator()->add($this->objOptLanguage, '', transm($this->getModule(), 'userdetail_form_field_language', 'language'));
         
         //user group / role
         $this->objOptGroup = new Select();
         $this->objOptGroup->setNameAndID('optGroup');
-        $this->getForm()->add($this->objOptGroup, '', transm($this->getModule(), 'userdetail_form_field_userrole', 'user role'));
+        $this->getFormGenerator()->add($this->objOptGroup, '', transm($this->getModule(), 'userdetail_form_field_userrole', 'user role'));
 
         //user acount
         $this->objOptAccount = new Select();
         $this->objOptAccount->setNameAndID('optAccount');
-        $this->getForm()->add($this->objOptAccount, '', transm($this->getModule(), 'userdetail_form_field_useraccount', 'part of user acount'));
+        $this->getFormGenerator()->add($this->objOptAccount, '', transm($this->getModule(), 'userdetail_form_field_useraccount', 'part of user acount'));
 
 
         //sessions
@@ -522,8 +522,8 @@ class detailsave_users extends TCRUDDetailSaveController
             {
                 $this->objLblHintSessions1->setText(transm($this->getModule(), 'form_label_sessions_nosessions', 'User isn\'t logged in anywhere'));
             }
-            $this->getForm()->add($this->objLblHintSessions1, $sTransSectionSessions);        
-            $this->getForm()->add($this->objLblHintSessions2, $sTransSectionSessions);        
+            $this->getFormGenerator()->add($this->objLblHintSessions1, $sTransSectionSessions);        
+            $this->getFormGenerator()->add($this->objLblHintSessions2, $sTransSectionSessions);        
 
             //display sessions
             $objSessions->resetRecordpointer();
@@ -542,7 +542,7 @@ class detailsave_users extends TCRUDDetailSaveController
                 $sTempTextCheckbox.= $objSessions->getBrowser().', '.$objSessions->getOperatingSystem().' ('.$objSessions->getSessionStarted()->getDateTimeAsString($this->getDateTimeFormatDefault()).')';
 
 
-                $this->getForm()->add($objCheckbox, $sTransSectionSessions, $sTempTextCheckbox);
+                $this->getFormGenerator()->add($objCheckbox, $sTransSectionSessions, $sTempTextCheckbox);
                 unset($objCheckbox);//I don't save the checkboxes in an array or something, when we need them, we create new ones
             }   
             

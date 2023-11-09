@@ -53,17 +53,17 @@ class detailsave_installedmodules extends TCRUDDetailSaveController
         $this->objEdtName->setNameAndID('edtName');
         $this->objEdtName->setClass('fullwidthtag');                         
         $this->objEdtName->setReadOnly(true);
-        $this->getForm()->add($this->objEdtName, '', transm($this->getModule(), 'form_field_internalname', 'internal name (read-only)'));
+        $this->getFormGenerator()->add($this->objEdtName, '', transm($this->getModule(), 'form_field_internalname', 'internal name (read-only)'));
         
             //category
         $this->objOptCategory = new Select();
         $this->objOptCategory->setNameAndID('optCategory');
-        $this->getForm()->add($this->objOptCategory, '', transm($this->getModule(), 'form_field_category', 'category'));
+        $this->getFormGenerator()->add($this->objOptCategory, '', transm($this->getModule(), 'form_field_category', 'category'));
 
             //is visible
         $this->objChkVisible = new InputCheckbox();
         $this->objChkVisible->setNameAndID('chkVisible');
-        $this->getForm()->add($this->objChkVisible, '', transm($this->getModule(), 'form_field_isvisible', 'is visible (in menus etc)'));   
+        $this->getFormGenerator()->add($this->objChkVisible, '', transm($this->getModule(), 'form_field_isvisible', 'is visible (in menus etc)'));   
     
     }
 

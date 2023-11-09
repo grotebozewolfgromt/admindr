@@ -52,7 +52,7 @@ class detailsave_countries extends TCRUDDetailSaveController
         $this->objEdtCountry->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtCountry->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtCountry, '', transm($this->getModule(), 'form_field_country', 'country'));
+        $this->getFormGenerator()->add($this->objEdtCountry, '', transm($this->getModule(), 'form_field_country', 'country'));
 
             //ISO2
         $this->objEdtISO2 = new InputText();
@@ -64,7 +64,7 @@ class detailsave_countries extends TCRUDDetailSaveController
         $this->objEdtISO2->addValidator($objValidator);  
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtISO2->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtISO2, '', transm($this->getModule(), 'form_field_iso2', 'alpha iso2 code')); 
+        $this->getFormGenerator()->add($this->objEdtISO2, '', transm($this->getModule(), 'form_field_iso2', 'alpha iso2 code')); 
 
             //ISO3
         $this->objEdtISO3 = new InputText();
@@ -76,18 +76,18 @@ class detailsave_countries extends TCRUDDetailSaveController
         $this->objEdtISO3->addValidator($objValidator);  
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtISO3->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtISO3, '', transm($this->getModule(), 'form_field_iso3', 'alpha iso3 code')); 
+        $this->getFormGenerator()->add($this->objEdtISO3, '', transm($this->getModule(), 'form_field_iso3', 'alpha iso3 code')); 
     
 
             //is in european union
         $this->objChkInEU = new InputCheckbox();
         $this->objChkInEU->setNameAndID('chkEU');
-        $this->getForm()->add($this->objChkInEU, '', transm($this->getModule(), 'form_field_isineuropeanunion', 'in European Union'));           
+        $this->getFormGenerator()->add($this->objChkInEU, '', transm($this->getModule(), 'form_field_isineuropeanunion', 'in European Union'));           
         
             //is default
         $this->objChkDefault = new InputCheckbox();
         $this->objChkDefault->setNameAndID('chkDefault');
-        $this->getForm()->add($this->objChkDefault, '', transm($this->getModule(), 'form_field_issystemdefault', 'Is system default'));           
+        $this->getFormGenerator()->add($this->objChkDefault, '', transm($this->getModule(), 'form_field_issystemdefault', 'Is system default'));           
     }
 
     /**

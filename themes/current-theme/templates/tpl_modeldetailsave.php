@@ -1,5 +1,5 @@
 <?php
-    echo $objForm->generate()->renderHTMLNode();
+    echo $objFormGenerator->generate()->renderHTMLNode();
 ?>
 
                 

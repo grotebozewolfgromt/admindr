@@ -54,12 +54,12 @@ class detailsave_activelanguagespersite extends TCRUDDetailSaveController
         //website
         $this->objOptWebsite = new Select();
         $this->objOptWebsite->setNameAndID('optWebsite');
-        $this->getForm()->add($this->objOptWebsite, '', transm($this->getModule(), 'form_field_website', 'website'));
+        $this->getFormGenerator()->add($this->objOptWebsite, '', transm($this->getModule(), 'form_field_website', 'website'));
 
         //language
         $this->objOptLanguage = new Select();
         $this->objOptLanguage->setNameAndID('optLanguage');
-        $this->getForm()->add($this->objOptLanguage, '', transm($this->getModule(), 'form_field_language', 'language (missing languages? go to: "all languages", "edit" and check: "shown-in-cms")'));
+        $this->getFormGenerator()->add($this->objOptLanguage, '', transm($this->getModule(), 'form_field_language', 'language (missing languages? go to: "all languages", "edit" and check: "shown-in-cms")'));
     }
 
     /**

@@ -52,7 +52,7 @@ class detailsave_modulescategories extends TCRUDDetailSaveController
         $this->objEdtName = new InputText();
         $this->objEdtName->setNameAndID('edtName');
         $this->objEdtName->setClass('fullwidthtag');                         
-        $this->getForm()->add($this->objEdtName, '', transm($this->getModule(), 'form_field_categoryname', 'category name'));
+        $this->getFormGenerator()->add($this->objEdtName, '', transm($this->getModule(), 'form_field_categoryname', 'category name'));
               
     }
 

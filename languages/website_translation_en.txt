@@ -9,3 +9,14 @@ previous_results_paginator;Previous;Previous
 Results [x] - [y];Results [x] - [y];Results [x] - [y]
 next_results_paginator;Next;Next
 logincontroller_loginfailed;login failed, user credentials are not valid;login failed, user credentials are not valid
+Next [x] results (page [y]);Next [x] results (page [y]);Next [x] results (page [y])
+contactform_productsupport;Product support;Product support
+contactform_requestnewfeatures;Request new features;Request new features
+contactform_marketingandsales;Marketing and sales;Marketing and sales
+contactform_legal;Legal matter;Legal matter
+contactform_reportanissue;Report an issue;Report an issue
+contactform_pricing;Pricing;Pricing
+contactform_other;Other;Other
+supportcontactform_title;Contact Us;Contact Us
+supportcontactform_htmltitle;Contact Us;Contact Us
+supportcontactform_metadescription;Please fill out the form to contact us;Please fill out the form to contact us

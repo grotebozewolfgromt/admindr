@@ -58,7 +58,7 @@ class detailsave_currencies extends TCRUDDetailSaveController
         $this->objEdtCurrencyName->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtCurrencyName->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtCurrencyName, '', transm($this->getModule(), 'currenciesdetail_form_field_currencyname', 'Name'));
+        $this->getFormGenerator()->add($this->objEdtCurrencyName, '', transm($this->getModule(), 'currenciesdetail_form_field_currencyname', 'Name'));
 
             //currency symbol
         $this->objEdtCurrencySymbol = new InputText();
@@ -70,7 +70,7 @@ class detailsave_currencies extends TCRUDDetailSaveController
         $this->objEdtCurrencySymbol->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtCurrencySymbol->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtCurrencySymbol, '', transm($this->getModule(), 'currenciesdetail_form_field_currencysymbol', 'Symbol'));
+        $this->getFormGenerator()->add($this->objEdtCurrencySymbol, '', transm($this->getModule(), 'currenciesdetail_form_field_currencysymbol', 'Symbol'));
     
 
             //ISO code alphabetic
@@ -85,7 +85,7 @@ class detailsave_currencies extends TCRUDDetailSaveController
         $this->objEdtISOAlphabetic->addValidator($objValidator);  
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtISOAlphabetic->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtISOAlphabetic, '', transm($this->getModule(), 'currenciesdetail_form_field_isoalphabetic', 'Alphabetical ISO code')); 
+        $this->getFormGenerator()->add($this->objEdtISOAlphabetic, '', transm($this->getModule(), 'currenciesdetail_form_field_isoalphabetic', 'Alphabetical ISO code')); 
 
             //ISO numeric
         $this->objEdtISONumeric = new InputNumber();
@@ -99,7 +99,7 @@ class detailsave_currencies extends TCRUDDetailSaveController
         $this->objEdtISONumeric->addValidator($objValidator);  
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtISONumeric->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtISONumeric, '', transm($this->getModule(), 'currenciesdetail_form_field_isonumeric', 'Numeric ISO code')); 
+        $this->getFormGenerator()->add($this->objEdtISONumeric, '', transm($this->getModule(), 'currenciesdetail_form_field_isonumeric', 'Numeric ISO code')); 
     
             //minor unit (decimals after decimal separator)
         $this->objEdtDecimalPrecision = new InputNumber();
@@ -113,17 +113,17 @@ class detailsave_currencies extends TCRUDDetailSaveController
         $this->objEdtDecimalPrecision->addValidator($objValidator);  
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtDecimalPrecision->addValidator($objValidator);       
-        $this->getForm()->add($this->objEdtDecimalPrecision, '', transm($this->getModule(), 'currenciesdetail_form_field_minorunit', 'Decimals after separator')); 
+        $this->getFormGenerator()->add($this->objEdtDecimalPrecision, '', transm($this->getModule(), 'currenciesdetail_form_field_minorunit', 'Decimals after separator')); 
 
             //is default
         $this->objChkIsSystemDefault = new InputCheckbox();
         $this->objChkIsSystemDefault->setNameAndID('chkSystemDefault');
-        $this->getForm()->add($this->objChkIsSystemDefault, '', transm($this->getModule(), 'currenciesdetail_form_field_issystemdefault', 'Is system default'));           
+        $this->getFormGenerator()->add($this->objChkIsSystemDefault, '', transm($this->getModule(), 'currenciesdetail_form_field_issystemdefault', 'Is system default'));           
 
             //is visible
         $this->objChkIsVisible = new InputCheckbox();
         $this->objChkIsVisible->setNameAndID('chkVisible');
-        $this->getForm()->add($this->objChkIsVisible, '', transm($this->getModule(), 'currenciesdetail_form_field_isvisible', 'Is visible (in places where only a selected number of currencies are shown)'));           
+        $this->getFormGenerator()->add($this->objChkIsVisible, '', transm($this->getModule(), 'currenciesdetail_form_field_isvisible', 'Is visible (in places where only a selected number of currencies are shown)'));           
                 
     }
 

@@ -95,23 +95,23 @@ class detailsave_contacts extends TCRUDDetailSaveController
             //is client
         $this->objChkIsClient = new InputCheckbox();
         $this->objChkIsClient->setNameAndID('chkIsClient');
-        $this->getForm()->add($this->objChkIsClient, '', transm($this->getModule(), 'form_field_isclient', 'is client'));   
+        $this->getFormGenerator()->add($this->objChkIsClient, '', transm($this->getModule(), 'form_field_isclient', 'is client'));   
             
             //is supplier
         $this->objChkIsSupplier = new InputCheckbox();
         $this->objChkIsSupplier->setNameAndID('chkIsSupplier');
-        $this->getForm()->add($this->objChkIsSupplier,  '', transm($this->getModule(), 'form_field_issupplier', 'is supplier'));         
+        $this->getFormGenerator()->add($this->objChkIsSupplier,  '', transm($this->getModule(), 'form_field_issupplier', 'is supplier'));         
     
 
             //on mailing list
         $this->objChkOnMailingList = new InputCheckbox();
         $this->objChkOnMailingList->setNameAndID('chkOnMailingList');
-        $this->getForm()->add($this->objChkOnMailingList, '', transm($this->getModule(), 'form_field_onmailinglist', 'on mailing list'));   
+        $this->getFormGenerator()->add($this->objChkOnMailingList, '', transm($this->getModule(), 'form_field_onmailinglist', 'on mailing list'));   
         
                 //on black list
         $this->objChkOnBlackList = new InputCheckbox();
         $this->objChkOnBlackList->setNameAndID('chkOnBlackList');
-        $this->getForm()->add($this->objChkOnBlackList, '', transm($this->getModule(), 'form_field_onblacklist', 'on blacklist'));   
+        $this->getFormGenerator()->add($this->objChkOnBlackList, '', transm($this->getModule(), 'form_field_onblacklist', 'on blacklist'));   
     
 
             //custom identifier
@@ -121,7 +121,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtCustomIdentifier->setMaxLength(50);                
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtCustomIdentifier->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtCustomIdentifier, '', transm($this->getModule(), 'form_field_customidentifier', 'Label (to identify this contact just to you, so you can search for it)'));
+        $this->getFormGenerator()->add($this->objEdtCustomIdentifier, '', transm($this->getModule(), 'form_field_customidentifier', 'Label (to identify this contact just to you, so you can search for it)'));
 
 
             //company name
@@ -131,7 +131,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtCompanyName->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         $this->objEdtCompanyName->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtCompanyName, '', transm($this->getModule(), 'form_field_companyname', 'Company name')); 
+        $this->getFormGenerator()->add($this->objEdtCompanyName, '', transm($this->getModule(), 'form_field_companyname', 'Company name')); 
 
             //chamber of commerce number
         $this->objEdtChamberCommerce = new InputText();
@@ -140,7 +140,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtChamberCommerce->setMaxLength(25);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '25'), 25);
         $this->objEdtChamberCommerce->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtChamberCommerce, '', transm($this->getModule(), 'form_field_chamberofcommerceno', 'Chamber of commerce registration number (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtChamberCommerce, '', transm($this->getModule(), 'form_field_chamberofcommerceno', 'Chamber of commerce registration number (encrypted, not searchable)')); 
                 
 
             //first name
@@ -150,7 +150,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtFirstNameInitials->setMaxLength(50);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtFirstNameInitials->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtFirstNameInitials, $sFormSectionPersonal, transm($this->getModule(), 'form_field_firstnameinitials', 'First name (or initials)')); 
+        $this->getFormGenerator()->add($this->objEdtFirstNameInitials, $sFormSectionPersonal, transm($this->getModule(), 'form_field_firstnameinitials', 'First name (or initials)')); 
 
             //last name
         $this->objEdtLastName = new InputText();
@@ -159,7 +159,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtLastName->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         $this->objEdtLastName->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtLastName, $sFormSectionPersonal, transm($this->getModule(), 'form_field_lastname', 'Last name (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtLastName, $sFormSectionPersonal, transm($this->getModule(), 'form_field_lastname', 'Last name (encrypted, not searchable)')); 
 
             //last name prefix
         $this->objEdtLastNamePrefix = new InputText();
@@ -168,7 +168,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtLastNamePrefix->setMaxLength(20);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '20'), 20);
         $this->objEdtLastNamePrefix->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtLastNamePrefix, $sFormSectionPersonal, transm($this->getModule(), 'form_field_lastnameprefix', 'Last name prefix')); 
+        $this->getFormGenerator()->add($this->objEdtLastNamePrefix, $sFormSectionPersonal, transm($this->getModule(), 'form_field_lastnameprefix', 'Last name prefix')); 
     
 
             //email
@@ -178,7 +178,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtEmailAddress->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         $this->objEdtEmailAddress->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtEmailAddress, $sFormSectionPersonal, transm($this->getModule(), 'form_field_emailaddress', 'Email address (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtEmailAddress, $sFormSectionPersonal, transm($this->getModule(), 'form_field_emailaddress', 'Email address (encrypted, not searchable)')); 
     
 
             //phone1
@@ -188,7 +188,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtPhone1->setMaxLength(50);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtPhone1->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtPhone1, $sFormSectionPersonal, transm($this->getModule(), 'form_field_phonenumber1', 'Phone number (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtPhone1, $sFormSectionPersonal, transm($this->getModule(), 'form_field_phonenumber1', 'Phone number (encrypted, not searchable)')); 
                 
             //phone1
         $this->objEdtPhone2 = new InputText();
@@ -197,7 +197,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtPhone2->setMaxLength(50);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtPhone2->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtPhone2, $sFormSectionPersonal, transm($this->getModule(), 'form_field_phonenumber2', 'Phone number 2 (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtPhone2, $sFormSectionPersonal, transm($this->getModule(), 'form_field_phonenumber2', 'Phone number 2 (encrypted, not searchable)')); 
 
     
             //billing: address line 2
@@ -207,7 +207,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtBillingAddressLine2->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         $this->objEdtBillingAddressLine2->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtBillingAddressLine2, $sFormSectionBilling, transm($this->getModule(), 'form_FIELD_BILLINGADDRESSSTREET', 'Street + house number (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtBillingAddressLine2, $sFormSectionBilling, transm($this->getModule(), 'form_FIELD_BILLINGADDRESSSTREET', 'Street + house number (encrypted, not searchable)')); 
 
             //billing: address line 1
         $this->objEdtBillingAddressLine1 = new InputText();
@@ -216,7 +216,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtBillingAddressLine1->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         $this->objEdtBillingAddressLine1->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtBillingAddressLine1, $sFormSectionBilling, transm($this->getModule(), 'form_FIELD_BILLINGADDRESSMISC', 'Appt. building/ company dept. etc (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtBillingAddressLine1, $sFormSectionBilling, transm($this->getModule(), 'form_FIELD_BILLINGADDRESSMISC', 'Appt. building/ company dept. etc (encrypted, not searchable)')); 
 
             
             //billing: postal code or zip
@@ -226,7 +226,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtBillingPostalCodeZip->setMaxLength(10);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
         $this->objEdtBillingPostalCodeZip->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtBillingPostalCodeZip, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingpostalcodezip', 'Postal code/zip (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtBillingPostalCodeZip, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingpostalcodezip', 'Postal code/zip (encrypted, not searchable)')); 
     
             //billing: city
         $this->objEdtBillingCity = new InputText();
@@ -235,7 +235,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtBillingCity->setMaxLength(50);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtBillingCity->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtBillingCity, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingcity', 'City')); 
+        $this->getFormGenerator()->add($this->objEdtBillingCity, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingcity', 'City')); 
 
             //billing: state/region
         $this->objEdtBillingStateRegion = new InputText();
@@ -244,13 +244,13 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtBillingStateRegion->setMaxLength(50);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtBillingStateRegion->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtBillingStateRegion, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingstateregion', 'State/region')); 
+        $this->getFormGenerator()->add($this->objEdtBillingStateRegion, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingstateregion', 'State/region')); 
             
 
             //billing: country
         $this->objSelBillingCountryID = new Select();
         $this->objSelBillingCountryID->setNameAndID('optBillingCountryID');
-        $this->getForm()->add($this->objSelBillingCountryID, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingcountry', 'Country'));
+        $this->getFormGenerator()->add($this->objSelBillingCountryID, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingcountry', 'Country'));
         
             //billing: vat no
         $this->objEdtBillingVatNumber = new InputText();
@@ -259,7 +259,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtBillingVatNumber->setMaxLength(20);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '20'), 20);
         $this->objEdtBillingVatNumber->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtBillingVatNumber, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingvatno', 'VAT number (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtBillingVatNumber, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingvatno', 'VAT number (encrypted, not searchable)')); 
 
             //billing: bank account no
         $this->objEdtBillingBankAccountNo = new InputText();
@@ -268,7 +268,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtBillingBankAccountNo->setMaxLength(20);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '20'), 20);
         $this->objEdtBillingBankAccountNo->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtBillingBankAccountNo, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingbankaccoutno', 'Bank account number (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtBillingBankAccountNo, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingbankaccoutno', 'Bank account number (encrypted, not searchable)')); 
             
             //billing: email
         $this->objEdtBillingEmailAddress = new InputText();
@@ -277,7 +277,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtBillingEmailAddress->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         $this->objEdtBillingEmailAddress->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtBillingEmailAddress, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingemailaddress', 'Email address (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtBillingEmailAddress, $sFormSectionBilling, transm($this->getModule(), 'form_field_billingemailaddress', 'Email address (encrypted, not searchable)')); 
                             
     
             //delivery: address line 2
@@ -287,7 +287,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtDeliveryAddressLine2->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         $this->objEdtDeliveryAddressLine2->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtDeliveryAddressLine2, $sFormSectionDelivery, transm($this->getModule(), 'form_FIELD_DELIVERYADDRESSSTREET', 'Street + house number (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtDeliveryAddressLine2, $sFormSectionDelivery, transm($this->getModule(), 'form_FIELD_DELIVERYADDRESSSTREET', 'Street + house number (encrypted, not searchable)')); 
     
 
             //delivery: address line 1
@@ -297,7 +297,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtDeliveryAddressLine1->setMaxLength(100);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '100'), 100);
         $this->objEdtDeliveryAddressLine1->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtDeliveryAddressLine1, $sFormSectionDelivery, transm($this->getModule(), 'form_FIELD_DELIVERYADDRESSMISC', 'Appt. building/ company dept. etc (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtDeliveryAddressLine1, $sFormSectionDelivery, transm($this->getModule(), 'form_FIELD_DELIVERYADDRESSMISC', 'Appt. building/ company dept. etc (encrypted, not searchable)')); 
 
             
             //delivery: postal code or zip
@@ -307,7 +307,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtDeliveryPostalCodeZip->setMaxLength(10);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
         $this->objEdtDeliveryPostalCodeZip->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtDeliveryPostalCodeZip, $sFormSectionDelivery, transm($this->getModule(), 'form_field_deliverypostalcodezip', 'Postal code/zip (encrypted, not searchable)')); 
+        $this->getFormGenerator()->add($this->objEdtDeliveryPostalCodeZip, $sFormSectionDelivery, transm($this->getModule(), 'form_field_deliverypostalcodezip', 'Postal code/zip (encrypted, not searchable)')); 
     
             //delivery: city
         $this->objEdtDeliveryCity = new InputText();
@@ -316,7 +316,7 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtDeliveryCity->setMaxLength(50);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtDeliveryCity->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtDeliveryCity, $sFormSectionDelivery, transm($this->getModule(), 'form_field_deliverycity', 'City')); 
+        $this->getFormGenerator()->add($this->objEdtDeliveryCity, $sFormSectionDelivery, transm($this->getModule(), 'form_field_deliverycity', 'City')); 
 
             //delivery: state/region
         $this->objEdtDeliveryStateRegion = new InputText();
@@ -325,20 +325,20 @@ class detailsave_contacts extends TCRUDDetailSaveController
         $this->objEdtDeliveryStateRegion->setMaxLength(50);    
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtDeliveryStateRegion->addValidator($objValidator);          
-        $this->getForm()->add($this->objEdtDeliveryStateRegion, $sFormSectionDelivery, transm($this->getModule(), 'form_field_deliverystateregion', 'State/region')); 
+        $this->getFormGenerator()->add($this->objEdtDeliveryStateRegion, $sFormSectionDelivery, transm($this->getModule(), 'form_field_deliverystateregion', 'State/region')); 
             
 
             //delivery: country
         $this->objSelDeliveryCountryID = new Select();
         $this->objSelDeliveryCountryID->setNameAndID('optDeliveryCountryID');
-        $this->getForm()->add($this->objSelDeliveryCountryID, $sFormSectionDelivery, transm($this->getModule(), 'form_field_deliverycountry', 'Country'));
+        $this->getFormGenerator()->add($this->objSelDeliveryCountryID, $sFormSectionDelivery, transm($this->getModule(), 'form_field_deliverycountry', 'Country'));
                
 
            //notes
         $this->objTxtArNotes = new Textarea();
         $this->objTxtArNotes->setNameAndID('txtArNotes');
         $this->objTxtArNotes->setClass('fullwidthtag');                         
-        $this->getForm()->add($this->objTxtArNotes, $sFormSectionMisc, transm($this->getModule(), 'form_field_notes', 'Notes (only seen by you)')); 
+        $this->getFormGenerator()->add($this->objTxtArNotes, $sFormSectionMisc, transm($this->getModule(), 'form_field_notes', 'Notes (only seen by you)')); 
    
 
     }

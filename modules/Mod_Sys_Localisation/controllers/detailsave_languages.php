@@ -64,7 +64,7 @@ class detailsave_languages extends TCRUDDetailSaveController
         $this->objEditLocale->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEditLocale->addValidator($objValidator);    
-        $this->getForm()->add($this->objEditLocale, '', transm($this->getModule(), 'languages_form_field_locale', 'Locale code (format: AA-AA)'));
+        $this->getFormGenerator()->add($this->objEditLocale, '', transm($this->getModule(), 'languages_form_field_locale', 'Locale code (format: AA-AA)'));
 
             //language
         $this->objEditLanguage = new InputText();
@@ -78,22 +78,22 @@ class detailsave_languages extends TCRUDDetailSaveController
         // $this->objEditLanguage->addValidator($objValidator);       
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEditLanguage->addValidator($objValidator);       
-        $this->getForm()->add($this->objEditLanguage, '', transm($this->getModule(), 'languages_form_field_language', 'Language name (in English)')); 
+        $this->getFormGenerator()->add($this->objEditLanguage, '', transm($this->getModule(), 'languages_form_field_language', 'Language name (in English)')); 
 
             //is cms language
         $this->objChkCMSLanguage = new InputCheckbox();
         $this->objChkCMSLanguage->setNameAndID('chkCMSLanguage');
-        $this->getForm()->add($this->objChkCMSLanguage, '', transm($this->getModule(), 'languages_form_field_iscmslanguage', 'is CMS language'));   
+        $this->getFormGenerator()->add($this->objChkCMSLanguage, '', transm($this->getModule(), 'languages_form_field_iscmslanguage', 'is CMS language'));   
         
             //is shown in selectboxes
         $this->objChkShowInCMSSelect = new InputCheckbox();
         $this->objChkShowInCMSSelect->setNameAndID('chkCMSSelect');
-        $this->getForm()->add($this->objChkShowInCMSSelect, '', transm($this->getModule(), 'languages_form_field_isvisible', 'is visible (is shown in places where not all languages are shown, otherwise you have 400 languages)'));         
+        $this->getFormGenerator()->add($this->objChkShowInCMSSelect, '', transm($this->getModule(), 'languages_form_field_isvisible', 'is visible (is shown in places where not all languages are shown, otherwise you have 400 languages)'));         
 
             //is shown in selectboxes
         $this->objChkDefaultSystem = new InputCheckbox();
         $this->objChkDefaultSystem->setNameAndID('chkDefaultSystem');
-        $this->getForm()->add($this->objChkDefaultSystem, '', transm($this->getModule(), 'languages_form_field_isdefaultsystem', 'Is system default'));         
+        $this->getFormGenerator()->add($this->objChkDefaultSystem, '', transm($this->getModule(), 'languages_form_field_isdefaultsystem', 'Is system default'));         
 
 //            //active languages per site
 //        $objChkActLangSite = null;
@@ -110,7 +110,7 @@ class detailsave_languages extends TCRUDDetailSaveController
 //            $objChkActLangSite = new InputCheckbox();
 //            $objChkActLangSite->setNameAndID(TCRUDDetailSaveLanguages::ACTIVESITESCHECKBOXNAME.$this->objWebsites->getID());            
 //            $objChkActLangSite->setChecked(isset($arrCheckedSitesInDB[$this->objWebsites->getID()])); //here comes the fast searching for arraykeys into play
-//            $this->getForm()->add($objChkActLangSite, $sTransSection, $this->objWebsites->getWebsiteName());     
+//            $this->getFormGenerator()->add($objChkActLangSite, $sTransSection, $this->objWebsites->getWebsiteName());     
 //        }
     }
 

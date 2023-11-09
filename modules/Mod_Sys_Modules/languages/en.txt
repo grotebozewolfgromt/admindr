@@ -26,3 +26,6 @@ form_field_isvisible;is visible (in menus etc);is visible (in menus etc)
 pagetitle_detailsave_installedmodules_edit;Edit module: [modulename];Edit module: [modulename]
 form_field_categoryname;category name;category name
 pagetitle_detailsave_modulecategories_edit;Edit category: [modulecategory];Edit category: [modulecategory]
+form_button_upload;upload;upload
+checkbox_installafterupload;install module after upload;install module after upload
+pagetitle_uploadmodule;Mod_Sys_Modules: upload module;Mod_Sys_Modules: upload module

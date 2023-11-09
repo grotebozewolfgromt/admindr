@@ -92,7 +92,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
         $this->objEdtGroupname->addValidator($objValidator);    
         $objValidator = new Required(transcms('form_error_requiredfield', 'This is a required field'));
         $this->objEdtGroupname->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtGroupname, '', transm($this->getModule(), 'userrolesdetail_form_field_groupname', 'Role name'));
+        $this->getFormGenerator()->add($this->objEdtGroupname, '', transm($this->getModule(), 'userrolesdetail_form_field_groupname', 'Role name'));
 
             //description
         $this->objEdtDescription = new InputText();
@@ -101,7 +101,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
         $this->objEdtDescription->setMaxLength(100);
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
         $this->objEdtDescription->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtDescription, '', transm($this->getModule(), 'userrolesdetail_form_field_description', 'Description'));
+        $this->getFormGenerator()->add($this->objEdtDescription, '', transm($this->getModule(), 'userrolesdetail_form_field_description', 'Description'));
 
             //max users account
         $this->objEdtMaxUsersInAccount = new InputNumber();
@@ -110,13 +110,13 @@ class detailsave_usersroles extends TCRUDDetailSaveController
         $this->objEdtMaxUsersInAccount->setMaxLength(20);
         $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
         $this->objEdtMaxUsersInAccount->addValidator($objValidator);    
-        $this->getForm()->add($this->objEdtMaxUsersInAccount, '', transm($this->getModule(), 'userrolesdetail_form_field_maxusersinaccount', 'Maximum number of users allowed in account (0=unlimited, -1=no users)'));
+        $this->getFormGenerator()->add($this->objEdtMaxUsersInAccount, '', transm($this->getModule(), 'userrolesdetail_form_field_maxusersinaccount', 'Maximum number of users allowed in account (0=unlimited, -1=no users)'));
         
 
         //anonymous
         $this->objChkAnonymous= new InputCheckbox();
         $this->objChkAnonymous->setNameAndID('edtAnonymous');
-        $this->getForm()->add($this->objChkAnonymous, '', transm($this->getModule(), 'userrolesdetail_form_field_anonymous', 'is anonymous (represents users that are not logged-in, users with this role can never log in)'));         
+        $this->getFormGenerator()->add($this->objChkAnonymous, '', transm($this->getModule(), 'userrolesdetail_form_field_anonymous', 'is anonymous (represents users that are not logged-in, users with this role can never log in)'));         
 
 
         //=====assign users other roles: 
@@ -126,7 +126,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
             $this->objLblHintAssignUsers->setText(transm($this->getModule(), 'userrolesdetail_form_label_permissionsallowassignusersroles', 'This role is allowed to assign users to the following roles:'));
         else
             $this->objLblHintAssignUsers->setText(transm($this->getModule(), 'userrolesdetail_form_label_permissionsallowassignusersroles_shownaftersave', 'Permission checkboxes for roles will be shown after saving'));
-        $this->getForm()->add($this->objLblHintAssignUsers, $this->sTransFormSectionTransAllowedAssignUserRoles);
+        $this->getFormGenerator()->add($this->objLblHintAssignUsers, $this->sTransFormSectionTransAllowedAssignUserRoles);
 
         //checkboxes
         if (!$this->getModel()->getNew()) //existing record
@@ -138,7 +138,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
                 $objCheckbox->setNameAndID('chkAssignUsersRoleID_'.$objRolesAll->getID());//we can't have spaces in variable names
                 // $objCheckbox->setChecked($objPerm->getAllowed()); --> we check the checkboxes later
                 // $objCheckbox->setLabel($objRolesAll->getRoleName());
-                $this->getForm()->add($objCheckbox, $this->sTransFormSectionTransAllowedAssignUserRoles, $objRolesAll->getRoleName());
+                $this->getFormGenerator()->add($objCheckbox, $this->sTransFormSectionTransAllowedAssignUserRoles, $objRolesAll->getRoleName());
                 unset($objCheckbox);//I don't save the checkboxes in an array or something, when we need them, we create new ones
             }   
         }
@@ -152,7 +152,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
             $this->objLblHintPermissions->setText(transm($this->getModule(), 'userrolesdetail_form_label_permissionsbelow', 'Permissions of modules and system:'));
         else
             $this->objLblHintPermissions->setText(transm($this->getModule(), 'userrolesdetail_form_label_permissionsshownaftersave', 'Permission checkboxes will be shown after saving'));
-        $this->getForm()->add($this->objLblHintPermissions, $this->sTransFormSectionPermissions); //we
+        $this->getFormGenerator()->add($this->objLblHintPermissions, $this->sTransFormSectionPermissions); //we
 
         //checkboxes
         if (!$this->getModel()->getNew()) //existing record
@@ -164,7 +164,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
                 $objCheckbox = new InputCheckbox();
                 $objCheckbox->setNameAndID($this->resourceToVariablename($objPerm->getResource()));//we can't have spaces in variable names
                 // $objCheckbox->setChecked($objPerm->getAllowed()); --> we check the checkboxes later
-                $this->getForm()->add($objCheckbox, $arrResource['module'], $arrResource['category'].': '.$arrResource['operation']);
+                $this->getFormGenerator()->add($objCheckbox, $arrResource['module'], $arrResource['category'].': '.$arrResource['operation']);
                 unset($objCheckbox);//I don't save the checkboxes in an array or something, when we need them, we create new ones
             }   
         }
@@ -285,7 +285,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
             $objAssUser->resetRecordpointer();
             while($objAssUser->next())
             {
-                $objCheckbox = $this->getForm()->getElement($this->roleIDToVariablename($objAssUser->getAllowedAssignUsersRoleID()));
+                $objCheckbox = $this->getFormGenerator()->getElement($this->roleIDToVariablename($objAssUser->getAllowedAssignUsersRoleID()));
                 $objCheckbox->setChecked(true);//only the records in the database are allowed
             }   
         }
@@ -297,7 +297,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
             $objPerm->resetRecordpointer();
             while($objPerm->next())
             {
-                $objCheckbox = $this->getForm()->getElement($this->resourceToVariablename($objPerm->getResource()));
+                $objCheckbox = $this->getFormGenerator()->getElement($this->resourceToVariablename($objPerm->getResource()));
                 $objCheckbox->setChecked($objPerm->getAllowed());
             }   
         }
