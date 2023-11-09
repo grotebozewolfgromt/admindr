@@ -36,3 +36,5 @@ form_field_colorbackground;Background color (hexadecimal value from #00000 to #F
 form_field_addressseller;Address seller;Address seller
 form_field_vatno;VAT number seller;VAT number seller
 form_field_paymentwithindays;Must be payed within (amount of days);Must be payed within (amount of days)
+list_column_i_volgorde;Order;Order
+pagetitle_detailsave_transactions_new;Create new transaction;Create new transaction

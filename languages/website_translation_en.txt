@@ -20,3 +20,4 @@ contactform_other;Other;Other
 supportcontactform_title;Contact Us;Contact Us
 supportcontactform_htmltitle;Contact Us;Contact Us
 supportcontactform_metadescription;Please fill out the form to contact us;Please fill out the form to contact us
+logincontroller_sessionexpired;Login session expired;Login session expired

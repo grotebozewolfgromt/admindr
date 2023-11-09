@@ -45,3 +45,4 @@ form_error_onlynumeric;Only numeric allowed;Only numeric allowed
 overview_bulkactions_uninstall;uninstall;uninstall
 overview_bulkactions;Bulk actions;Bulk actions
 message_noaccess_viewrecords;you don't have permission to view these records;you don't have permission to view these records
+message_saverecord_success;Record save successful;Record save successful

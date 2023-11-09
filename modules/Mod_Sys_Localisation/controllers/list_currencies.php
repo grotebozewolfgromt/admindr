@@ -3,6 +3,7 @@ namespace dr\modules\Mod_Sys_Localisation\controllers;
 
 use dr\classes\models\TSysCurrencies;
 use dr\classes\controllers\TCRUDListController;
+use dr\classes\models\TModel;
 use dr\modules\Mod_Sys_Localisation\Mod_Sys_Localisation;
 
 
@@ -38,7 +39,8 @@ class list_currencies extends TCRUDListController
             TSysCurrencies::FIELD_ISONUMERIC,            
             TSysCurrencies::FIELD_DECIMALPRECISION,            
             TSysCurrencies::FIELD_ISVISIBLE,
-            TSysCurrencies::FIELD_ISSYSTEMDEFAULT
+            TSysCurrencies::FIELD_ISSYSTEMDEFAULT,
+            TModel::FIELD_ORDER
                                     ));
       
         $this->executeDB();
@@ -51,7 +53,8 @@ class list_currencies extends TCRUDListController
             array('', TSysCurrencies::FIELD_ISONUMERIC, transm($sCurrentModule, 'currencies_overview_column_'.TSysCurrencies::FIELD_ISONUMERIC, 'ISO N')),
             array('', TSysCurrencies::FIELD_DECIMALPRECISION, transm($sCurrentModule, 'currencies_overview_column_'.TSysCurrencies::FIELD_DECIMALPRECISION, 'Dec')),
             array('', TSysCurrencies::FIELD_ISVISIBLE, transm($sCurrentModule, 'currencies_overview_column_'.TSysCurrencies::FIELD_ISVISIBLE, 'Visible')),
-            array('', TSysCurrencies::FIELD_ISSYSTEMDEFAULT, transm($sCurrentModule, 'currencies_overview_column_'.TSysCurrencies::FIELD_ISSYSTEMDEFAULT, 'Default'))
+            array('', TSysCurrencies::FIELD_ISSYSTEMDEFAULT, transm($sCurrentModule, 'currencies_overview_column_'.TSysCurrencies::FIELD_ISSYSTEMDEFAULT, 'Default')),
+            array('', TSysCurrencies::FIELD_ORDER, transm($sCurrentModule, 'currencies_overview_column_'.TModel::FIELD_ORDER, 'Order'))
                 );
         
     

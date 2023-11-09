@@ -4,6 +4,7 @@ namespace dr\modules\Mod_Transactions\controllers;
 
 use dr\classes\models\TSysContacts;
 use dr\classes\controllers\TCRUDListController;
+use dr\classes\models\TModel;
 use dr\modules\Mod_Transactions\Mod_Transactions;
 use dr\modules\Mod_Transactions\models\TTransactions;
 use dr\modules\Mod_Transactions\models\TTransactionsTypes;
@@ -42,7 +43,8 @@ class list_transactionstypes extends TCRUDListController
             TTransactionsTypes::FIELD_ISDEFAULTORDER,
             TTransactionsTypes::FIELD_COLORBACKGROUND,
             TTransactionsTypes::FIELD_NEWNUMBERINCREMENT,
-            TTransactionsTypes::FIELD_PAYMENTMADEWITHINDAYS
+            TTransactionsTypes::FIELD_PAYMENTMADEWITHINDAYS,
+            TModel::FIELD_ORDER
                                     ));
         $this->executeDB();
       
@@ -56,6 +58,7 @@ class list_transactionstypes extends TCRUDListController
             array('', TTransactionsTypes::FIELD_COLORBACKGROUND, transm($sCurrentModule, 'list_column_'.TTransactionsTypes::FIELD_COLORBACKGROUND, 'Color')),
             array('', TTransactionsTypes::FIELD_NEWNUMBERINCREMENT, transm($sCurrentModule, 'list_column_'.TTransactionsTypes::FIELD_NEWNUMBERINCREMENT, 'Increment')),
             array('', TTransactionsTypes::FIELD_PAYMENTMADEWITHINDAYS, transm($sCurrentModule, 'list_column_'.TTransactionsTypes::FIELD_PAYMENTMADEWITHINDAYS, 'Pay days')),
+            array('', TModel::FIELD_ORDER, transm($sCurrentModule, 'list_column_'.TModel::FIELD_ORDER, 'Order'))
                 );
         
 

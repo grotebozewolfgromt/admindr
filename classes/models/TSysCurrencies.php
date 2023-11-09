@@ -25,7 +25,7 @@ class TSysCurrencies extends TModel
 	const FIELD_CURRENCYSYMBOL 		= 'sCurrencySymbol'; //currency symbol i.e. €
 	const FIELD_ISOALPHABETIC 		= 'sISOAlphabetic'; //alhabetical 3 letter ISO code, i.e. EUR
 	const FIELD_ISONUMERIC 			= 'iISONumeric'; //mumerical ISO code, i.e. 973
-	const FIELD_DECIMALPRECISION 			= 'iDecimalPrecision'; //official name: minor unit, the number of digits after decimal separator (currency decimals)
+	const FIELD_DECIMALPRECISION 	= 'iDecimalPrecision'; //official name: minor unit, the number of digits after decimal separator (currency decimals)
 	const FIELD_ISSYSTEMDEFAULT 	= 'bIsSystemDefault';	//boolean: is this the default currency?
 	const FIELD_ISVISIBLE 			= 'bIsVisible'; //preventing 400 locales are shown in html select boxes
 	
@@ -219,7 +219,8 @@ class TSysCurrencies extends TModel
 					$this->set(TSysCurrencies::FIELD_ISONUMERIC, $arrColumns[3]);
 					$this->set(TSysCurrencies::FIELD_DECIMALPRECISION, $arrColumns[4]);
 					if ($arrColumns[5] == '1')
-						$this->set(TSysCountries::FIELD_ISSYSTEMDEFAULT, true);
+						$this->set(TSysCurrencies::FIELD_ISSYSTEMDEFAULT, true);
+					$this->set(TSysCurrencies::FIELD_ISSYSTEMDEFAULT, true);
 					
 
 					if (!$this->saveToDB())
@@ -429,7 +430,7 @@ class TSysCurrencies extends TModel
 	*/
 	public function getTableUseOrderField()
 	{
-		return false;
+		return true;
 	}
 	
 	/**

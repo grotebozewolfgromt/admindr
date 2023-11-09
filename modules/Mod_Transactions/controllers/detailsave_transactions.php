@@ -48,6 +48,7 @@ use dr\classes\types\TDateTime;
 use dr\classes\models\TSysCMSUsers;
 use  dr\classes\models\TSysCMSUsersAccounts;
 use dr\classes\models\TSysContacts;
+use dr\classes\models\TSysCurrencies;
 use dr\classes\models\TUsersAbstract;
 use dr\modules\Mod_Transactions\Mod_Transactions;
 use dr\modules\Mod_Transactions\models\TTransactionsTypes;
@@ -132,41 +133,20 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     protected function formToModel()
     {
-        //name
-        $this->getModel()->set(TTransactionsTypes::FIELD_NAME, $this->objEdtName->getContentsSubmitted()->getValueAsString());
+        //transaction type
+        $this->getModel()->set(TTransactions::FIELD_TRANSACTIONSTYPEID, $this->objSelTransactionsType->getContentsSubmitted()->getValueAsString());
 
-        //stock
-        $this->getModel()->set(TTransactionsTypes::FIELD_ISSTOCK, $this->objChkStock->getContentsSubmitted()->getValueAsBool());
+        //currency
+        $this->getModel()->set(TTransactions::FIELD_CURRENCYID, $this->objSelCurrency->getContentsSubmitted()->getValueAsBool());
 
-        //financial
-        $this->getModel()->set(TTransactionsTypes::FIELD_ISFINANCIAL, $this->objChkFinancial->getContentsSubmitted()->getValueAsBool());
+        //purchase order number
+        $this->getModel()->set(TTransactions::FIELD_PURCHASEORDERNUMBER, $this->objEdtPurchaseOrderNo->getContentsSubmitted()->getValueAsBool());
 
-        //default selected
-        $this->getModel()->set(TTransactionsTypes::FIELD_ISDEFAULTSELECTED, $this->objChkDefaultSelected->getContentsSubmitted()->getValueAsBool());
+        //internal notes
+        $this->getModel()->set(TTransactions::FIELD_NOTESINTERNAL, $this->objTxtNotesInternal->getContentsSubmitted()->getValueAsBool());
 
-        //default invoice type
-        $this->getModel()->set(TTransactionsTypes::FIELD_ISDEFAULTINVOICE, $this->objChkDefaultInvoice->getContentsSubmitted()->getValueAsBool());
-
-        //default order type
-        $this->getModel()->set(TTransactionsTypes::FIELD_ISDEFAULTORDER, $this->objChkDefaultOrder->getContentsSubmitted()->getValueAsBool());
-
-        //foreground color
-        $this->getModel()->set(TTransactionsTypes::FIELD_COLORFOREGROUND, $this->objEdtColorForeground->getContentsSubmitted()->getValueAsString());
-
-        //background color
-        $this->getModel()->set(TTransactionsTypes::FIELD_COLORBACKGROUND, $this->objEdtColorBackground->getContentsSubmitted()->getValueAsString());
-
-        //new number increment
-        $this->getModel()->set(TTransactionsTypes::FIELD_NEWNUMBERINCREMENT, $this->objEdtNewNumber->getContentsSubmitted()->getValueAsString());
-
-        //address seller
-        $this->getModel()->set(TTransactionsTypes::FIELD_ADDRESSSELLER, $this->objTxtAddress->getContentsSubmitted()->getValueAsString(), '', true);
-
-        //vat no seller
-        $this->getModel()->set(TTransactionsTypes::FIELD_VATNOSELLER, $this->objEdtVatNo->getContentsSubmitted()->getValueAsString(), '', true);
-
-        //payment within days
-        $this->getModel()->set(TTransactionsTypes::FIELD_PAYMENTMADEWITHINDAYS, $this->objEdtPaymentDays->getContentsSubmitted()->getValueAsString());
+        //external notes
+        $this->getModel()->set(TTransactions::FIELD_NOTESEXTERNAL, $this->objTxtNotesExternal->getContentsSubmitted()->getValueAsBool());
     }
 
     /**
@@ -174,43 +154,28 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     protected function modelToForm()
     {
+        //transactions-types
+        $objTypes = new TTransactionsTypes();
+        $objTypes->sort(TTransactionsTypes::FIELD_ORDER);
+        $objTypes->limit(1000);
+        $objTypes->loadFromDB();
+        $objTypes->generateHTMLSelect($this->getModel()->get(TTransactions::FIELD_TRANSACTIONSTYPEID), $this->objSelTransactionsType);
+                      
+        //currency
+        $objCurr = new TSysCurrencies();
+        $objCurr->sort(TSysCurrencies::FIELD_ORDER);
+        $objCurr->where(TSysCurrencies::FIELD_ISVISIBLE, true);
+        $objCurr->loadFromDB();
+        $objCurr->generateHTMLSelect($this->getModel()->get(TTransactions::FIELD_CURRENCYID), $this->objSelCurrency);
 
+        //purchase order number
+        $this->objEdtPurchaseOrderNo->setValue($this->getModel()->get(TTransactions::FIELD_PURCHASEORDERNUMBER));
 
-        //name
-        $this->objEdtName->setValue($this->getModel()->get(TTransactionsTypes::FIELD_NAME));
+        //internal notes
+        $this->objTxtNotesInternal->setValue($this->getModel()->get(TTransactions::FIELD_NOTESINTERNAL));
 
-        //stock
-        $this->objChkStock->setChecked($this->getModel()->get(TTransactionsTypes::FIELD_ISSTOCK));
-
-        //financial
-        $this->objChkFinancial->setChecked($this->getModel()->get(TTransactionsTypes::FIELD_ISFINANCIAL));
-
-        //default selected
-        $this->objChkDefaultSelected->setChecked($this->getModel()->get(TTransactionsTypes::FIELD_ISDEFAULTSELECTED));
-
-        //default invoice
-        $this->objChkDefaultInvoice->setChecked($this->getModel()->get(TTransactionsTypes::FIELD_ISDEFAULTINVOICE));
-
-        //default order
-        $this->objChkDefaultOrder->setChecked($this->getModel()->get(TTransactionsTypes::FIELD_ISDEFAULTORDER));
-
-        //foreground color
-        $this->objEdtColorForeground->setValue($this->getModel()->get(TTransactionsTypes::FIELD_COLORFOREGROUND));
-
-        //background color
-        $this->objEdtColorBackground->setValue($this->getModel()->get(TTransactionsTypes::FIELD_COLORBACKGROUND));
-
-        //new number increment
-        $this->objEdtNewNumber->setValue($this->getModel()->get(TTransactionsTypes::FIELD_NEWNUMBERINCREMENT));
-
-        //address
-        $this->objTxtAddress->setValue($this->getModel()->get(TTransactionsTypes::FIELD_ADDRESSSELLER, '', true));
-
-        //vat no
-        $this->objEdtVatNo->setValue($this->getModel()->get(TTransactionsTypes::FIELD_VATNOSELLER, '', true));
-
-        //payment within days
-        $this->objEdtPaymentDays->setValue($this->getModel()->get(TTransactionsTypes::FIELD_PAYMENTMADEWITHINDAYS));
+        //external notes
+        $this->objTxtNotesExternal->setValue($this->getModel()->get(TTransactions::FIELD_NOTESEXTERNAL));
     }
 
     /**
@@ -283,7 +248,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     public function getTemplatePath()
     {
-        return GLOBAL_PATH_LOCAL_MODULES.DIRECTORY_SEPARATOR.$this->sModule.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'tpl_detailsave_transactions.php';
+        return GLOBAL_PATH_LOCAL_MODULES.DIRECTORY_SEPARATOR.$this->getModule().DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'tpl_detailsave_transactions.php';
     }
 
     /**

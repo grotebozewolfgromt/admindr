@@ -64,7 +64,7 @@ class Mod_Transactions extends TModuleAbstract
     public function getTabsheets()
     {
         return array(
-            array('list_invoices', Mod_Transactions::PERM_CAT_TRANSACTIONS, 'Transactions', 'Manage all invoices and orders'),
+            array('list_transactions', Mod_Transactions::PERM_CAT_TRANSACTIONS, 'Transactions', 'Manage all invoices and orders'),
             array('list_transactionstypes', Mod_Transactions::PERM_CAT_TRANSACTIONS, 'Trans. Types', 'Manage types of transactions')
         );
     } 

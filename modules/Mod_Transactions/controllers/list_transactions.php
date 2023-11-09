@@ -11,7 +11,7 @@ use dr\modules\Mod_Transactions\models\TTransactions;
 include_once(GLOBAL_PATH_LOCAL_CMS.DIRECTORY_SEPARATOR.'bootstrap_cms_auth.php');
 
 
-class list_invoices extends TCRUDListController
+class list_transactions extends TCRUDListController
 {
     
     /**
@@ -118,7 +118,7 @@ class list_invoices extends TCRUDListController
      */
     public function getDetailPageURL()
     {
-        return 'detailsave_invoices';
+        return 'detailsave_transactions';
     }
 
     /**

@@ -38,6 +38,9 @@ use dr\classes\types\TDateTime;
  * For example an invoice number like this:		werGHKEweo2-jpswew3d42aas-2024-150694
  * In this case this number format could be:  	[accountno]-[websitecode]-[year]-[invoice-increment]
  * 
+ * @todo status
+ * @todo history
+ * 
  * created 21 october 2023
  * 21 oct 2023: TInvoices: created
  * 26 oct 2023: TInvoices: FIELD_PSPNAME added

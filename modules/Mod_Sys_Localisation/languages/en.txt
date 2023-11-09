@@ -58,3 +58,4 @@ form_field_issystemdefault;Is system default;Is system default
 pagetitle_detailsave_countries_edit;Edit country: [country];Edit country: [country]
 pagetitle_detailsave_countries_new;Create new country;Create new country
 pagetitle_detailsave_currencies_new;Create new currency;Create new currency
+currencies_overview_column_i_volgorde;Order;Order

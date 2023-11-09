@@ -1,4 +1,4 @@
 <?php
-    header('Location: list_invoices');
+    header('Location: list_transactions');
 ?>
 

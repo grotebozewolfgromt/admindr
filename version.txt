@@ -133,6 +133,7 @@ versie conflict niet opgelost
 -rename getForm() -> getFormGenerator() in TCRUDDetailSaveController
 -rename permission category invoices -> permission category transactions
 -rename database field: transactions: invoicenumber -> incrementnumber
+-basis elementen factuur - geeft nog fout
 
 
 4 nov 2023
