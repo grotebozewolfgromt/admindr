@@ -1,0 +1,63 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+Mod_HTMLTools;html tools;html tools
+cmsmodulelist_modulename;Mod_HTMLTools;Mod_HTMLTools
+plaintext2html_form_field_plaintext;Input: plain text;Input: plain text
+plaintext2html_form_field_relnofollow;Links: rel="nofollow";Links: rel="nofollow"
+plaintext2html_form_field_targetblank;Links: target="_blank";Links: target="_blank"
+plaintext2html_form_button_convert;convert;convert
+plaintext2html_title;plain text to html;plain text to html
+plaintext2html_explanation;With this tool you can convert plain text to html layout;With this tool you can convert plain text to html layout
+tabsheets_module_name_txt 2 html;txt 2 html;txt 2 html
+tabsheets_module_explanation_convert plain text into html;convert plain text into html;convert plain text into html
+tabsheets_module_name_list 2 ul;list 2 ul;list 2 ul
+tabsheets_module_explanation_convert lists into html ul-li-tags;convert lists into html ul-li-tags;convert lists into html ul-li-tags
+tabsheets_module_name_word letter counter;word letter counter;word letter counter
+tabsheets_module_explanation_count words and characters;count words and characters;count words and characters
+tabsheets_module_name_csv 2 table;csv 2 table;csv 2 table
+tabsheets_module_explanation_make a table out of CSV data;make a table out of CSV data;make a table out of CSV data
+tabsheets_module_name_html markup cleaner;html markup cleaner;html markup cleaner
+tabsheets_module_explanation_cleanup ugly html from WYSIWYG-editors;cleanup ugly html from WYSIWYG-editors;cleanup ugly html from WYSIWYG-editors
+modulename_menu;html tools;html tools
+csv2table_form_field_userawhtml;Use raw html;Use raw html
+csv2table_form_field_userichtexthtml;Use rich text html (copy paste from Word, LibreOffice etc);Use rich text html (copy paste from Word, LibreOffice etc)
+htmlmarkupcleaner_form_field_formathtml;Format HTML code (human readable);Format HTML code (human readable)
+htmlmarkupcleaner_form_field_filterunwantedtagsattributes;Filter bad HTML markup tags and attributes;Filter bad HTML markup tags and attributes
+htmlmarkupcleaner_form_field_linkstargetblank;Links: target="_blank";Links: target="_blank"
+htmlmarkupcleaner_form_field_relnofollow;Links: rel="nofollow";Links: rel="nofollow"
+htmlmarkupcleaner_form_field_replacepbybr;Replace <p> by <br> tag;Replace <p> by <br> tag
+htmlmarkupcleaner_form_button_count;Clean my dirty HTML;Clean my dirty HTML
+htmlmarkupcleaner_title;HTML markup cleaner;HTML markup cleaner
+htmlmarkupcleaner_explanation;Some tools like browser HTML generators and word processors can generate so much poop that interferes with the CSS of a site.<br>This tools cleans the HTML for you.<br>Finally some well deserved rest at night!;Some tools like browser HTML generators and word processors can generate so much poop that interferes with the CSS of a site.<br>This tools cleans the HTML for you.<br>Finally some well deserved rest at night!
+htmlmarkupcleaner_form_field_html;Output: html;Output: html
+htmlmarkupcleaner_form_button_copytoclipboard;Copy clean HTML to clipboard;Copy clean HTML to clipboard
+htmlmarkupcleaner_result;Clean HTML;Clean HTML
+list2ul_form_field_plaintext;Input: plain text (every item on a new line);Input: plain text (every item on a new line)
+plaintext2html_form_field_method_newline;every line is a list item;every line is a list item
+plaintext2html_form_field_method_bulletppints;every bullet point is a list item;every bullet point is a list item
+list2ul_form_field_bulletcharacter;Bullet character that marks a new item;Bullet character that marks a new item
+list2ul_form_button_convert;convert;convert
+list2ul_title;plain text list to html ul list;plain text list to html ul list
+list2ul_explanation;With this tool you can convert plain text list to a html list with the &ltul&gt and &ltli&gt tags.<br>Each line is one item in the list;With this tool you can convert plain text list to a html list with the &ltul&gt and &ltli&gt tags.<br>Each line is one item in the list
+list2ul_form_field_html;Output: html;Output: html
+list2ul_form_button_copytoclipboard;Copy HTML to clipboard;Copy HTML to clipboard
+list2ul_result;result in HTML:;result in HTML:
+csv2table_form_field_plaintext;Input: CSV;Input: CSV
+csv2table_form_field_usecustomseparator;Use custom separator;Use custom separator
+csv2table_form_field_valueseparator;Value separator;Value separator
+csv2table_form_field_useenterseparator;Use NewLine-character separator (\n);Use NewLine-character separator (\n)
+csv2table_form_field_numberorfolumns;Number of columns in table (when enter character is also used as column separator);Number of columns in table (when enter character is also used as column separator)
+csv2table_form_field_usetabseparator;Use tab-character separator (\t);Use tab-character separator (\t)
+csv2table_form_field_firstlineistableheader;First line is table header (horizontal);First line is table header (horizontal)
+csv2table_form_field_firstvalueistableheader;First value is table header (vertical);First value is table header (vertical)
+csv2table_form_button_convert;convert;convert
+csv2table_title;CSV to table ;CSV to table 
+csv2table_explanation;With this tool you can convert plain text CSV (comma separated values) from Excel for example to html table;With this tool you can convert plain text CSV (comma separated values) from Excel for example to html table
+wordlettercounter_form_field_plaintext;Input: text (html is allowed but filtered for count);Input: text (html is allowed but filtered for count)
+wordlettercounter_form_button_count;count;count
+wordlettercounter_title;word and letter counter;word and letter counter
+wordlettercounter_explanation;This tool counts words, letters and characters.;This tool counts words, letters and characters.
+plaintext2html_form_field_html;Output: html;Output: html
+plaintext2html_form_button_copytoclipboard;Copy HTML to clipboard;Copy HTML to clipboard
+csv2table_form_field_html;Output: html;Output: html
+csv2table_form_button_copytoclipboard;Copy HTML to clipboard;Copy HTML to clipboard
+csv2table_result;result in HTML:;result in HTML:

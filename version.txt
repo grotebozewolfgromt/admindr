@@ -1,0 +1,1722 @@
+VERSION DOCUMENT CMS 5
+=======================
+CMS4 is een upgrade van CMS2 met minder gecompliceerde onderdelen, waardoor het sneller is.
+Tevens is deze geschikt gemaakt voor php 7
+CMS5 is CMS4 maar met nieuwe bijgeprogrammeerde onderdelen die gelijke functionaliteit hebben van cms3 (inloggen, activelanguages etc)
+
+
+aantekening: RubixML -> fast machine learning library for PHP
+
+wat heeft een verbouwing van site naar cms5 nodig?
+======================================================
+-libraries toevoegen:
+ 	-index.php
+	include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_inet.php'); (voor redirectHTTPS
+	include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_date.php'); (voor hoursLeftOffer())
+
+	-book-tube
+	include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_date.php'); (voor hoursLeftOffer())
+	-blog.php
+	include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_sys_inet.php');		
+	-blogdetail.php
+	include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_sys_inet.php');    
+	include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_img.php');    
+
+-tabllen overzetten:
+	-tblBEDEVLivestreamSubmissions
+	-tblBEDEVSiteContent
+	-tblBEDEVWeblog
+	-tblBEDEVWeblogTags
+-siteid niet vergeten
+
+
+
+TODOs
+======================================================
+SHORT TERM TODOS:
+
+URL validator controleren op latin chars
+email validator controleren op latin chars
+
+detailscherm accounts --> WERKT, maar moet users openen en nieuwe user in account createn
+checkbox bij user: create new account for user (on save first time)
+optie: invite creeren die naar user verstuurd wordt, die in hetzelfde account terecht komt
+account holders moeten users kunnen toevoegen in het instellingen scherm
+//lierelei no verwijderen omdat het aantal inlogs opgehoogd is
+bij loginsessies land vermelden
+
+
+aparte tabel met producten waar de maandelijkse, jaarlijkse or eenmalige fees in staan met koppeling naar roles (default is anonymous)
+geen gebruikers toe kunnen voegen aan anonymous role
+
+	-rename 'overview' -> 'list' voor controllers
+	-amerikaanse notatie van tijd in tijdboxen
+	-het recoveren van een password werkt niet. het lijkt aan de email token te liggen, die niet overeenkomt met de token in de database
+	-createn account lukt niet omdat voor password: special chars niet worden geaccepteerd, maar wel vereist zijn. waarschijnlijk filterXSS functie in getContentsSubmitted() in FormInputAbstract
+	-TOEVOEGEN: logincontroller: preventTimingAttack() als login goed
+	-cookie path in logincontroller setten op www_path/subdir van cms
+	-ip spoofing protection; persistent-ip-address: 
+		bij inlogform weergeven: token uitgeven in cookie: 
+		cookie en ip adres opslaan in db table. 
+		bij inloggen moet cookie token kloppen met ip, en token invalidaten
+		op deze manier kunnen alleen 'goedgekeurde' ip's inloggen --> voor 'remind me' inloggen
+		in loginsessions is ip opgeslagen: deze controleren met cookie
+	-invalidate the form token after it has been used, otherwise an attacker can reuse it
+	-eigen password verify function schrijven met pepper
+	-eigen password verify function vervangen in logincontroller
+	-tmodel: validateChecksum & calculateChecksum: pepper via hash_hmac gebruiken
+	-min watchtwoord lengte van 10 chars afdwingen
+	-tabelchecksums vastleggen in TTableVersions
+	-checken cookies: als je toegang hebt tot de database, kun je dan via cookie inloggen?? 
+		-> salting and pepering login token in cookie
+		-> extra token gebruiken voor verificatie (ipv encrypted in db, ook encrypted in db)
+	-check in TModel om definetablefouten op te sporen (omdat deze heel moeilijk te vinden zijn)
+	-login via google
+	-formgenerator: 
+		-> als error op form dan preventTimingAttack(), slow down the attacker
+		->extra check op request url (domein moet hetzelfde zijn) 
+		->honeypot
+		->recaptcha support (verplaatsen vanuit logincontroller)
+		->hdSubmitted verwijderen en isSubmitted() checkt op existence hdCTRF token
+	-formgenerator flood detection: https://www.hashbangcode.com/article/drupal-9-integrating-flood-protection-forms
+	-field voor seed/salt aanmaken (in login controller zit al een seed veld -> renamen), die je kan gebruiken om toe te voegen aan passwords en usernames
+	-usersessions
+		-hashen (+salt) ip addressen (kan salten? wordt daarop gezocht?)
+	-cmsusersflooddetect: 
+		-ip adres hashen (kan niet salten, want er wordt op gezocht)
+	-html purifyer schrijven (cleanHTMLMarkup kopieren). en deze aanroepen in filterXSS()
+	-user settings, checken of user de settings saved van eigen account ipv ander account https://www.youtube.com/watch?v=rloqMGcPMkI
+	-.php extensie verwijderen voor bestanden buiten het CMS (misschien zelfs in het cms). alle file urls worden gereroute naar .php variant in .htaccess
+	-mail component, filteren injection headers:  op dubbelepunt(:) en foutmelding boolean possible injection attack
+	-tijden (time between submits, time between show and submit) van formulieren in logincontroller instellen: voor inloggen, recovery, create account
+	-generateSubmitButton() + generateCancelButton() met onClick() event om de button en de rest van de form te disablen (om dubbele submission te voorkomen)
+	-naast een systemwide pepper, een pepper per class dat inheritance afgedwongen wordt via TModel
+	-ipv generateWord voor cookie identification uniqueid gebruiken
+	-als er een randomID() is in TModel dan randomid gebruiken in crudcontrollers ivm veiligheid
+	=kan ik hier wat mee voor de ip land check: to guy who wrote clientIPToHex() function - you reinvented so many wheels. bin2hex(inet_pton($ip)) will do the same thing.
+	-dark mode: alle kleur informatie naar aparte CSS verplaatsen (colorscheme.css), dan is het heel makkelijk om een andere te kiezen en zo een dark mode te implementeren
+
+ problemen/todos:
+TODO BELANGRIJK: bij inloggen checken of de request komt van de huidige server (om te voorkomen dat een andere computer probeert in te loggen ipv huidige php server). Cors. https://reqbin.com/req/php/yxgi232e/get-request-with-cors-headers
+TODO BELANGRIJK: forms: checken of de request komt van de huidige server (om te voorkomen dat een andere computer probeert formulier te submitten ipv huidige php server). cors: https://reqbin.com/req/php/yxgi232e/get-request-with-cors-headers
+https://youtu.be/mL8EuL7jSbg?t=720 checken of cookie is geset als httpOnly (anders kan javascript cookie lezen)
+ todo: Strongpassword hint heeft kan geen html tags tags aan voor error. dit ivm meerdere rules
+ todo: inloggen werkt niet meer als je een preg_escape doet in badcharswhitelist and badcharsblacklist
+todo: countries module (dan kunnen we dat in select-box weergeven bij registreren account)
+todo: general html-blocks builder maken die je voor webpaginas, blogs, emails etc kunt overerven hergebruiken met extra componenten
+todo: config file per host (kun je makkelijk hele cms directory vervangen)
+todo: records kunnen openen op basis van uniqueid ipv id
+todo: column in db: ipadres-hash ipv plain ipadres (ivm hack, dan heb je ips van gebruikers die tot unieke persoon te herleiden zijn)
+todo: auto expire van een login sessie
+todo: login: regenerate sessie bij handleLogin()
+todo: loginhistorie (userid, 'ip', 'fingerprint', date)
+todo: backups maken (ook in cronjob en bij uninstall)
+todo: javascript popups
+todo: background uploading files/images
+-blogpost: toevoegen iAuthorUserID
+-blogpost: categorien (1 blogpost kan in meerdere categorien zitten)
+-ip locatie database en locatie aan login sessies toevoegen in user detail scherm (niet in db ivm gdpr)
+-de detailsave crud controller checkt niet of record is gelocked of checked out: handleNewEditRecord()
+-als quicksearch en dan bulk action, de quicksearch wordt gewist. de bulkacties zijn een _GET ipv _POST
+-tijd in 2 comboboxen
+-translations cachen in sessie
+-locales cachen in sessie
+-er staan cms waarden zoals constanten als cms_languages in de bootstrap v/h framework ipv cms
+-@todo tab selection doesn't work when url parameter exists
+-there is a running issue automatically logging out: this has to do with the browserfingerprint which returns sometimes a different fingerprint. The debugLog() logs the generated fingerprints
+
+
+9 nov 2023
+=======
+versie conflict niet opgelost
+
+
+4 nov 2023
+========
+velden toegevoegd transaction types o.a. paymentwithindays
+
+
+3 nov
+=======
+transaction types aangemaakt
+transaction types list
+transaction types detailsave
+rename overview_invoices list_invoices
+rename TInvoicesLines -> TTransactionsLines
+rename TInvoices -> TTransactions
+rename Mod_Invoices -> Mod_Transactions
+rename list_invoices -> list_transactions
+renames overview_* controllers -> list_* 
+renames templates in 'modules'-module: overview_* -> list_* 
+
+1 nov 
+=======
+added: invoicelines:purchase priceexclvat
+added: invocies:purchase meta_priceexclvat
+
+
+
+31 okt
+========
+* 31 okt 2023: TDBPreparedStatementMySQL: createTableFromModel():  INDEX(field), INDEX (field) is now repeated instead of comma'd
+indexen aanmaken afgerond
+
+30 okt
+========
+kolom indexen aangemaakt.
+Bezig nog met controle of alle indexen daadwerkelijk aangemaakt worden in tabellen
+* 30 okt 2023: TDBPreparedStatementMySQL: createTableFromModel():  INDEX(field, field) aangemaakt
+
+26 okt 2023:
+===========
+-rename tpl_overviewcontroller -> tpl_modellistcontroller
+-rename TCRUDOverviewController -> TCRUDListController
+-rename tpl_detailsavecontroller -> tpl_modeldetailsavecontroller
+-fix: undefined index billingemailaddress encrypted bij getGUIItemName
+
+25 okt 2023:
+=============
+-TInvoices updates
+-TInvoicesLines updates
+
+24 okt 2023:
+=============
+-TInvoices afgemaakt, TInvoicesLines gestart
+
+
+20 okt 2023:
+=============
+ * 20 oct 2023: checkbox selecteren rij in tabel, maakt rij nu blauw
+oeps versie file verwijderd -- hoop gedaan oa consistentie tussen syscountries syscurrencies (NEW) syslanguages verbeterd
+rename Mod_sys_languages -> Mod_sys_localisation
+currency is nu in overview en editbaar
+contacts:
+	-bank account toegevoegd
+	-chamber commerce no toegeogd
+	-vatno is nu encrypted
+
+
+19 okt 2023:
+============
+ * 19 oct 2023: TIPGeoLocation: loadFromDBByIP default parameter is '' en gebruikt interne IP adress
+ * 19 oct 2023: TIPGeoLocation: getCountryIDloadFromDB default parameter is '' en gebruikt interne IP adress
+* 19 okt 2023: TSysCountries: loadFromDBByISO2() added
+ * 19 okt 2023: TPaginator: setCurrentPage() bugfix: deed altijd een conversie van strToInt()
+ * 19 okt 2023: TPaginator: getCurrentPageFirstItem() added
+ * 19 okt 2023: TPaginator: getCurrentPageLastItem() added
+* 19 okt 2023: veel eyecandy aan css 
+
+
+11 okt 2023:
+============
+* 11 okt 2023: TSysCMSUsers: removed googleid (moved to TUsersAbstract)
+* 11 okt 2023: TCMSLoginController: toevoegingen googleid
+* 11 okt 2023: TCMSUsers: toevoegingen googleid
+
+
+26 juli 2023:
+-============
+* 26 jul 2023: TDBPreparedStatementMySQL: getSafeDatabaseName() getSafeFieldName() updated not to use REGEX_ALPHANUMERIC_UNDERSCORE for security reasons
+* 26 jul 2023: SECURITY FIX: lib_cms2: addDBRecord() added real_escape_string()
+
+
+
+
+27 juni 2023:
+===========
+* 27 june 2023: lib_sys_inet: obfuscateEmail() added: email@example.com --> em***@e******.c**
+
+
+5 juni 2023:
+===========
+bezig user aanmaken based on Google login
+
+3 juni 2023:
+===========
+bezig met login via google
+* 3 june 2023: lib_sys_inet: removeVariableFromUrl() updated so it can remove all variables in one sweep
+
+
+29 mei 2023:
+===========
+lib_inet: getDomain() updated
+
+25 jan 2023:
+===========
+added url form validator
+* 19 jan 2023: TSpamDetector: added detectNonLatinCharacterSet()
+
+21 jan 2023:
+===========
+* 21 jan 2023: TLoginControllerAbstract(): uses recaptchav3 features of FormGenerator, instead of implementing it ourselves
+
+20 jan 2023:
+============
+ * 20 jan 2023: TContactFormController optimized: email adres check works, email via template works, fields removed werkt
+ * 20 jan 2023: lib_sys_inet: isValidEmail() bugfix
+ * 20 jan 2023: lib_sys_inet: isValidURL() added
+* 20 jan 2023: FormGenerator: recapcha3 functionality added 
+
+TODO: FormGenerator recaptcha functionaliteit gebruiken in logincontroller
+
+
+19 jan 2023:
+=============
+ * 19 jan 2023: lib_string: filterBadCharsWhiteList(): long standing bug fixed with double escaped regex. Added extra parameter for whitelist in regex
+ * 19 jan 2023: TSpamDetector: updated
+ * 19 jan 2023: TContactFormController updates + senden email werkt nu
+
+
+
+18 jan 2023:
+=============
+* 18 jan 2023: lib_string: filterBadCharsWhiteList(): support for dots (.) and other special regular expression characters
+* 18 jan 2023: lib_sys_inet: isValidEmail() extra parameter for checking only latin characters, to avoid spoof email addresses
+* 18 jan 2023: TMailSend: filter_var() statements for email addresses added;
+* 18 jan 2023: lib_sys_inet: isValidEmail() check on dns went wrong when no @ in email address. FIXED
+* 18 jan 2023: TContactFormController toevoegingen. Senden email werkt nog niet
+
+
+11 december
+================
+* 11 dec 2022: contacts: addressline1 and addressline2 vervangen door 'straat' en 'misc'
+
+
+3 december
+================
+* 3 dec 2022: in config in te stellen wat de eerste pagina is van het cms
+
+
+28 november
+================
+* 28 nov 2022: anonymous role not selectable anymore in detailsave_users
+* 28 nov 2022: added: apart veld bij roles: maxUsersAllowed (role kan maximaal 3 users toevoegen bijvoorbeeld)
+* 28 nov 2022: description field did not exist in detailsave_usersroles
+* 28 nov 2022: maxUsersAllowed field added to detailsave_usersroles
+* 28 nov 2022: skin renames: skin_loggedin -> skin_withmenu  and skin_loggedout -> skin_withoutmenu
+* 28 nov 2022: TModel: added: isChecksumValidAllRecords()
+* 28 nov 2022: TSysCMSUsersRolesAssignUsers werkt nu 
+* 28 nov 2022: checksum TSysCMSUsersRolesAssignUsers wordt gecheckt bij inloggen
+* 28 nov 2022: extra velden toegevoegd contacts: lastnameprefix, onblacklist, onmailingslist, phone1, phone2
+
+
+21 november 
+================
+* 19 nov 2022: kleine naamgeving dingen veranderd
+* 19 nov 2022: isManagableByOtherUsers flag weg gehaald bij roles, er moet een aparte tabel voor in de plaats komen in de toekomst
+
+19 november
+===============
+* 19 nov 2022: sql log logs now errors, even when not in developmentenvironment
+* 19 nov 2022: theme switching werkt nu!!!
+
+
+
+
+18 november
+==============
+* 18 nov 2022: custom identifiers contacts + accounts is nu 50 chars
+* 18 nov 2022: auth() checkt voor aanwezigheid SESSIONARRAYKEY_PERMISSIONS in $_SESSION[]. Dit kan voorkomen als gebruiker niet is ingelogd in systeem
+* 18 nov 2022: rechtensysteem: default rechten voor anonymous users en non-sytem users are disallowed by default
+* 18 nov 2022: als je userrole verwijdert, worden automatisch permissies verwijderd door db (ipv via het systeem), dmv CASCADE_DELETE
+* 18 nov 2022: anonymous users are never allowed to log in
+* 18 nov 2022: checksum van roles en accounts worden gecheckt bij inloggen
+* 18 nov 2022: nieuwe user aan kunnen maken met accounts WERKT NU!
+* 18 nov 2022: getGUIItemName() voor contacten nu beter
+* 18 nov 2022: email adress (niet-billing) veld toegevoegd op contact form (alleen billing email was aanwezig)
+* 18 nov 2022: THEMES introduced! nieuwe locaties voor templates, images, js, css:in current-theme folder
+* 18 nov 2022: TControllerAbstract: flag bCachingEnabled toegevoegd
+===> Themes switchen werkt nog half ergens een dubbele rename met __INSTALLED__
+
+
+
+17 november
+=============
+* 17 nov 2022: login met beperkingen van useraccount werkt nu fatsoenlijk
+* 17 nov 2022: per pagina gebruiker kunnen volgen in accesslogs
+* 17 nov 2022: cronjob: opruimen logfile dirs ouder dan 1 jr
+* 17 nov 2022: cronjob: htaccess in cruciale directories
+* 17 nov 2022: cronjob: cronjob logs werden nog niet allemaal gelogd naar de cronjob log, nu wel
+* 17 nov 2022: auto delete useraccounts in conjob
+* 17 nov 2022: rechten van sites-top-screen duidelijker gemaakt
+
+
+
+
+
+16 november
+==============
+* 16 nov 2022: usergroups: added description field and extra user  on install
+ * 16 nov 2022: TSysCMSUsersGroups renamed to TSysCMSUsersRoles
+  * 16 nov 2022: TUsersGroupsAbstract renamed to TUsersRolesAbstract
+ * all renames done usergroups -> userroles
+* 16 nov 2022: TDBPreparedStatementMySQL: generateSQLSelectModel(): Joins section updated. Now supports tables that have 2 or more references to the same exernal table. For example tblContacts has iDeliveryCountryID and iBillingCountryID both referring to tblCountries
+* 16 nov 2022: detailscherm accounts geeft users in account weer
+* 16 nov 2022: detailscherm users geeft accounts weer
+* 16 nov 2022: TSysCMSUsers::FIELD_USERGROUPID rename => TSysCMSUsers::FIELD_USERROLEID
+* 16 nov 2022: TSysCMSPermissions::FIELD_USERGROUPID rename => TSysCMSPermissions::FIELD_USERROLEID
+* 16 nov 2022: TSysCMSPermissions::getGroupid rename => TSysCMSPermissions::getRoleID
+* 16 nov 2022: TSysCMSPermissions::setGroupid rename => TSysCMSPermissions::setRoleID
+* 16 nov 2022: error logs aparte files voor logs
+
+inloggen met account restricties werkt nu!
+
+
+15 nov 2022
+===========
+* 15 nov 2022: TCRUDDetailSaveController: "cancel" button is now "close"
+ * 15 nov 2022: TCRUDDetailSaveController: functionality of "save & close" button removed
+ * 15 nov 2022: contacten module: nu ook achternaam en postcode geencrypt
+ * 15 nov 2022: contacten module: custom identifier automatisch gegenereerd als leeg
+ * 15 nov 2022: rename: user account expires --> deleteafter
+ * 15 nov 2022: TSysCMSUserAccounts created
+ * 15 nov 2022: volgorde system tabellen in lib_sys_framework aangepast, nu: afhankelijkheid users van accounts programmeren
+* 15 nov 2022: TModel: loadFromDB support voor levels of join, eerste parameter ($mAutoJoinDefinedTables = 0) is nu een mixed parameter. true voorheen betekende oneindig, nu betekent het 1 level
+* 15 nov 2022: TUsersAbstract->loadFromDBByUserLoginAllowed: loadfromDB(1) only 1 level now
+* 15 nov 2022: TUserSessionsAbstract->loadFromDBByTokensLoginAllowed: loadfromDB(1) only 1 level now
+ * 15 nov 2022 - TCRUDOverviewController doet nu bNoRecordsToDisplay
+ * 15 nov 2022 - TCRUDOverviewController executeDB() heeft mixed parameter voor level diepte
+ * 15 nov 2022 - alle modules zaken met bNoRecordsToDisplay weggehaald omdat TCRUDOverviewController dat nu doet
+ * 15 nov 2022 - TCMSLoginController speciale waarden developmentenvironment voor loginattempts etc 
+* 15 nov 2022: not steeds bezig met useraccount toevoegen: 
+
+
+14 nov 2022
+===========
+* 14 nov 2022: TModel: defineTableDebug() added. When you ever forget a field or have a copy/paste error, this function lets you track it
+* 14 nov 2022: TContactsAbstract and TSysContacts created
+* 14 nov 2022: Select(): added: setValue($sValue) wrapper for setSelectedOption($sHTMLOptionValue)
+* 14 nov 2022: Textarea(): added: setValue() and getValue() wrappers for setText() and getText()
+* 14 nov 2022: de contacten module werkt nu.
+* 14 nov 2022: de contacten module : er zit nog een bug in het zoeken
+
+
+29 juli 2022
+============
+csv2table: tbody tag inbegrepen
+
+
+22 mrt 2022:
+============
+* 22 mrt 2022: TSpamDetector: speedup: if score is 100 then no further detection is needed and skips detection functions
+* 22 mrt 2022: TSpamDetector: updated
+
+19 mrt 2022:
+============
+ * 19 mrt 2021: lib_string: filterURL(): changes params, separate tld and protocol detect
+  * 19 mrt 2022: TSpamDetector: translateChars() toegevoegd
+ * 19 mrt 2022: TSpamDetector: badEmoji filter werkt nu
+ * 19 mrt 2022: TSpamDetector: detectPunctiation() added
+ 
+
+18 mrt 2022:
+============
+ * 18 mrt 2022: lib_sys_inet: generatePrettyURLSafeURL() updated with support for accents
+ * 18 mrt 2021: lib_string: replaceAccent(): added
+  * 18 mrt 2021: lib_string: filterURL(): added
+ * 18 mrt 2021: lib_string: filterURL(): now support for strict url detection
+  * 18 mrt 2022: TWeightedAverageScore: clear() added
+* 18 mrt 2022: TWeightedAverageScore: calculateScore() updated: prevent division by 0
+ * 18 mrt 2022: TSpamDetector: created
+ * 18 mrt 2022: TSpamDetector: verbeterd
+
+
+17 mrt 2022:
+============
+ * 17 mrt 2022: TSysCountries: iseuropeanunion field added
+--- nog niet klaar met support module en support form ---
+
+14 mrt 2022:
+============
+* 14 mrt 2020: TWeightedAverageScore: created
+--- nog niet klaar met support module en support form ---
+
+11 mrt 2022:
+===========
+* 11 mrt 2022: support module created - doesn't work properly yet (wip)
+* 11 mrt 2022: TContactFormController created - doesn't work properly yet (wip)
+* 11 mrt 2022: form\Option added disabled field
+ * 11 mrt 2022: TControllerAbstract: renaming executeOnCacheMiss -> executeEarlyBinding()
+ * 11 mrt 2022: TControllerAbstract: renaming executeAlways -> executeLateBinding()
+--- nog niet klaar met support module en support form ---
+
+8-3-2022:
+=======
+ * 08 mrt 2022: TIPGeoLocation: inconsistentie met TModel weg gewerkt, loadFromDB() is verwijderd
+
+
+
+6-3-2022:
+========
+TIPGeoLocation created
+
+5-3-2022:
+=========
+ * 5 mrt 2022: TControllerAbstract: partial caching now possible with late binding variables
+ * 5 mrt 2022: TControllerAbstract: bugfixes: partial caching
+ * 5 mrt 2022: invitecodes table created on install
+
+4-3-2022:
+=========
+* 04 mrt 2022: TModel: added support for atomic database transaction
+TRedemptionCodesAbstract created
+redemption codes in cmsusers module werkt nu volledig
+
+
+3-3-2022:
+=========
+ * 3 mrt 2022: all languages: system default checkbox added
+created TSysCMSPermissionsCountries
+created permissionscountries in permissions module
+de voorkant laat zien waar deze service beschikbaar is
+
+
+2-3-2022:
+=========
+ * 2 mrt 2022: TSysCountries: isDefault field added
+ * 2 mrt 2022: TSysCountries: isDefault field toegevoegd aan checksum
+ * 2 mrt 2022: countries beschikbaar in language module
+ * 2 mrt 2022: lib_inet: bugfix: redirectToHTTPS() werkt nu 
+ * 2 mrt 2022: lib_inet rename to lib_sys_inet: omday redirectToHTTPS() wordt gebruikt in bootstrap
+ 
+
+1-3-2022:
+=========
+* 1 mrt 2022: lib_types: added: issetXXX functions
+* 1 mrt 2022: TsysCountries created , module moet nog
+
+
+1-2-2022:
+==========
+-done: in de render() van TCRUDOverviewController std variabelen opnemen, die je in child klasse niet hoeft te implementeren
+-crobjob heeft nu een id die je kunt definieren in config. Dit ter voorkoming van DOS attacks door unauthorized parties
+-done: cms systeem schermen inloggen/uitloggen etc omzetten naar urlrouter versies met controllers
+-kleine verbeteringen aan de router en cms url libraries
+
+
+1-1-2022:
+==========
+nieuwe tcruddetail:
+-usersmodule klaar (users + usergroups)
+-settingsmodule (user + system + cronjob) klaar
+-languagesmoduke klaar (all langs + active langs)
+-modules module (detailsave-bestaande-modules + categorien klaar)
+-websites module klaar
+-blog module klaar
+
+
+bugfix: installeren  en deinstalleren modules werkt
+bugfix: upload zip file werkt
+bugfix: delete bullkaction zou niet moeten werken voor modules (dat doet het wel)
+
+
+
+30-12-2021:
+============
+Versie 2 van de cruddetailssave controller is klaar, is toegepast op userdetail, maar de rest van de detailschermen moeten nog!
+
+* TControllerAbstract -> TCacheControllerAbstract
+* TCRUDOverviewController erft niet meer over van TControllerAbstract ivm snelheid
+* TControllerAbstract->start() heet nu TControllerAbstract->render()
+* urlroutercms roept ->start() niet meer aan
+
+
+
+12-12-2021:
+==========
+* 12 dec 2021: lib_string: endswith(): speedup because strlen is cached
+midden in overschakeling van overview controllers (usersmodule nu gedaan)
+alle detailsave controllers moeten nog
+ * 12 dec 2021: lib_cms_url: getModuleFromURL() filter op illegale karakters
+overview controllers omgebouwd naar nieuwe versie (mod_dev en mod_html uitgezonderd)
+
+
+10-12-2021:
+==========
+declared variables bootstrap_cms_auth as global in bootstrap_cms_auth
+ * 10 dec 2021: caching in session toegevoegd
+ opgelost: er gaat nog iets niet lekker met detailsaveusers
+opgelost: iets nog niet lekker met rename modules directory
+
+7-12-2021:
+==========
+TControllerAbstract caching werkt nu goed.
+TController is in principe Af
+MAAAAAAR maar bootstrap_cms_auth probleem nog niet verholpen!!!
+
+
+
+6-12-2021:
+==========
+verder met cachende controller gegaan.
+PRobleem met objLocale (en andere objection in bootstrap_cms_auth) -> bootstrap wordt geladen maar file lijkt geinclude in functie waardoor variabelen niet beschikbaar zijn
+
+
+5-12-2021:
+===========
+urlrewriter begonnen
+wijzigingen aan config file voor dynamisch cms path en dynamisch module path
+iets verder met urlrouter
+niet alle klassen in modules staan in classes dir
+renamen en verschuiven files in modules, aparte module dirs voor models, controllers en templates
+
+er zit nog iets niet lekker met wijzigende naam module directory
+
+27 nov 2021:
+==========
+probleem met fingerprint via Fetch() verholpen
+* 14 sept 2021: lib_inet: getFingerprintBrowser() werkt nu ook in een js Fetch() call
+mod_dev: progress bar upload via xhr
+ * 27 nov 202: TagAbstract: removed prefixes
+ * 27 nov 2021: Select(): setSelectedOption() returns boolean if found or not +
+ * 27 nov 2021: Select(): setSelectedOption(): speed increase: if found, loop is terminated
+* 27-nov-2021: InputTime omgebouwd zodat deze 2 comboboxen voor uren en minuten weergeeft
+	@todo voor de amerikaanse am/pm tijdnotatie
+
+
+22 nov 2021: 
+==========
+* 22 nov 2021: TModel: added string based uniqueid
+alle TModel klassen geupdate met methods voor uniqueid
+  * 22 nov 2021: lib_string: uniqidReal(): is more unique, because it doesn't generate hex anymore
+ * 22 nov 2021: lib_string: isUniqueidRealValid(): changed to fit uniqidReal()
+
+
+
+13 nov 2021:
+==========
+bestand te uploaden via drag and drop. resultaat in dev module. dit werkt via gewoon form submit.
+bestand uploaden via fetch geeft probleem omdat fetch een andere fingerprint genereert dan de browser, dus file upload failed. Het werkt als je de authentication weghaalt
+
+
+
+3 nov 2021:
+==========
+* 3 nov 2021: TModel: uniqueID is now called RandomID to avoid confusion with uuid
+ * 3 nov 2021: lib_string: uniqidReal(): added
+ * 3 nov 2021: lib_string: isUniqueidRealValid(): added
+ * 3 nov 2021: lib_types: function is_hex(&$sHexString) added
+  * 3 nov 2021: TModel: getUseUniqueID + getUseUqiqueIDAsPrimary is now called RandomID
+  * 3 nov 2021: TLoginControllerAbstract: hoop renames ivm de naam uniqueid
+* 3 nov 2021: TModel: rename findUniqueID() -> findRandomID()
+ * 3 nov 2021: TModel: meer renames ivm unique voornamelijk commentaren
+ * 3 nov 2021: ergens rename, iets met usersessiesabstract volgens mij (maar weet niet zeker)
+ * 3 nov 2021: lib_string: makeUnique gebruikt nu uniqueidReal()
+ finished renaming 
+
+
+
+2 oct 2021:
+===========
+* 2 okt 2021: FormGenerator: generate() SESSIONARRAYKEY_ANTICSRFTOKEN was not checked for existence
+ * 2 okt 2021: lib_string: filterXSS() updated, filterJavascriptInjection() alias added
+* 2 okt 2021: lib_string: filterXSS() updated, <a> tag added in html allowed 
+* 2 okt: TUsersFloodDetectAbstract: encryptUsername() gebruikt local pepper en SHA256
+ * 2 okt: TUsersFloodDetectAbstract: bugfix: hashed username sql failed omdat veld te kort was
+* 2 okt 2021: FormGenerator: support voor flood detection. maar er wordt nog geen foutmelding gegeven of slowdown gedaan
+  * 2 okt 2021: TLoginControllerAbstract(): extra preventTimingAttacks() added when formchecks fail
+ * 2 okt 2021: FormGenerator: flood detection errors shown, errormessage on top of form deleted
+* 2 okt 2021: lib_string: filterXSS(): GIGA SECURITY FLAW BUGFIX!!!! the function didn't filter at all!!
+* 2 okt 2021: FormGenerator: hoop bugfixes ivm CSRF token
+
+
+1 oct 2021:
+============
+-* 1 okt 2021: FormGenerator: Cross-Site Request Forgery token implemented. nu Standaard geintegreerd
+ * 1 okt 2021: FormGenerator: Cross-Site Request Forgery tokens counted and if exceeded: error + no form
+-commnets updated
+ 
+
+
+28 sept 2021:
+=============
+-added pepper in config file/bootstrap
+* 28 sept 2021: TModel: calculateChecksum() added support for pepper
+ * 28 sept 2021: lib_string: generateRandomString() added
+* 28 sept 2021: TModel: isChecksumValid() and calculateChecksum() implemented salt + salt constant in class 
+* 28 sept 2021: lib_string: generateRandomString() is now faster and has parameter for characters to generate
+* 28 sept 2021: TModel: calculateChecksum() bugfix: speed
+ * 28 sept 2021: TModel: calculateChecksum(): even more speed
+
+
+
+11 sept 2021:
+=============
+-11 sept 2021: lib_string: generateEmailID renamed-> getFingerprintEmail()
+-11 sept 2021: lib_string: getFingerprintEmail() is case insensitive now
+-11 sept 2021: FIXED: lib_string: getFingerprintEmail() is case insensitive now
+-11 sept 2021: TUserAbstract: added const for emailfingerprint digest
+-11 sept 2021: TUserAbstract: db field rename
+* TUsersSessionsAbstract: 11 sept 2021: getFingerprint() renamed: getFingerprintBrowser() to avoid confusion with emailaddressfingerprint
+ * 11 sept: TUsersFloodDetectAbstract: getFingerprint() renamed getFingerprintBrowser
+ meerdere FIELD_FINGERPRINT velden gerenamed in meerdere klassen
+ * 11 sept 2021: TLoginControllerAbstract(): detect flood on emailaddress fingerprint create account
+* 11 sept 2021: TModel: isMatchUncryptedValue() added
+ * 11 sept 2021: TLoginControllerAbstract(): create account with encrypted and fingerprinted emailaddress (including: check duplicate email addressses)
+* 11 sept 2021: TLoginControllerAbstract(): detect flood on emailaddress fingerprint password reset (TESTED!!! Works!)
+EMAILADRESS_OLD IS NU VERWIJDERD EN EMAIL ADDRESS WORDT NIET MEER PLAT OPGESLAGEN IN DE DATABASE!!!
+
+
+27 aug 2021:
+============
+-FIXED: compatibility with php8 (ZipArchive doesnt work???)
+
+
+21 aug 2021:
+============
+-bugfix: sys_install geeft fout index not found foreignkey_table op flooddetect en userssessions
+-uitleg encryption TModel in comments toegevoegd
+-userdetailscherm: email encrypted opslaan en openen wekrt nu
+-overviewerscherm template: ondersteuning voor encrypted fields
+-custom overviewerscherm modules: ondersteuning voor encrypted fields
+-bugfix: index.html was shown as module in 'uninstalled modules' tab
+
+
+
+20 aug 2021:
+============
+cmslogincontroller en logincontrollerabstract: ik vond nog CMS dependent code in loginconstrollerabstract. populatePermissionsSessionArray() aangepast
+vreemde karakters worden gefilterd uit input formulier
+username md5 hashed in loginattempts
+lib_string: added lastChar(), firstChar() and generateEmailID();
+users: emailaddress veld gerenamed
+users: emailaddressencrypted veld toegeovegd
+users: emailaddressid veld toegeovegd
+OVERAL WORD NOG HET OUDE EMAIL ADDRESS VELD GEBRUIKT, functionaliteit nog niet geimplementeerd
+begonnen met encryption te integreren in TModel
+	-get() set() met encrypted moet nog
+	-in alle TModel descendants: setFieldEncryptedDisabled() gebruiken
+	-probleem: in referenced field kun je niet encryption opvragen
+==> sys_install geeft fout index not found foreignkey_table op flooddetect en userssessions
+
+
+
+
+18 aug 2021
+===========
+added encryption methods to TModel class
+send email on flood all attempts
+
+
+
+
+30 juni 2021
+============
+handlePassworRecoverEnterEmail() heeft beperktere flood detection to save system resources
+handleLoginLogout() laat nu recover password link zien als teveel mislukte inlogpogingen
+bugfix: detectFloodAll() deed geen detection of createaccountattempts
+	-recaptcha voor password reset
+	-recaptcha voor create account
+lib_security toegevoegd en 2 encryptie functions
+Bezig met:encryption integeren in model classes
+
+
+
+25 juni 2021
+============
+* 25 jun 2021: lib_string: generatePassword() heeft meer special characters en gebruikt random_int() ipv rand() voor betere randomization
+* 25 juli 2021: lib_misc: preventTimingAttack() toegevoegd
+ * 25 jun 2021: lib_inet: getFingerprintBrowser() has parameter to exclude ip address
+ * 25 jun 2021: lib_inet: getFingerprintBrowser() is more unique now: language is added
+* 25 jun 2021: TDateTime: subtractHours() toegevoegd
+tabsctractlogincontroller general flood detection integrated (on all attempts, not only on ip or username)
+tabsctractlogincontroller de flood detection voor elk onderdeel uit elkaar getrokken, betere systemload maar ook dat je bij het aantal inlogpogingen verstreken toch je watchwoord kunt veranderen
+flood detection was done twice, once in the controller and once in the controller that calls tabsctractlogincontroller
+bugfix: form input error password bij password-reset nam email tokens niet mee bij opnieuw openen form en daardoor mislukte het opslaan
+dubbele wachtwoordvelden bij createn account
+dubbele wachtwoordvelden bij password reset
+ * 25 jun 2021: ib_math: isFloatGreaterThan() and isFloatLessThan() added
+ GOOGLE RECAPTCHA V3 is integrated for logging in! You can switch it off if you like via the config file or in tabsctractlogincontroller child class
+
+
+24 jun 2021
+============
+flood detection based on sessions werkt nu volledig
+langstanding todo: deletefromdb_old is volledig uit logincontroller verwijderd
+flood detect: verwijder failed login attempts uit database on logout
+on logout wordt nu vanalles netjes opgeruimd, behalve the CMS2 shit
+formtoken toegevoegd: checkt of het formulier wel uitgegeven is door het cms (voor inloggen, create account en password reset)
+StrongPassword validator toegeovegd
+nu werkt inloggen ineens niet meer
+inloggen werkte niet vanwege de preg_escape in badcharswhitelist and badcharsblacklist
+validator werkt voor createn account
+
+
+23 jun 2021
+============
+ password expires bug opgelost bij createn new account buiten cms
+ * 23 jun 2021: TDateTime: setZero() toegevoegd
+password expires bug opgelost bij saven usersetting inside cms
+ * 23 jun 2021: InputAbstract: setValueSubmitted() added
+Bij falen create account, worden alle elementen ingevuld
+getApplicationName() toegeovegd in logincontroller en worden nu opgevraagd in child klassen en templates
+* 23 jun 2021: TModel: where() alias added for find(). It is a bit more consistent with SQL and new programmers
+zo veel mogelijk naar abstracte logincontroller klasse verhuisd zodat het mogelijk is om binnen aan paar tellen een child klasse te createn met ALLE mogelijkheden van het inloggen erin (account aanmaken, password resetten, alle emails sture, alle email tokens etc etc)
+* 23 juni 2021 rename TUserLoginAttempts -> TUsersFloodDetectAbstract
+ * 23 juni 2021 added fields FIELD_EMAILADDRESS, FIELD_ISLOGINATTEMPT, FIELD_ISPASSWORDRESET, FIELD_ISCREATEACCOUNTATTEMPT, FIELD_ISDUPLICATEUSERNAMEATTEMPT
+flood detect op fingerprint toegevoegd in abstractlogincontroller
+ Mod_Sys_CMSUsers cronjob methodes verplaatst naar usersessionsabstract en usersflooddetectionabstract
+ flood detection werkt: user successful login registreren + detecteren
+ flood detection op password reset en usernames werkt nu
+bugje verholpen waarbij formulier werd verwijderd op flood.
+nog betere flood detection bij openen password reset form en click op email form (hetzelfde voor account creation)
+abstracte methods voor settings als getMaxAllowedFailedLoginAttemptsPerDay, getMaxAllowedSuccessfulLoginAttemptsPerDay, getMaxAllowedPasswordResetsPerDay, getMaxAllowedCreateAccountsPerMonth
+
+
+
+
+22 jun 2021
+==========
+-create account email wordt gestuurd
+-create account meer credentials worden toegevoegd (usergroup etc)
+-emailtoken van password recover is meer random
+-emailtoken van password recover is niet meer plat opgeslagen in database
+-username gehashed bij versturen email als id3
+-enablen account na klikken op link email- werkt maar confirmatie nog niet weergegeven
+-in config is het mogelijk om websites aan linker kant en header uit te zetten
+-TCMSUsers->deleteExpiredEmailTokens() created
+-TCMSUsers->deleteExpiredUsers() created
+-2 bovenstaande functies in cron job aangeroepen
+-als account gecreate wordt, wordt deze automatisch verwijderd (in cron job) als activation time is verlopen (binnen 1 uur)
+
+
+
+21 jun 2021
+==========
+-index gebruikt nu bootstrap_cms
+-config added:
+	-anyone can register (verwijderd uit database voor veiligheid en snelheid)
+	-application name (zo kan ik op 1 plek de applicatie naam veranderen en het is overal veranderd)
+-bezig met createn new account
+
+
+
+16 jun 2021
+==========-
+-directory "thirdparty" renamed naar "vendor" hetgeen wat meer industrie standaard is
+
+
+18 dec 2020
+===========
+-password recovery in basic is done (emails worden gestuurd en het is mogelijk om password te resetten)
+-option for name + email of system bot added to settings and settings screen
+-2 extra velden bij gebruikers toegevoegd: emailtoken, emailtokenexpired
+
+
+
+
+
+
+
+
+14 dec 2020
+===========
+-TMailSend is de neiuwe mail klasse, dat is een wrapper voor PHPMailer met flood detection
+
+
+
+
+11 dec 2020
+===========
+-started password recovery
+
+
+
+4 dec 2020
+==========
+-if user password is expired the user is prompted to change it on login
+ * 4 dec 2020: TModel: definetable() for languages the old method of instantiating the class was used, now the static version is used, which is faster
+* 4 dec 2020: TSysCMSUsers: public function initRecord() added with default usergroupid from settings
+user password expires wordt auto geset in settings scherm, niet auto in user detailscherm met de hand (bewuste keuze)
+
+
+
+
+3 dec 2020
+==========-
+settings internal + settings gui: cms: field added:  default usergroupid
+settings: default second usergroup on install set
+moved install settings to TSysSettings::install()
+moved install permissions TCMSPermissions::install();
+implemented: user password expired root on install
+
+
+
+2 dec 2020
+===========
+-added development module
+-gestart met update, add, modify db kolommen
+-drop column werkt (todo: modify and add)
+* 2 dec 2020: TDBPreparedStatementMySQL: added functions: alterTableDrop, alterTableRenameField, alterTableModify, alterTableAdd
+* 2 dec 2020: TDBPreparedStatement: added functions: alterTableDrop, alterTableRenameField, alterTableModify, alterTableAdd
+ * 2 dec 2020: TModel: added functions: alterFieldDBAdd, alterFieldDBModify, alterFieldDBRename, alterFieldDBDrop
+ 
+
+29 nov 2020
+===========
+-user sessions toegevoegd aan user detail scherm, nog bugje: deleten werkt maar GUI wordt niet refreshed
+-29 nov 2020: TCRUDDetailSaveController: the bottom control panel is added AFTER modelToForm() which allows for quicker programming with dynamic elements like user-sessions for users or permissions for usergroups
+* 29 nov 2020:: lib_inet: getBrowserName() and getBrowserOS added
+-lib_typedef browsers and osses toegevoegd
+-user sessions in userdetail scherm geeft browser en os weer ipv ip adres
+-sessies naar user instellingen gekopieerd
+-blog module: worth reading gaf een fout door verkeerde tabel definitie
+
+
+
+17 nov 2020
+============
+-checkout word gedaan voor meerdere records in TCRUDDetailSaveController
+-saven system settings werkt
+-module "enabled" methodes verwijderd ivm consistentie. omdat bij systeem intensieve processen wordt de module-directory listing opgevraagd en zou alleen voor enabled er ook een database query tegenaan moeten gooien om ze uit te sluiten.
+-settings module is visible werkt nu  + toegevoegd in moduledetailscherm
+-default translation keys in typedef for general translation keys
+-public username toegevoegd bij gebruikers, zodat je namen op websites kan weergeven (bijvoorbeeld als blog author)
+-17 nov 2020 :TCRUDDetailSaveController checkt op of je checkinout wil gebruiken.
+
+
+
+
+
+13 nov 2020
+============
+ * 13 nov 2020: TModel: limitNone(): added
+-updateSettings() in TSysSettings werkt nu
+-BUGFIX: als je module installeert zijn de rechten nog niet ververst, dus de module staat nog niet in de module lijst
+- * 13 nov 2020; lib_types: boolToStr() behaviour changed, it returns '0' or '1' by default instead of 'true' and 'false'
+-settings scrherm: de gui settings laden werkt, saven nog niet
+-settings permissies gewijzigd voor cms
+-settings nu toegevoegd aan tandwiel icoon boven in beeld
+
+
+
+
+
+12 nov 2020
+============
+een paar content-blocks toegeovegd
+
+
+11 nov 2020
+============
+-TKeyValueDB created
+-TSysSettings created
+-FIX: modules: 2 install buttons; 1 was delete
+-bezig met settings implementeren
+ * 11 nov 2020: TModel: getFieldNullable(): BUGFIX gaf true terug als deze false was (een !=== bug)
+ -begin gemaakt aan het settings systeem. het werkt met installeren framework, installeren en deinstalleren modules.
+
+
+
+10 nov 2020
+============
+-TModule_abstract en TModel hebben extra velden: visible en sNameDefault
+-enabled wordt nu daadwerkelijk iets mee gedaan
+-visible zorgt voor het wel of niet weergeven van een module
+-modules linker kant op een nieuwe manier weergegeven waardoor de default naam gebruikt wordt door transm() van de modulenaam
+-extra kolommen in mod_modules zichtbaar in overzicht
+-kolommmen volgorde mod_modules, klopte nog niet
+-BUGFIX: volgorde veranderen geeft fout bij modules
+-bugfix: sorteren modules werkte niet goed
+-cmsmodulelist_modulename translationkey is nu allemaal interne-module-naam
+-oude kolom translation kolom uit moduleoverzicht verwijderd
+-jajajajaja: permissies kunnen nu live geupdate worden!!!! dmv van datbase veld bUpdatePermissions bij users
+-de TUsersAbstract heeft nu fake password fields voor extra veiligheid!!!
+
+
+
+9 nov 2020
+============
+-afgemaakt: in cronjob: TSysCMSPermissions: updatePermissions() --> delete rechten uit db
+
+
+
+6 nov 2020
+-----------
+-nasty bug verholpen waarbij het createn van een record niet mogelijk is om opnieuw op te slaan
+-checksum checking weer ingeschakeld
+-update permissions werkt voor het auto toevoegen van rechten in de business logic
+* 6 nov 2020: TagAbstract: getNodeByID added
+-BUGFIX: saven van gebruikersgroep werkt, maar rechten worden weergegeven van de vorige laad (save en close werkt gewoon)
+
+
+
+5 nov 2020
+========
+- de naam van de quicksearch editbox: edtQuicksearch is nu een constante van crudoverviewcontroller
+-gebruiker aanmaken en inloggen werkt gewoon, kan probleem niet vinden
+-als nieuw record bij gebruiker: wordt current-password niet getoond
+
+
+
+
+
+4 nov 2020
+========
+* 4 nov 2020 : TCMSLoginController->populatePermissionsSessionArray(), checks for existence of users and empty's permission array (otherwise it requests a usergroup that doesn;t exist) 
+module authenticatie via auth() werkt (): afgehandeld in TCMSLoginController->handleAuthentication()
+-getTabsheets() van module hebben een andere structuur gekregen
+-block_tabsheets leest nu nieuwe structuur
+-tabsheets in linker menu verwijderd
+-tabbladen worden niet meer weergegeven als geen rechten hebt
+-TCRUDOverviewController doet auth() check
+-created showAccessDenied() which loads additional template to show "access denied"
+-* 4 nov 2020: TLoginControllerAbstract(): getIsLoggedIn() function added
+-permissions toegevoegd aan weergegeven module linker kant
+ * 4 nov 2020: ;TModel: saveToDB() werkte niet goed met meerdere records (alleen de eerste)
+ * 4 nov 2020: ;TModel: saveToDB() ondersteuning voor het opslaan van een record met uniqueid als primary key
+-de rechten worden opgeslagen in usergroups detailscherm
+-createPermissionsForUsergroup() werden niet gecreate: opgelost
+-rechten in usergroup detailscherm werkt nu naar behoren!!!!!
+
+
+
+
+3 nov 2020
+========
+getAUth() en related function moved to lib_sys_framework.
+arrPermissions added to bootstrap
+* 3 nov 2020: TLoginControllerAbstract(): authenticate() checks first on session, then on cookie. this is much safer
+authenticatie systeem werkt nu: wordt uit database geladen, in sessie array gezet en met auth opgevraagd
+* 3 nov 2020: TUsersAbstract: loadFromDBByUserLoginAllowed() checkt op checksum, dat voorkomt database tempering, dat is een SUPER VEILIG IDEE!!!
+* auth() wordt nu overal met goede parameters aangeroepen
+de basis van het authenticatie system staat en werkt
+
+
+
+2 nov 2020
+========
+-auth constanten gedefinieerd voor system + array teruggeven system
+-createPermissionsCMS werkt nu
+-updatePermissions() werkt nog niet goed, beide loopjes werken niet naar behoren
+
+
+
+
+
+
+1 nov 2020
+========
+-js openInNewTab() function toegevoegd en toegepast op cron-knop in settings
+-TSysCMSPermissions->updatePermissions() worden uitgevoerd in de conjob van de users module
+-mogelijk om uninstalled modules te verijwderen
+-modules deinstalleren verwijdert niet meer de hele module directory
+-het gedrag van installeren en deinstalleren van modules is nu consistent met andere schermen
+- * 1 nov 2020: TModel: findQuicksearch() toegevoegd (dit was voorheen findLike()), findLike is nu dedicated aan 1 veld met wildcards
+- TCMSpermission deletePermissionsForModule() deletePermissionsForUsergroup werkt nu
+-het verwijderen van permissies werkt als je een gebruikersgroep verwijdert.
+-TCMSPermissions: deletePermissionsForModule() and createPermissionsForModule hebben extra check op bestaan van module in modules directory (voor extra veiligheid)
+
+
+
+
+31 okt 2020
+=====
+-typedefs voor auth toegevoegd
+-module field in TCMSPermissions verwijderd
+-HUGE SPEED IMPROVEMENT!!!! at least 100ms!
+     -de definitie van de systemtabellen is verplaatst naar lib_sys_framework: getSystemModels() en getSystemModelsInstantiated()
+     -de definitie hoeft niet voor iedere page request geladen te worden, alleen voor installeren,update en deinstalleren
+* 31 okt 2020: TDBPreparedStatementMySQL: find like  aangepast in generateSQLWhereModel() je meot nu expliciet de wildcards opgeven (behalve bij 'sentences'
+TSysCMSPermissions: createPermissionsForModule() werkt nu
+
+
+
+
+30 okt 2020
+======
+bezig met implementeren authentication
+-added cat and op constanten in module klassen
+-created permission classes
+-nu bezig met TCMSPermissions->createPermissionsForModule() en 3 andere class-functions
+
+
+
+
+29 okt 2020
+======
+-ruwe randjes van uploaden en installeren modules weggewerkt. werkt nu naar behoren.
+-auth() heeft nu maar 3 parameter ipv 4
+-er wordt nu gecheckt of wel mag uploaden/installeren module
+
+
+
+
+
+28 okt 2020
+====
+-* 28 oct 2020 - TMime:  types deleted because they are now defined in typedef lib
+* 28 oct 2020: InputFile added 'multiple'
+* -lib_sys_file: uploadFilesRearrangeArray() added
+* -lib_sys_file: function tempdir() added
+* -lib_sys_file: function copyRecursive($sSource, $sDestination) added
+ * -lib_sys_file: function renameRecursive($sSource, $sDestination) added
+ uploaden en unzippen van een module werkt nu
+ * -lib_sys_file: function getFileFolderArray() performance improvement
+installeren werkt half, paar kleine dingetjes
+nieuwe methodes voor installeren en deinstalleren modules die ook door de installatie van het framework wordt gebruikt
+
+
+
+
+
+
+
+27 okt 2020
+====
+-pagina voor uninstalled modules toegevoegd. (het uploaden/installeren werkt nog niet)
+
+
+26 okt 2020
+====
+26 okt: search bar ingekort, deze viel op de volgende regel in firefox en chrome
+26 okt: verwijderen module via de gui lukt nu
+26 okt: delete_old verwijderd uit CRUDOverview controller
+
+
+
+
+
+
+28 mei 2020
+====
+* 28 mei 2020: lib_string: plainText2HTML() kan nu een punt, komma vraagteken etc hebben na een url
+* 28 mei 2020: lib_string: cleanHTMLMarkup() toegevoegd
+* 28 may 2020: TagAbstract: contentEditable added
+
+html markup improver toegevoegd in html tools
+
+
+13 mei 2020
+====
+* 13 mei 2020: lib_string: getYoutubeID() added
+* 13 mei 2020: lib_string: getYoutubeID() nocookie domain toegevoegd
+
+
+
+
+
+30 apr 2020
+====
+HTML tool heeft ondersteuning voor enter karakter (+aantal kolommen)
+HTML tool heeft ondersteuning voor vertikale table header
+
+
+
+
+27 mrt 2020
+=====
+overzicht voor translations van een blog (maar detail werkt nog niet)
+create knop rechts bovenin
+languages per site werkte niet
+tpl_overview supports also uniqueid
+module categorien zijn nu te editen
+bugfix sorteervolgorde module categorien werkte neit goed
+
+
+
+
+
+26 mrt 2020
+======
+begin gemaakt aan blog: de database tabellen worden nu gecreeerd
+bezig met detailscherm voor blog.
+probleem: ik moet de id van de translation doorgeven ipv id van blog, anders kan ik nooit een translation in een andere taal editen met hezelfde scherm
+ik moet het overzichtsscherm maken op basis van blogtranslation ipv blog
+
+
+25 mrt 2020
+======
+SPEED INCREASE:
+problem: bij het instantieren van een model klasse wordt de tabel gedefinieerd in constructor. 
+Bij dat definieren worden TModel klassen van de foreign key tabel geinstantieerd om slechts 2 dingen te weten: tabelnaam + klasse naam
+De klassenaam kan statisch opgevraagd worden met ::class, als ook de tabelnaam statisch opgevraagd kan worden hoeft de foreign TModel niet ingestantieerd te worden.
+Sinds php is zeer traag met OOP, en al deze klassen bij elk pagina geladen moeten worden, scheelt dit veel tijd. Testen wijzen uit 1,5x tot 2x zo snel!!!
+-getTableNAmeWithoutPrefix() methods voor alle Tmodel klasses verwijderd
+-getTable() is verwijderd uit TModel
+-alle TModel child klassen hebben een STATIC method getTable() gekregen.
+-renaming van dynamic -> static method calls in TModel child klassen van getTable ($objModel->getTable() is nu $objModel::getTable() geworden)
+-reprogram TModel->defineTable() zodat de foreign klasse niet meer geinstantieerd hoeft te worden om klasse en tabelnaam op te vragen
+
+REST OF THE DAY:
+-removed all the references (files, class methods etc) of/to the old klasses: TDBSQLBuilder, TDBSQLBuilderJoin, TDBTableInfo, TDBTableInfoColumn
+-sorting columns voor foreign tables werkt nu.2
+-sorting columns in manual view werkt nu
+-getFieldsSortable() is helemaal verdwenen. alle velden zijn automatisch sorteerbaar
+
+
+
+
+
+24 mrt 2020
+======
+-curssusen overzicht werkt nu
+Ik ben bezig met TCRUDDetailSaveCourses -> populate() gedaan, de rest moet nog
+
+
+3feb 2020
+=====
+-tool wordlettercounter save to file input
+
+30 jan 2020
+=====
+-tool: linecount included in wordlettercouter tool
+
+29 jan 2020
+=====
+-tool added: word letter counter
+-tool: csv 2 table added
+-tool: csv 2 table: added values separator and first line is table header-option
+
+28 jan 2020
+=====
+tools module toegevoegd met text2html converter
+list2ul converter toegevoegd in tools module
+* 28 jan 2020: lib_string: filterXSS option allowall toegoevoegd
+2 methodes in list2ul
+last conversions saved as files
+
+
+27 jan 2020
+=====
+languages: rename activelanguage -> iscmslanguage
+languages: added: showincmsselectboxes
+het is nu mogelijk om default language per site te definieren
+default language (per site) is nu als globale constante op te vragen + wordt gewijzigd bij wijzigen siteid
+url parameter voor unique defined
+url parameter for languageid defined
+possible to configure a upload directory in config
+module kan db tabellen createn
+module kan db tabellen verwijderen
+TModel heeft een default languageid voor translation
+
+bezig: met het maken van de eerste module: courses: geeft nog een fout die met de volgorde van de FROM tabellen ivm inner join maken heeft 
+
+
+todo: config file per host (kun je makkelijk hele cms directory vervangen)
+todo: records kunnen openen op basis van uniqueid ipv id
+todo: sorteren op join tabellen in overzichten
+todo: prefer session over cookie in login for security
+todo: loginform token
+todo: sortorder van externe join tabellen kunnen gebruiken
+todo: auto expire van een sessie
+todo: regenerate sessie bij handleLogin()
+todo: loginhistorie (userid, 'ip', 'fingerprint', date)
+todo: installeren module
+todo: overzicht module categorien
+todo: backups maken (ook in cronjob en bij uninstall)
+
+
+24 jan 2020
+=====
+uninstallFramework() uninstalled dependencies by default. dit was niet handig. dit is uitgeschakeld
+installFramework installed dependencies by default. dit was niet handig. dit is uitgeschakeld
+in syslanguages the language was unique instead of locale, this is fixed
+languages per website werkt nu
+aanvinken per taal de website verwijderd
+logfiles older than a year deleted in cronjob
+for setting cookies DAY_IN_SECS is used systemwide
+normale users standaard ook toegevoegd
+een icoon en tekst gecentreerd als er geen records zijn
+
+
+
+
+
+
+23 jan 2020
+======
+* 23 jan 2020:: lib_inet: getFingerprintClient() ==> getFingerprintBrowser()
+bugfix: de siteid werd niet geset in cookie. werkt nu , ook het wisselen van sites
+sites getest als sessie verloopt, werkt
+we hebben nu 2 language klassen, 1 voor het cms en 1 generieke met alle talen. de cms variant kun je aangegeven isActive() wat je bij generieke niet kunt. 
+* 23 jan 2020: TDBPreparedStatementMySQL: generateSelect() ondersteuning for join-inner-table (not always is current table of model assumed)
+* 23 jan 2020: TModel: join functions have support for setting an internal table (not always current is assumed)
+* 23 jan 2020: TModel: loadFromDB() has support for unlimited recursion of foreign key tables in query (previously only one layer)
+language models weer terug zoals het was. dit moet je oplossen met een aparte table met active talen
+switchen van talen werkt voor de user
+php modules worden gecheckt bij installatie
+abstract categories weer verwijderd. weinig meerwaarde en we overhead
+usergroups geimplementeerd
+checkout source wordt nu user geset
+
+
+
+
+22 jan 2020
+=====
+user passwords change gaf fout, nu verholpen
+alle sessies van een gebruiker worden nu verwijderd bij een password change, behalve de huidige
+default login en password is nu root en root
+gebruiker werd niet weergegeven bij cms users: opgelost
+checksum bij loginsessions
+bugfix: abstractcontroller usersobject werd als id geset ipv alleen id
+cronjob explanation by settings
+cronjob execute nu button
+cruddetailssave location.href was " maar had ' moeten zijn
+you need to enter current password if you want to change the password
+logintoken1 is retired, logintoken2 is logintoken geworden in usersessies
+tabsheets is nu een generiek object dat je ook voor andere pagina's kan gebruiken behalve modules
+websites module nu toegevoegd aan systeem
+tabsheets werden altijd getoond (ook in moduledetailsave). opgelost
+als arrTabsheets niet gedefinieerd, gaf fout
+GLOBAL_WEBSITEID_SELECTED, GLOBAL_WEBSITEID_CURRENT toegevoegd
+ARRAYKEY from typedef lib verplaatst naar bootstrap
+* 22 jan 2020: TModel: setRecordPointerToValue() bug fixed deu to swithcing internal data structure
+now there are 3 types of messages: success, notification, error
+website switching kan nu
+backwards compatible websites en TModel (iID -> i_id en iOrder -> i_volgorde)
+overbodige cms2 modules verwijderd. websites moet blijven bestaan!!!
+logout uit cms2 verwijderd
+* 22 jan 2020:: lib_inet: getFingerprintClient() HTTP_X_REAL_IP not always present, so removed
+
+
+
+
+21 jan 2020
+======
+laden van modules in bootstrap_cms ipv in templates. nu maar 1 sql query nodig voor home
+overviews van modules werken weer, pfiew
+modules hebben wat betere namen voor de controllers. de eerste was altijd index.php, dit wordt nu geredirect
+elke module heeft een handleCronjob.
+module: cmsusers heeft een cronjob om oude sessies en loginattempts (nieuw!!) te verwijderen
+* 21 jan 2020: TModel: deleteFromDB() heeft parameter $bCheckAffectedRows gekregen
+* 21 jan 2020: TDBPreparedStatementMySQL: deleteFromDBModel() heeft parameter $bCheckAffectedRows gekregen
+er is nu een settingscontroller en template, waarnaar gelinkt wordt
+in settings kun je cronjob aanroepen
+loggedout skin was template en skin ineen, dit is nu gescheiden
+cronjob heeft logged out skin.
+alleen geinstalleerde modules (die in de db staan) worden nu als modules gezien (niet meer als de directory bestaat), alleen cronjobs van geinstalleerde modules worden uitgevoerd
+
+
+20 jan 2020
+======
+Een snellere versie van TDBPreparedStatementMySQL geprogrammeerd: eerst de array samenstellen en daarna in 1 keer in TModel inserten (versie 2)
+nieuwe data structuur in TDBPreparedStatementMySQL geprogrammeerd voor TModel.
+nieuwe data structuur geimplementeerd in TModel
+
+sta nu op het punt: om tpl_overview te vervangen zodat je velden van andere database tabellen in kan laten zien
+
+
+18 jan 2020
+======
+* er is nu een TCategoryAbstract die je kunt overerven om snel een categorieklasse te maken
+* tested uninstall with new system classes and it works!
+* de usersession klasses gemaakt, maar nog niet geimplementeerd in de controllerabstract. dit ga ik nu doen
+* usersessions functies (new usersessions object etc) toegevoegd in controllerabstract, maar wordt intern nog niet gebruikt in controllerabstract
+* 18 jan 2020:: lib_inet: getFingerprintClient() added
+* 18 jan 2020:: basisversie met sessie tabel werkt
+* sessie wordt verwijderd bij het uitloggen
+* TDBPreparedStatement en TDBPreparedStatementMySQL geupdate met deleteModel()!!!!
+* TDBPreparedStatementMySQL updateModel() werkt nu met getWHere ipv de gedetecteerde primary keys
+* TModel saveToDB() ondersteuning voor uniqueid en id met automatisch toevoegen find()
+* 18 jan 2020: TModel: saveToDB() checks for duplicate unique-ids on save
+
+
+todo: fingerprint authenticatie toevoegen
+todo: auto expire van een sessie
+todo: login attempts ouder dan een jaar verwijderen
+todo: regenerate sessie bij handleLogin()
+todo: loginhistorie (userid, 'ip', 'fingerprint', date)
+todo: oude sessies verwijderen auto
+
+17 ja 2020
+======
+* 17 jan 2020: TLoginControllerAbstract() getUseKeepLoggedIn() toegevoegd en bijgehorende functionaliteit toegevoegd
+
+16 jan2020
+=====
+* nieuwe inloggen werkt nu ook voor cms2/4 modules
+* 16 jan 2020: TUsersAbstract: extra filter on username, password and tokens parameter in loadFromDBBy.. functions
+* 16 jan 2020: TLoginControllerAbstract() session id is refreshed on login and logout to prevent cookie stealing
+* messages worden weergegeven op inlog formulier
+* 16 jan 2020: TModel: uniqueid support toegevoegd
+* 16 jan 2020: TModel: findID() wordt niet toegevoegd wanneer parameter niet nuermic is
+ * 16 jan 2020: TModel: findUniqueID() toegevoegd
+ extensive rename van token 2->1 3->2 1->ID
+created TUserLoginAttemptsAbstract en TSysCMSUserLoginAttempts
+logincontroller beheert nu users en loginattempts objecten
+* 16jan2020: lib_inet: getIPAddressBrowser)_ added
+* 16 jan 2020: TDateTime: subtractDays() toegevoegd
+* 16 jan 2020: TLoginControllerAbstract() failed login attempts worden verwijderd bij succesvol login
+
+
+15 jan 2020
+=====
+* TController als parent weg gehaald, weinig extra functionaliteit. maar het vreet wel resources
+* alle controllers verplaatst naar aparte controller directory
+login werkt nu op basis van sessie
+login met geencrypte token3 werkt nu 
+
+14jan 2020
+=====
+* 14 jan 2020: FormGenerator: CSS_CLASS_FORMDESCRIPTIONPOST toegevoegd for checkboxes
+* 14 jan 2020: modules module: translation cached on top in template overzicht
+* 14 jan 2020: TModel: getFieldsSelected() toegevoegd. het is mogelijk om velden uit te sluiten. in praktijk is het echter sneller om handmatig de velden te definieren
+language is toegevoegd bij gebruikers
+
+13 jan 2020
+======
+* veel gedaan DateMin en DateMax validators
+
+nu bezig met aparte klasse InputDate maken waar een extra scriptje aan te koppelen is
+
+11 jan 2020
+=====
+* 11 jan 2020: lib_string: generatePassword() updated to support special characters and more improved security
+* 11 jan 2020: lib_string: convertPlaintText2HTML() removed, because plaintText2HTML() exists
+* 11 jan 2020: lib_string: generatePassword() has a second parameter to specify minimum and maximum length, this improves security because before it had always a fixed length
+* 11 jan 2020: lib_framework: sendMEssage en sendMessageError toegevoegd
+* 11 jan 2020: TDateTime: setNow() toegevoegd
+* 11jan 2020- Emailaddress validator - can ignore an empty field
+* 11jan 2020- Emailaddress toegeoveogd aan user form
+
+tijd : 9:12 werkt niet doordat het een 0 nodig heeft ervoor
+datum en tijd op 1 regel
+tijd of datum leeg gaat niet goed
+
+nu verder gaan met gebruikers en login,
+auto loginexpire nog implementeren
+login registreren
+auto passwordexpire nog implementeren
+
+
+
+10 jan 2020
+====
+* 10 jan 2020: TCRUDDetailSaveController: error message when database save gone wrong
+* 10 jan 2020: TDBPreparedStatementMySQL:  generateSQLWhere() en andere methodes aangepast voor support zero timestamp
+* 10 jan 2020: TDBPreparedStatementMySQL:  generateSQLWhere() en andere methodes aangepast voor support zero timestamp
+* 10 jan 2020: TDateTime: isZero() added
+* 10 jan 2020: dikke bug verholpen waarbij de default timestamp 0 door timezones beneden 0 viel en records niet opgeslagen werden. opgelost door support voor timestamp 0 in te bouwen die converteert naar 0000-00-00 00:00:00 voor mysql
+* 10jan2020: TSysModulesCategories: default system category added
+* 10 jan 2020: TModel: setTDateTime(), setTInteger etc toegevoegd
+* 10 jan 2020: TModel: internal setRecordChanged() etc  aangepast naar setTDateTime() functie
+* 10 jan 2020: TModel: checkinNowDB() uses now 0 timestamp
+* 10 jan 2020: TModel: init() uses now 0 timestamp for checkoutexpires default
+* 10 jan 2020: TDateTime: grondige Biereco verherbouwing zonder $objApplication uit CMS3
+* 10 jan 2020: lib_date is leeg geruimd
+
+ik was bezig met een gebruikersmodule te maken. 
+het detailscherm moet nog.
+Maar kwam de datetime bugs tegen toen ik het overzicht bekeek
+
+
+9 jan 2020
+====-
+* 9 jan 2020: TagAbstract: resetNodespointer() added
+* 9 jan 2020: Select(): setSelectedOption() added
+* 9 jan 2020: FormGenerator: setSubmittedValuesAsValues(): uitzondering voor select boxen toegevoegd
+* 9 jan 2020: detailscherm modules werkt nu
+* 9 jan 2020: form input error nu css gestyled en geeft foutmelding bovenin scherm
+* 9 jan 2020: FormGenerator: generate(): restyle: fouten worden niet meer bovenaan form weergegeven, maar bij de velden zelf, in plaats daarvan een generieke foutmelding bovenin form, deze hebben we voor het cms weggelaten ivm de standaard foutmelding van het cms
+* 9 jan 2020: de join ging niet goed in modules module: opgelost
+* 9 jan 2020 - TCRUDOverviewController: executeDB() heeft extra parameter voor join
+* 9 jan 2020: TModel: loadFromDB(): de objPagintorClone->loadFromDB(false) --> false toegevoegd omdat je anders 2 inner join statements in je sql query hebt voor je paginator
+* 9 jan 2020: the bulkactions are displayed (and executed) according to delete (manually), lock (auto by model), unlock (auto by model) possibilities. so it's now easy to define no-delete-bulk-action
+* 9 jan 2020: beetje css styling, dropdown and checkboxen zijn nu groter, select box op aparte regel is nu verholpen
+* 9 jan 2020: TDBConnectionMySQL: forgot to include the port on connecting
+* 9 jan 2020: config geherstructureerd: alle cms2 connectie zooi naar beneden, if statements voor ontwikkelomgeving
+* 9 jan 2020: config : nasischijf is dev-env en bedrijfsuitje.events live
+
+
+over nadenken: de categorien van modules horen eigenlijk meertalig te zijn
+
+
+@todo: TModel->deleteFromDB checken op fysieke delete lijkt niet te gebeurek
+
+BEZIG: modules module maken, waarin je modules kan weergeven, checken of ze bestaan, installeren etc
+
+BEZIG: nieuwe versie modules maken
+
+
+
+OPTIMIZE:
+@TODO: alleen met database connecten als er nodig is
+@TODO: rewrite CSV met array ipv TObjectlist
+@TODO: messages systeem in database per gebruiker
+
+
+8 jan 2020
+=====
+* checkout sources (overview and detail screen) worden nu beter opgegeven in db
+* verschil in gedrag met knoppen "save" en "save & close"
+* save  and saveclose buttons op 1 regel
+* 8 jan 2020: FormGenerator: setSubmittedValuesAsValues() : exception for buttons and the form method (_GET or _POST) is used to retrieve values (only post was supported before, because it was the default value)
+* geen check meer op ids bij toevoegen in form generator
+* cancel button themakleur (net zoals tabsheets)
+* tabsheets in aparte template block zodat deze niet zichtbaar is alle schermen, alleen wanneer deze nodig zijn kun je de block includen
+* detailsave controller gemaakt, alle business logic overgeheveld van languages->detailsave.php naar nieuwe klassen
+
+
+
+
+7 jan 2020
+====
+* alles van filters verwijderd (array oplossing werkte niet, kostte te veel tijd)
+* controller voor overview verder ontwikkeld voor bulk acties
+* messagebar werkt nu
+* verholpen: delete van locked record geeft fout  bovenin beeld, de foutmelding word niet weergegeven, rode balk wel--> is geen bug als je het met de klassen maakt en niet handmatig in db toevoegd
+* klaar met definieren controller
+* fout in datecheckout bij custom defined module, deze wordt niet uit database geladen en geeft daarom null terug --> verholpen had met selectie velden te maken in controller
+* overnemen in modules module checkout en lock is nu gebeurd
+
+
+
+6 jan 2020
+====
+* 6 jan 2020: TagAbstract: isArray added
+* 6 jan 2020: lib_string: filterXSS() supports arrays
+* begin gemaakt met filters
+* jquery and jqueryui toegevoegd
+* filters verhuisd naar crud controller, laden pagina met filters (filters worden niet in filter sectie weergegeven: heeft met array te maken die eigenlijk 1 object is: alle laatste waarden worden overschreven ),
+     de knoppen staan verkeerd, verwijderen condities moet nog
+* css en javascript wordt in html geinclude in live omgeving
+
+
+
+21 dec 2019
+====
+* mobiele versie tabel heeft alleen getGUIItemName() in tabel en niet de rest van de kolommen
+* de order column was eerst alleen op desktop te zien, nu ook op mobile
+
+
+
+
+13 sept 2019
+====
+checkin/checkout werkt via bulkacties. moet gui nog doen
+ * 13 sept 2019: TModel: added: checkoutSource, locked, lockedSource related functions and database fields
+* 13 sept 2019: TDateTime: calls to depraced now() replaced door time()
+locken en checkout van items werkt nu. auto checkout met edit moet nog
+gui van standaard template werkt nu met lock en checkout
+de source van de lock wordt nu weergegeven in de standaard overview template
+auto checkin and checkout via detail and save screen werkt nu in languages: 
+de cancel werkt nu ook in de detail screen
+lock verhindert nu records van deletion op TModel nieveua
+lock verhindert nu records van save op TModel nieveua
+TModel->deleteFromDB() geupdate
+* 13 sept 2019: updated: TDBPreparedStatementMySQL->deleteFromDB() returns now false if there where no records deleted, like in case of a record lock
+* 13 sept 2019: TDBPreparedStatementMySQL:  getAffectedRows() removed because it was too mysql specific
+
+
+
+
+
+12 sept 2019
+====
+tabsheet selected is now red ipv blue
+default limit load is 1000 ipv 10.000
+limit op module lijst query is nu 100
+order up/down wekrt nu ook in algemene overview template
+sort order wordt nu uit Tmodel gehaald ipv url.dus bij 'order'-kolom staat nu een groen pijltje in languages (algemene template)
+sort order wordt nu uit Tmodel gehaald ipv url.dus bij 'order'-kolom staat nu een groen pijltje in modules module
+sort order authenticate op pijl iccontjes nu ook in modules module
+sort order pijltjes nu ook uitgeschakeld wanneer niet op iOrder is gesorteertd (beide modules: languages and modules module)
+folder and index file existance is displayed with icons too, dat maakt het super overzichtelijk
+* 12 sept 2019: TModel: isFirstRecord() and isLastRecord() toegevoegd
+eerste en laatste pijltje zijn nu in sort ge-disabled
+
+
+
+
+
+24 aug 2019
+====
+-modules module: kolom exists -> checks
+-layout dingetjes in overzichts schermen gewijzigd
+-$sURLThisScript is nu een variabele voor het hele CMS
+-geselecteerd tabsheet wordt nu als selected weergegeven
+-some stylin' in the overiews
+-up down werkt nu min of meer
+* 24 aug 2019: TModel: orderChangeOneUpDownDB() database transactie toegevoegd
+constante recordid checkbox
+constante selBulkAction 
+constanten voor changeOrderUPDown
+constanten voor sorteren colummen: sortorderindex etc
+constante voor variabele: id in het url (om fouten te voorkomen)
+
+
+
+
+23 aug 2019
+====
+-modules list in home en modules module translation checkt op bestaan directory
+-modules list in module module :) is nu eleganter geprogrammeerd. makkelijk om kolommen om te wisselen bijv.
+-modulesicons en checkedicons 32px ipv 16px
+-voorbereidingen voor changeorderup/down. function in TModel NU MAKEN
+
+NU BEZIG: function changeOrderDown1DB/changeOrderUP1DB in TModel is aangemaakt, maar moet nog code krijgen!
+
+NIET VERGETEN: orderupdown authenticatie te checken
+NIET VERGETEN: orderupdown : alleen als gesorteerd op order dan up/down anders disabled
+
+NU BEZIG: modules module maken, waarin je modules kan weergeven, checken of ze bestaan, installeren etc
+weergeven met virtuele kolommen net gedaan (sort order, category etc)
+MOET NOG: order up/down
+
+BEZIG MET: nieuwe versie modules maken
+
+
+OPTIMIZE:
+@TODO: alleen met database connecten als er nodig is
+@TODO: rewrite CSV met array ipv TObjectlist
+@TODO: messages systeem in database per gebruiker
+
+
+22 aug 2019
+====
+de geupdate versie CMS4 dat breekt met de cms2php7 variant heet nu CMS5
+
+
+NU BEZIG: modules module maken, waarin je modules kan weergeven, checken of ze bestaan, installeren etc
+weergeven met virtuele kolommen net gedaan (sort order, category etc)
+MOET NOG: order up/down
+
+BEZIG MET: nieuwe versie modules maken
+
+
+
+
+
+10 mei 2019
+=====
+verder gegaan met modules maken
+tabbladen worden nu weergegeven in module lijst.
+tabbladen worden nu ook weergegeven boven de module
+* 10 mei 2019 getModuleFromURL() bugfix, geen controle op directory
+* TPreparedStatementMysql: 10 mei 2019: bugfix: getSearchableFields  van externe tabllen werd aangeroepen ipv getFieldsSearchable
+
+NU BEZIG: modules module maken, waarin tje modules kan weergeven, checken of ze bestaan, installeren etc
+
+BEZIG MET: nieuwe versie modules maken
+
+
+OPTIMIZE:
+@TODO: alleen met database connecten als er nodig is
+@TODO: rewrite CSV met array ipv TObjectlist
+@TODO: messages systeem in database per gebruiker
+
+
+
+9 mei 2019
+======
+cms4 modules nu ook op home
+cms4 modules ook in cms2 layouts
+
+
+
+8 mei 2019
+======
+css restyling van verschillende elementen
+bulk acties page reload gedaan
+added new record button
+added cancel button
+* 8 mei 2019: uninstallFramework() system models uninstall reversed
+added modules model
+added modulescategories model
+* 8 mei 2019: TMysqlpreparedstatement->generateSQLSelectModel() alias with AS missed a space
+* 8 mei 2019: TModel: rename selectFrom -> select() and selectAliasFrom -> selectAlias
+* weergeven van modules vanuit database met categorien werkt nu (de foutmelding is vanwege de taalbestanden omdat er bogus modules in de datbase staan)
+
+NU GAAN DOEN: weergeven modules in home
+
+7 mei 2019
+=====
+quicksearch aangepast, click op x zoekt opnieuw en icoon naar links verplaatst
+bulk acties werkt bijna:
+@TODO: do a page reload to prevent that the user does a page refresh for example with a quicksearch or filter (and the action is executed twice)
+
+
+BEZIG MET: nieuwe versie modules maken
+
+
+OPTIMIZE:
+@TODO: alleen met database connecten als er nodig is
+@TODO: rewrite CSV met array ipv TObjectlist
+@TODO: messages systeem in database per gebruiker
+
+4 mei 2019
+======
+filters werkt nu (heel basic)
+kolommen sorteren werkt nu
+rename van gloabl_path_libraries en delete www_libraries
+
+
+
+
+
+3mei 2019
+=======
+quicksearch werkt nu
+css aangepast zodat tabel over de volledig breedte is
+searchbox opgemaakts in css
+toggle checkboxen werkt nu
+
+
+2 mei 2019
+========
+*detailsave van een module werkt nu in languages
+form generator: required field bug
+
+
+
+1 mei 2019
+=========
+paginator werkt nu in de index van de eerste module
+* 1 mei 2019: TPaginator: generateHTMLList() heeft een overhaul gekregen zodat het nu elastissch werkt. en meer dan 10 pagina's aan kan
+
+
+
+27 april 2019
+==========
+* 27 april 2019: logThis() removed, use error_log() instead
+* 27 april 2019: logThisDev() renamed to logDev()
+* opzet nieuwe modules gemaakt
+* libraries worden niet meer automatisch ingeladen ivm performance
+*autoloader bijgewerkt klassen van module kunnen via autoloader worden ingeladen
+translations van modules als globale array
+opsplitsing boostrap_cms en bootstrap_cms_auth
+bugfix: languages van de modules werkt nu! 
+* 27 apr 2019: TTranslation: bugfix: init() werkte niet goed (op locale variabelen ipv class variablen)
+ * 27 apr 2019: TTranslation: bugfix: bij iedere translate() werd file geladen
+ * 27 apr 2019: modulenaam wordt uit de languagefile van de module geladen
+ 
+
+
+26 april 2019
+==========
+-templates verplaatst naar aparte directory
+-translations file added
+-locale added
+-namechange: lib_framework -> lib_system
+-translation files, locale en countrysettings werken nu
+-bezig met: overview module
+
+25 april 2019
+===========
+-installFramework, uninstallFramework, updateFramework toegevoegd
+-globale systeem databasetabllen gedefinieerd in config en bootstrap
+-TModel uit CMS3 werkt nu!!!!!!!!!!!!!!!!!!!!!!!!
+-lib_framework meer functions als logThis() uit CMS3 toegevoegd
+-logfiles werken nu
+
+12 april
+============
+-lib_cust verplaatst naar site
+-lib_url aangemaakt in cms --> 3 urls worden nu hier uit gelezen
+-selectedsite bij het inloggen: de siteid uit de config wordt nu gebruikt ipv domeinen uit de database vergelijken
+-cmsmessage and cmserror als parameter meegeven, dan wordt een bericht getoond aan de bovenkant
+
+8 april
+=============
+-mod weblinks: meerdere links toevoegen: omgezet naar php7
+-error message if lib dir not found
+
+
+1 tm 5 april 2019
+=============
+-ombouw van CMS2 naar CMS4 (ivm php 7) en integratie libraries en classes van CMS3
+-betere beveiliging met inloggen
+-betere beveiliging ivm global variables (nu expliciet $_GET en $_POST gebruiken)
+-omzetting php 7

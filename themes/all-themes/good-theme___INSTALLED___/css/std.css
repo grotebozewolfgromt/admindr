@@ -1,0 +1,1503 @@
+/*
+pixel em formule: 
+doel px / context(=verhouding) = resultaat in em
+*/
+
+/* variables  */
+:root {
+
+	--theme-color1: #558ed3; 			/* std blue */
+	--theme-color2: #cccccc; 				/* darkgrey */
+	--theme-color3: white; 				/* white */
+ 	--theme-color4: #8fadd2; 				/* lighter blue */
+ 	--theme-color5: #f17211; 			/* the second theme color ORANGE */
+  	--theme-color-background-site: white; 	/* black */
+        --theme-color-background-grey: #f0f0f0;         /* grey */
+        --theme-color-border-grey: #dfdfdf;         /* lightergrey */
+  	--theme-color-background-content: white; 	/* white */
+  	--theme-color-background-header: #558ed3; 	/* blue */
+  	--theme-color-background-footer: #eeeeee; 	/* lightgrey */
+        --theme-color-background-tiles: #eeeeee; 	/* lightgrey */
+  	--theme-color-font-site: #4d4d4d;			/* grey */
+  	--theme-color-font-footer: #353535;			/* grey */
+  	--theme-color-bar: #494949; 					/* grey dunne grijze streep om onderscheidt te maken tussen items, bijv in footer */
+  
+  	
+  	--padding-height-header: 1.0em;
+}
+
+
+/* font definitions */
+/*@font-face 
+{
+    font-family: Century Gothic;
+    src: url(century-gothic.ttf);
+}*/
+
+
+
+/* GENERIC FOR ALL SCREENSIZES */
+
+/* fonts and font sizes */
+body
+{
+	font-family: Century Gothic, arial, Helvetica, Verdana, sans-serif;
+	background-color: var(--theme-color-background-site);
+	font-size:0.85em; /* logisch */
+	line-height: 150%;
+	letter-spacing: 0.07em;
+ 	-webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+}
+
+p
+{
+	display: block;
+	margin: 0em;   
+        margin-top: 1em;        
+}
+
+
+
+
+/* defining styles */
+
+h1
+{
+	font-weight: strong;
+	padding-bottom:0.3em;
+	padding-top:1em;
+        border-bottom: 1px; /* ja idd pixels, het moet zo dun mogelijk */
+        border-color: var(--theme-color-border-grey);
+        color: var(--theme-color1);
+        border-style:solid;
+	font-size: 1.2em;	
+	margin-top:0em; /* altijd bovenaan pagina en mag maar 1x voorkomen */
+	margin-bottom:1em;
+	line-height: 130%;
+        padding-left: 0.5em;
+        background-color: #f8f8f8;
+}
+
+h2
+{ 
+	font-weight: bold;
+	font-size: 1.0em;
+	color: var(--theme-color1);
+	margin-top:2em;
+	margin-bottom:1em;		
+	letter-spacing: 0.1em;	
+	text-decoration:none;
+}
+
+h3
+{
+        font-weight: bold;
+	color: var(--theme-color1);
+	font-size: 0.95em;
+	margin-top:2em;
+	margin-bottom:0.4em;
+	letter-spacing: 0.1em;		
+}
+
+h4
+{
+        color: var(--theme-color1);
+	font-size: 0.9em;	
+	font-weight: bold;
+	margin-top:0.8em;
+	margin-bottom:0.4em;	
+	letter-spacing: 0.1em;		
+}
+
+b
+{
+    font-weight:bold;
+}
+
+
+/* =============================== */
+
+
+
+.clearer 
+{ 
+	clear: both; 
+} /* gives floated elements a height if an empty div with this class is inserted */
+
+
+.fullwidthtag
+{
+    width: 100%;
+}
+
+/* general behaviour links */
+a, a:link, a:visited, a:active, a:hover
+{
+    color: var(--theme-color1);
+    text-decoration:underline;
+}
+
+
+
+/*lists */
+ul
+{
+    list-style-type: disc;    
+}
+
+li
+{
+    margin-left: 1.5em;
+}
+
+
+
+
+
+/* layout */
+#page 
+{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--theme-color-background-content);
+    color: var(--theme-color-font-site);
+    /*box-shadow: 0 0.2em 2em 0 rgba(0, 0, 0, 0.2), 0 0.2px 2em 0 rgba(0, 0, 0, 0.19);*/ 
+    width: 100%;
+    display: block;
+}
+
+.header 
+{
+	
+	background-color: var(--theme-color-background-header);
+	color: var(--theme-color3);
+        
+	display:block;
+	position:fixed;
+        z-index: 1000; /* over alles heen */
+	width:100%;
+	max-width: var(--max-width-site); /* TE breed verkleint het overzicht en leesbaarheid */
+	top:0; /* bovenaan */
+        height: 5.5em;
+        
+        font-size: 1em;
+        font-weight: bolder;
+        
+        box-shadow: 0 0.2em 0.5em 0 rgba(0, 0, 0, 0.2), 0 0.2px 2em 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.leftcolumn
+{
+	box-sizing: border-box; /* anders tellen de margins en paddings ook mee en dan komen er scrollbalken, en met percentages 70/30 gaat het ook mis */
+        height: 100%;
+}
+
+
+.maincolumn
+{
+	box-sizing: border-box; /* anders tellen de margins en paddings ook mee en dan komen er scrollbalken, en met percentages 70/30 gaat het ook mis */
+}
+
+
+
+.header img /*icoontjes van menu en telefoon */
+{
+	width: auto;
+	height: 2em;
+}
+
+
+
+
+.headerlogouticon
+{
+	float: right;
+	font-size: 1.0em;
+	padding: var(--padding-height-header);
+	padding-left: 2em;	/* de menu items hebben al padding */
+        padding-top:0em;
+        padding-right: 0em;
+}
+
+
+
+
+.headerhomeicon 
+{
+    	float: left;
+}
+
+
+.headersettingsicon
+{
+	float: right;
+}
+
+
+
+.header a
+{	
+	padding: var(--padding-height-header);	/* later on changed to fit more items horizontally */
+	padding-left: 2em;
+	padding-right: 2em;
+ 	display: inline-block;
+}
+
+.header a:hover
+{
+	background-color: var(--theme-color4);
+}
+
+
+.headerselectedwebsite
+{
+        position:fixed;
+        top: 4em;
+        left: 0em;
+        overflow: hidden;
+        height: 1.6em;
+        display: block;
+        background-color: var(--theme-color4);
+        width: 100%;
+        text-align: center; 
+}
+
+/* top message bar */
+.headermessagesuccess
+{
+        position:fixed;
+        background-color: green;
+        height: 1.6em;
+        top: 5.6em;
+        left: 0em;   
+        width: 100%;
+        text-align: center;         
+}
+
+.headermessageerror
+{
+        position:fixed;
+        background-color: red;
+        height: 1.6em;
+        top: 5.6em;    
+        left: 0em;
+        width: 100%; 
+        text-align: center;
+}
+
+.headermessagenotification
+{
+        position:fixed;
+        background-color: orange;
+        height: 1.6em;
+        top: 5.6em;    
+        left: 0em;
+        width: 100%; 
+        text-align: center;
+}
+
+/* content */
+.content
+{
+	width:100%;
+	clear: both;/* clear floating left right */
+	margin-top: 5.5em;
+}
+
+/* === LEFT COLUMN === */
+
+/* left column: modules */
+.leftcolumn_modules ul
+{
+   list-style-type: none;
+   margin-left: 0em;    
+}
+
+
+.leftcolumn_modules li
+{
+    margin-left: 0.0em;
+    list-style-type: none;
+    font-weight: bold;
+}
+
+.leftcolumn_modules li li
+{
+    margin-left: 0.3em;
+    list-style-type: none;
+    font-weight: normal;
+}
+
+.leftcolumn_modules li li img
+{
+    margin-right: 0.3em;
+}
+
+.leftcolumn_modules .selected
+{
+    font-weight: bold;
+}
+
+.leftcolumn_modules li li li
+{
+    margin-left: 2.5em;
+    list-style-type: none;
+    font-weight: normal;
+    font-size: small;
+}
+
+
+
+/* left column: websites */
+.leftcolumn_websites ul
+{
+   list-style-type: none;
+   margin-left: 0em;    
+}
+
+
+.leftcolumn_websites li
+{
+    margin-left: 1em;
+    list-style-type: none;
+    font-weight: normal;
+    font-size: 0.9em;
+    max-width: 17em;
+    overflow: hidden;
+}
+
+
+.leftcolumn_websites .selected
+{
+    font-weight: bold;
+}
+
+
+
+
+/* ==== MODULE TABSHEETS ==== */
+.module_tabsheets
+{
+    width: 100%;
+    display: block;
+    
+    border-style: solid;
+    border-width: 0px;
+    border-color: var(--theme-color-border-grey);
+    border-bottom-width: 1px;
+    
+    margin-bottom: 0em;
+    padding-bottom: 0.4em;    
+    
+    line-height: 1.8em;
+    
+}
+
+.module_tabsheets ul
+{
+    list-style-type: none;
+    margin: 0em;    
+    padding: 0em;
+    overflow-x: none;
+    overflow-y: none;   
+    display: block;
+    max-height: 3em;
+}
+
+.module_tabsheets li
+{
+    margin-left: 0.0em;
+    list-style-type: none;
+    font-weight: bold;
+    font-size: small;
+    display: inline;
+    margin-right: 0.5em;
+}
+
+/* general behaviour links */
+.module_tabsheets li a, .module_tabsheets li a:link, .module_tabsheets li a:visited, .module_tabsheets li a:active
+{
+    color:#666;
+   
+    text-decoration:none;
+    padding: 0.6em;
+
+    
+    border-style: solid;    
+}
+
+.module_tabsheets li a:hover
+{
+    color: var(--theme-color-font-site);
+    border-bottom-color: var(--theme-color5);
+    border-bottom-width: 3px;
+    background-color: #f8f8f8;
+    
+}
+
+.module_tabsheets .selected
+{
+     
+    text-decoration:none;
+    padding: 0.6em;    
+    border-style: solid;    
+    
+    color: var(--theme-color-font-site);
+    border-bottom-color: var(--theme-color5);
+    border-bottom-width: 3px;
+    background-color: #f8f8f8;
+
+}
+
+
+/* ==== FORMS ==== */
+
+.labelnextline
+{
+    display: block;
+    font-weight: bold;    
+    margin-bottom: 0.2em;    
+}
+
+.labelnextlinesub
+{
+    display: block;
+    font-weight: lighter; 
+    font-size: 0.7em;
+    margin-bottom: 0.2em;    
+}
+
+.labelsub
+{
+    display: inline;
+    font-weight: lighter; 
+    font-size: 0.7em;
+    margin-bottom: 0.2em;    
+}
+
+input[type=text]
+{
+    /*width: 100%;*/
+    height: 2em;
+    margin-bottom: 1em;
+    border-radius: 0.3em;     
+    box-sizing: border-box;
+    font-size: 1.1em;   
+    padding: 0.2em;  
+    padding-left: 0.5em;
+    border: 1px solid #b9b9b9;
+}
+
+input[type=password]
+{
+    /*width: 100%;*/
+    height: 2em;
+    margin-bottom: 1em;
+    border-radius: 0.3em;     
+    box-sizing: border-box;
+    font-size: 1.1em;   
+    padding: 0.2em;  
+    padding-left: 0.5em;
+    border: 1px solid #b9b9b9;
+}
+
+input[type=number]
+{
+    /*width: 100%;*/
+    height: 2em;
+    margin-bottom: 1em;
+    border-radius: 0.3em;     
+    box-sizing: border-box;
+    font-size: 1.1em;   
+    padding: 0.2em;  
+    padding-left: 0.5em;
+    border: 1px solid #b9b9b9;
+}
+
+select
+{
+    /*width: 100%;*/
+    height: 2em;
+    margin-bottom: 1em;
+    border-radius: 0.3em;     
+    box-sizing: border-box;
+    font-size: 1.1em;   
+    padding: 0.2em;  
+    padding-left: 0.5em;
+    border: 1px solid #b9b9b9;
+}
+
+input[type=checkbox]
+{
+    /*transform : scale(2);*/
+    margin:0.8em;
+    /* it's not really a great way to enlarge the checkboxes but it works */
+    
+/*    margin-bottom: 1em;
+    border-radius: 0.3em;     
+    box-sizing: border-box;
+    font-size: 1.1em;   
+    padding: 0.2em;  
+    padding-left: 0.5em;
+    border: 1px solid #b9b9b9;*/
+}
+
+.editbox_normal
+{
+    /*width:100em;*/
+    height: 2em;
+    margin-bottom: 1em;
+    border-radius: 0.3em;     
+    box-sizing: border-box;
+    font-size: 1.1em;   
+    padding: 0.2em;  
+    padding-left: 0.5em;
+    border: 1px solid #b9b9b9;
+}
+
+
+
+textarea
+{
+    height: 5em;
+    width: 100%;
+    margin-bottom: 1em;    
+    border-radius: 0.3em; 
+    box-sizing: border-box;
+    font-size: 1.1em;   
+    padding: 0.2em;
+    padding-left: 0.5em;    
+    border: 1px solid #b9b9b9;    
+}
+
+input[type=submit]
+{
+    background-color: var(--theme-color-background-header); 
+    color: var(--theme-color3);
+    border-radius: 0.3em; 
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.7em;
+    margin:0.5em;  
+    min-width: 5em; 
+    text-decoration:none;   
+    display: inline-block;
+    
+    border-width:0px;
+    font-size: 1.1em;   
+    box-sizing: border-box;
+    
+    cursor: pointer;
+}
+
+
+input[type=button]
+{
+    /*background-color: var(--theme-color-background-header); overridden by classes, this tag (input[type=button]) has a higher priority */ 
+    color: var(--theme-color3);
+    border-radius: 0.3em; 
+    padding: 0.5em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.7em;
+    margin:0.5em;  
+    min-width: 5em; 
+    text-decoration:none;   
+    display: inline-block;
+    
+    border-width:0px;
+    font-size: 1.1em;   
+    box-sizing: border-box;
+    
+    cursor: pointer;
+}
+
+.button_cancel
+{
+    background-color: var(--theme-color5) ;
+    color: white;
+}
+
+.button_normal
+{
+    background-color: var(--theme-color-background-header);
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+/* ==== TABLES ==== */
+
+.overview_table
+{
+    margin: 0em;
+    width: 100%;
+}
+
+.overview_table thead
+{
+    font-weight:bold;
+    border-bottom-color: black;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    background-color: #f8f8f8;
+}
+
+
+.overview_table tr
+{
+    border-bottom-color: #e5e5e5;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;   
+    vertical-align:top; 
+}
+
+
+.overview_table tr:hover 
+{   
+    background-color: #f6f6f6;
+}
+
+.overview_table th, .overview_table td
+{
+    text-align: left;
+    padding: 1em;   /* default, is overwritten later */
+    height: 0.5em;
+}
+
+.overview_table tr img
+{
+    /* the height of the images determines the row height */
+    height:16px; /* default, is overwritten later */
+    margin-left: 0.5em; 
+}
+
+
+
+/* ==== PAGINATOR ==== */
+.paginator
+{
+    margin: 0em;  
+    
+    font-size:1.1em; 
+    font-weight: bold;
+    
+    /*display: block;*/
+    display: inline-block;
+    background-color: #fbfbfb;
+
+}
+
+
+
+/* links AND no links */
+.paginator li a, .paginator li a:link, .paginator li a:visited, .paginator li a:active, .paginator li a:hover, .paginator .nolink
+{   
+    display: inline-block;
+    padding: 1em;    
+    padding-left:1.2em;
+    padding-right:1.2em;
+    text-decoration:none;
+    
+    border-left-width: 1px;
+    border-left-color: #e5e5e5;
+    border-left-style: solid;       
+}
+
+.paginator li:last-child a
+{
+    border-right-width: 1px;
+    border-right-color: #e5e5e5;
+    border-right-style: solid;      
+}
+
+.paginator .selected a
+{   
+    background-color:#efefef;
+/*    border-color:#007ead;
+    border-width: 1px;
+    border-style: solid;*/
+}
+
+
+.paginator li a:hover
+{
+    background-color: #e9e9e9;
+}
+
+.paginator li:first-child a:hover 
+{
+    /*border-top-left-radius: 2em;   ronde hoeken    */
+    /*border-bottom-left-radius: 2em;   ronde hoeken    */
+}
+
+.paginator li:last-child a:hover 
+{
+    /*border-top-right-radius: 2em;   ronde hoeken    */
+    /*border-bottom-right-radius: 2em;   ronde hoeken    */
+}
+
+
+
+.paginator li
+{
+    display: inline;
+
+    margin:0px;
+    padding:0px;
+    /*background-color:#007ead;*/
+}
+
+.paginator li:first-child, .paginator li:first-child a /* not division line in first item */
+{
+    border-left-width: 0px; /* disable border on first item */
+}
+
+
+.overview_paginator
+{
+    width: 100%;
+    border-bottom-color: var(--theme-color-border-grey);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+/*    background-color: white;*/
+    margin-bottom: 0em;
+    margin-top: 0em;
+    height:3.7em;
+    padding-top:0.5;
+    padding-bottom:0.5;
+    
+}
+
+
+
+/* ==== TILES ==== */
+
+
+/* kader voor alle uitje  */
+.tilesenclosure
+{
+/*    background-color: var(--theme-color-background-grey);
+    border: 1px;
+    border-color: var(--theme-color-border-grey);
+    border-style:solid;*/
+    
+    display: block;
+    width: 100%;
+
+    float: left;
+    margin-bottom: 1em;
+    box-sizing: border-box;
+    
+    border-radius: 0.1em;
+
+}
+
+/* kader voor 1 uitje  */
+.tilebox 
+{
+/*    background-color: var(--theme-color-background-tiles);
+    border: 1px;
+    border-color: black;    
+    border-style:solid;*/
+    
+    
+    display: inline-block;
+    width: 10em;
+    min-width: 11em;
+    overflow: hidden;
+    float: left;
+/*    position: relative;  hierdoor kan position: absolute voor childs */
+    z-index: 0;
+    text-align: center;
+    line-height: 1.4em;
+    font-size:0.95em; /* default, wordt straks overschreven */
+    box-sizing: border-box;
+    
+    
+}
+
+.tileboxwithsub
+{
+     height: 19em;
+
+}
+
+
+.tilebox a:link, .tilebox a:visited, .tilebox a:active, .tilebox a:hover
+{
+    display: block; /* alle links in footer onder elkaar plaatsen */
+    color: var(--theme-color-font-site);	
+    text-decoration: none;
+
+}
+
+.tileboxinner
+{
+    margin: 0.5em;
+    display: block;
+    box-sizing: border-box;    
+    
+    /* temp */
+/*    background-color: var(--theme-color-background-tiles);
+    border: 1px;
+    border-color: black;    
+    border-style:solid;*/
+
+    box-shadow: 0 0.1em 0.5em 0 rgba(0, 0, 0, 0.2), 0 0.2em 0.6em 0 rgba(0, 0, 0, 0.19);    
+}
+
+
+.tileboxinner:hover  /* groter maken als muis eroverheen */
+{ 
+    /*background-color: var(--theme-color-background-grey);*/
+    margin: 0.2em;
+    margin-bottom: 0.8em; /* verschil in margin-top + margin-bottom compenseren: om te voorkomen dat elementen op de volgende regel schuiven */
+    opacity: 0.8;
+}
+
+.tileimage
+{
+    overflow: hidden;
+    width: 100%; 
+    height: 10em;
+    
+/*        background-color: var(--theme-color-background-tiles);
+    border: 1px;
+    border-color: black;    
+    border-style:solid;*/
+}
+
+.tileimage img
+{
+    width: 100%; 
+    min-height: 100%;
+}
+
+.tiletitle
+{
+    /*position: absolute;  tov box --> die moet position: relative hebben*/
+    height: 2.7em;
+    overflow: hidden;
+    width: 100%;
+    display: block;
+    padding: 0.3em;
+    padding-bottom: 0em;    
+    padding-top: 0.5em;    
+    font-size: 0.75em; /* wordt overschreven voor groter scherm */
+    box-sizing: border-box; /* anders tellen de margins en paddings ook mee en dan komen er scrollbalken, en met percentages 70/30 gaat het ook mis */
+    line-height: 2em;
+    
+    font-weight: bold;
+}
+
+.tilesub
+{
+    /*position: absolute;  tov box --> die moet position: relative hebben*/
+    height: 2.7em;
+    overflow: hidden;
+    width: 100%;
+    display: block;
+    padding: 0.3em;
+    padding-top: 0em;
+    font-size: 0.75em; /* wordt overschreven voor groter scherm */
+    box-sizing: border-box; /* anders tellen de margins en paddings ook mee en dan komen er scrollbalken, en met percentages 70/30 gaat het ook mis */
+    line-height: 2em;
+
+    
+    font-weight: normal;    
+}
+
+
+
+
+
+/* === quicksearch on top of a module === */
+.overview_quicksearch
+{
+    width: 100%;
+    border-bottom-color: var(--theme-color-border-grey);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+/*    background-color: white;*/
+    margin-bottom: 0em;
+    margin-top: 0em;
+    height:3em;
+    padding-top:0.5;
+    padding-bottom:0.5;
+    
+}
+
+
+.overview_quicksearch input[type=image]
+{
+    margin:0.0em;
+    padding:0px;
+    border-style: none;
+    height:2.4em;
+    float: left;
+    margin-right: 0.1em;
+    margin-top:0.6em;
+}
+
+.overview_quicksearch input[type=search]
+{
+    /* input type search is pretty persistent in styling, we have to switch it off manually */
+    -moz-appearance: none;/* older firefox */
+    -webkit-appearance: none; /* safari, chrome, edge and ie mobile */
+    appearance: none; /* rest */
+  
+    margin:0.0em;
+    padding:0.0em;
+    padding-left:-1em;
+    border-style: none;
+    border-color: white;
+    height:2.4em;
+    width:calc(100% - 2.5em);
+    font-size: 1.2em;    
+  
+   
+}
+
+
+
+
+/* ==== FILTERS (overview pages) === */
+.overview_filters
+{
+
+    margin-top: 0em;
+    
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.2em;
+        
+    border-bottom-color: var(--theme-color-border-grey);   
+    border-bottom-width: 1px;
+    border-bottom-style: solid;  
+}
+
+.overview_filters_header
+{
+    width: 100%;
+    display:block;
+    font-weight: bold;
+    color: #558ed3;
+}
+
+/* ==== BULK ACTIONS (overview pages) === */
+.overview_bulkactions
+{
+
+    margin-top: 0em;
+    
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.2em;
+    padding-left: 1.3em;
+    
+    font-weight: bold;
+
+    border-bottom-color: var(--theme-color-border-grey);   
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+        
+}
+
+
+/* === create new record === */
+.overview_createnew
+{
+    margin-top: 0em;
+    
+    display: block;
+    width: 100%;
+    box-sizing: border-box; 
+    padding: 0.2em;
+    
+    border-bottom-color: var(--theme-color-border-grey);   
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+/* === command panel with buttons SAVE and CANCEL === */
+.div_commandpanel
+{
+    background-color: #f6f6f6;
+    
+    border-color: #dfdfdf;
+    border-width: 1px;
+    border-style: solid;    
+    
+    /*margin: 1em;*/
+    padding: 1em;
+}
+
+/* don't show headers of command panels */
+.div_commandpanel .formsection-header
+{
+   height:0px;
+   visibility: hidden;
+   margin-top: 0em;
+}
+
+.formsection-header
+{
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+
+/* form section on the form generator */
+.formsection
+{
+    margin: 1em;
+}
+
+/* every line on a form */
+.formsection-line
+{
+    margin-top: 0.5em;
+}
+
+
+/* message on top of the form saying that the user needs to correct input */
+/* we don't show the message, because the CMS gives message on top of screen */
+.formsection-line-toperrormessage
+{
+    color: red;
+    /*padding: 1em;*/
+    visibility: hidden;
+    height:0px;
+}
+
+/* the title of a formline with an error (so we can color it red) */
+/*.form-description-error
+{
+    color: red;
+}*/
+
+/* a formline with an error (color border red) */
+.formsection-line-error
+{
+    border-color: red;
+    border-width: 3px;
+    border-style: dashed;
+    border-radius: 1em;
+    padding: 1em;
+    background-color: #fbe0e0;
+    margin-bottom: 1em;
+}
+
+/* the list of errors per form line */
+.formsection-line-errorlist
+{
+    color: red;
+    font-weight: bold;  
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.form-description
+{
+    display:block;
+}
+
+
+/* === DRAG & DROP file uploads === */
+
+.file-dropzone
+{
+    max-width: 200px;
+    height: 200px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    color:#909090;
+    border: 4px dashed #6e9aff;
+    border-radius: 20px;
+}
+
+.file-dropzone-dragover
+{
+    /* make the dotted border solid on dragover */
+    border-style:solid;
+}
+
+.file-dropzone-input
+{
+    display: none;
+}
+
+.file-dropzone-thumbnail
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden; /* if data-label text is larger than div */
+    background-color:#909090;
+    background-size: cover; /* take up entire space that is available and not repeating itself */
+    position: relative; /* label possible at bottom */
+}
+
+.file-dropzone-thumbnail::after
+{
+    content: attr(data-label); /* using the data-label="blabla" property of the div tag as text to display */
+    position: absolute; /* so we can use absolute position from the bottom */
+    bottom: 0; /* display at the bottom */
+    left: 0;
+    width: 100%; /* entire width of the thumbnail */
+    padding: 5px 0;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.75); /* black background 75% opague */
+    font-size: 1em;
+    text-align: center;
+}
+
+/* file upload progressbar */
+.fileupload-progressbar
+{
+    border:#558ed3;
+    border-style: solid;
+    border-width: 2px;
+    width: 100%;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+
+}
+
+.fileupload-progressbar-fill
+{
+    height: 100%;
+    width: 0%;
+    background: lightblue;
+    display: flex; /* vertically align text of percentage */
+    align-items: center; /* vertically align text of percentage */
+    transition: width 0.25s; /* animate the progress in a nice way on width change */
+}
+
+.fileupload-progressbar-text
+{
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+
+
+/* ======================================= SMALL SIZE SCREENS =========================== */
+@media all and (max-width: 768px)
+{
+
+	
+	/* menu behaviour */
+
+	.topnavigation
+	{			
+		width: 100%;
+		display: none; /* menu NOT visible */
+		overflow-y: scroll;
+                overflow-style: scrollbar;                
+	}
+	
+		
+        .headersettingsicon
+        {
+		display: inline; /* icons visible */             
+        }
+         
+	.headermenuicon
+	{
+		display: inline; /* icons visible */
+	}
+	
+
+        .headerhomeicon
+        {
+                display: inline; /* icons visible */
+        }        
+    
+        
+        
+	.maincolumn
+	{
+            position: absolute;
+            top: 5em;
+            padding: 0em; /* smaller on small screens */
+
+            width: 100% ;
+                
+	}
+	
+	.leftcolumn
+	{
+		/*background-color: red;*/
+            display:none;
+	}
+	
+	
+	.row-centered
+	{
+		text-align:left; /* overwrites default for big screens */ 
+	}
+	
+	.col-centered
+	{
+		display:block; /* overwrites default for big screens */ 
+	}
+	 
+
+        /* ==== TILES ==== */
+        /* default gespecificeerd eerder in de stylesheet */ 
+        
+        
+        /* ==== TABLES ==== */
+        .overview_table th, .overview_table td
+        {
+            padding: 1em;   /* overwrites default */
+            padding-left:0.5em;
+            padding-right:0.1em;
+        }
+
+        .overview_table tr img
+        {
+            /* the height of the images determines the row height */
+            height:32px; /* overwrites default */
+        }	        
+
+        .column-display-on-mobile
+        {
+            display: inline;
+            /*visibility:collapse;*/
+        }
+        
+        .column-display-on-desktop
+        {
+            /*visibility:visible;*/
+            display: none;
+        }       
+}
+
+/* ======================================= MEDIUM SIZE SCREENS ========================= */
+@media all and (min-width: 768px) AND (max-width: 1024px)
+{
+
+
+	
+	/* menu behaviour */
+
+        .headerhomeicon
+        {
+                display: inline; /* icons visible */
+        }          
+	
+	.headermenuicon
+        {
+            display: inline; /* icon  visible */
+        }
+        
+        .headersettingsicon
+	{
+		
+            display: inline; /* icon visible */
+	}
+	
+        
+	.leftcolumn
+	{
+		padding: 0.6em; /* smaller on small screens */
+                display:none;    
+	}
+        
+	.maincolumn
+	{
+            position: absolute;
+            top: 5em;
+            padding: 0em; /* smaller on small screens */
+
+            width: 100% ;
+              
+	}
+	
+	
+
+
+       
+        
+        /* ==== TILES ==== */
+        .tilebox
+        {
+            /*width: 33.3%;*/
+
+        }       
+        
+        .tiletitle
+        {
+            font-size: 1em; /* overschrijft waarde kleiner scherm */
+        }
+        
+        .tilesub
+        {
+            font-size: 0.9em; /* overschrijft waarde kleiner scherm */
+        }        
+
+        /* ==== TABLES ==== */
+        .overview_table th, .overview_table td
+        {
+            padding: 0.5em;   /* overwrites default */
+ 
+        }
+
+        .overview_table tr img
+        {
+            /* the height of the images determines the row height */
+            height:32px; /* overwrites default */
+        }
+        
+        .column-display-on-mobile
+        {
+            display: none;
+            /*visibility:collapse;*/
+        }
+        
+        .column-display-on-desktop
+        {
+            /*visibility:visible;*/
+            display: table-cell;
+
+        }        
+}
+
+/* ======================================= LARGE SIZE SCREENS ========================== */
+@media all and (min-width: 1024px)
+{
+
+	
+	/* menu behaviour */
+	
+
+
+        .headerhomeicon
+        {
+                display: inline; /* icons visible */
+        }  
+        
+	.headermenuicon
+        {
+            display: none; /* icon not visible */
+        }
+        
+        .headersettingsicon
+	{
+		
+            display: inline; /* icon visible */
+	}
+        
+        
+                
+
+	.leftcolumn
+	{
+            position: absolute;
+            top: 5em;
+            left: 0em;
+            padding: 0em; 
+            width: 15em;
+            display: block;   
+            box-sizing: border-box;
+	}
+
+	.maincolumn
+	{
+            position: absolute;
+            top: 5em;
+            left: 15em;
+            padding: 0em; 
+            box-sizing: border-box;
+
+            width: calc(100% - 15em);
+            display: block;
+            
+            /* on a big screen I have a menu on the left. i need to draw a line. if I do that on the left menu and you scroll down, the line stops */
+            border-left-width: 1px;
+            border-left-style: solid;
+            border-left-color: var(--theme-color-border-grey);
+	}        
+        
+        
+        /* first image on page */
+        .topimage_inner
+        {
+            max-height:40em;
+        }
+
+        .topimage
+        {
+
+        }
+        
+        
+        /* ==== TILES ==== */
+        .tilebox
+        {
+            /*width: 25%;*/
+        }    
+        
+        .tiletitle
+        {
+            font-size: 1em; /* overschrijft waarde kleiner scherm */
+        }
+        
+        .tilesub
+        {
+            font-size: 0.9em; /* overschrijft waarde kleiner scherm */
+        } 
+        
+        /* ==== TABLES ==== */
+        .overview_table th, .overview_table td
+        {
+            padding: 0.3em;   /* overwrites default */
+            padding-left: 0.5em;   /* overwrites default */
+        }
+
+        .overview_table tr img
+        {
+            /* the height of the images determines the row height */
+            height:16px; /* overwrites default */
+        }     
+
+        .column-display-on-mobile
+        {
+            display: none;
+            /*visibility:collapse;*/
+        }
+        
+        .column-display-on-desktop
+        {
+            /*visibility:visible;*/
+            display: table-cell;
+        }          
+}
+
+
+
+
+
+
+
+
+

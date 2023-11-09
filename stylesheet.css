@@ -1,0 +1,102 @@
+img.imgborder 
+{ 
+	border: 1px solid #dcdcdc; 
+}
+
+INPUT
+{
+    FONT-SIZE: 11px;
+    COLOR: #000000;
+    FONT-FAMILY: verdana, verdana;
+}
+
+TEXTAREA
+{
+    FONT-SIZE: 11px;
+    COLOR: #000000;
+    FONT-FAMILY: verdana, verdana;
+}
+
+BODY
+{
+    FONT-SIZE: 11px;
+    COLOR: #000000;
+    FONT-FAMILY: verdana, verdana;
+}
+TD
+{
+    FONT-SIZE: 11px;
+    COLOR: #000000;
+    FONT-FAMILY: verdana, verdana;
+}
+A:visited
+{
+    FONT-SIZE: 11px;
+    COLOR: #000066;
+    FONT-FAMILY: verdana, verdana;
+    TEXT-DECORATION: underline
+}
+A:active
+{
+    FONT-SIZE: 11px;
+    COLOR: #000066;
+    FONT-FAMILY: verdana, verdana;
+    TEXT-DECORATION: underline0
+}
+A:hover
+{
+    FONT-SIZE: 11px;
+    COLOR: #F6222C;
+    FONT-FAMILY: verdana, verdana;
+    TEXT-DECORATION: underline
+}
+
+.textbox
+{
+    BORDER-RIGHT: #000066 1px solid;
+    BORDER-TOP: #000066 1px solid;
+    FONT-SIZE: 11px;
+    BACKGROUND: #ffffff;
+    BORDER-LEFT: #000066 1px solid;
+    WIDTH: 200px;
+    COLOR: #000066;
+    BORDER-BOTTOM: #000066 1px solid;
+    FONT-FAMILY: Verdana;
+    TEXT-DECORATION: none
+}
+.button
+{
+    BORDER-RIGHT: #000066 1px solid;
+    BORDER-TOP: #000066 1px solid;
+    FONT-SIZE: 11px;
+    BACKGROUND: #eeeeee;
+    BORDER-LEFT: #000066 1px solid;
+    WIDTH: 80px;
+    COLOR: #000066;
+    BORDER-BOTTOM: #000066 1px solid;
+    FONT-FAMILY: Verdana;
+    HEIGHT: 17px;
+    TEXT-DECORATION: none
+}
+
+	.textbox {
+		border-color : #666699 #666699 #666699 #666699;
+		border-width : 1 1 1 1;
+		color : Black; background-color : #99CCFF;
+		height : 19px; font-size : 12px;
+	}
+	.textarea {
+		border-color : #666699 #666699 #666699 #666699;
+		border-width : 1 1 1 1;
+		color : Black;
+		font-family : Courier New, Tahoma, Arial, sans-serif;
+	}
+	.formfield {
+		border-color : #666699 #666699 #666699 #666699;
+		border-width : 1 1 1 1;
+		color : Black; background-color : #99CCFF;
+		height : 19px; font-size : 12px;
+	}
+
+
+	SELECT 	{ font-size : 8pt; }

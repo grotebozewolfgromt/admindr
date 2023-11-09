@@ -1,0 +1,102 @@
+/* 
+    Document   : nonmobile.css
+    Created on : 22-jul-2015,
+    Author     : drenirie
+    Description:
+        niet mobiele stylesheet van het cms
+*/
+
+
+div#header
+{
+    height: 40px;
+    font-size: 30px;
+}
+
+div#loginfieldbox
+{
+    
+    width: 400px;
+    min-height: 200px;
+    margin-top: 30px;
+   
+}
+
+img#loginuserimage
+{
+    padding-top: 100px;
+    padding-bottom: 20px;	
+}
+
+.errormessageform
+{   
+    font-size: 15px;
+    margin-left:5px;
+    margin-bottom:20px;    
+}
+
+.form_input_errorlist
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+	font-size: 15px;    
+}
+
+
+/* INPUT TYPES */
+
+.input_type_text
+{
+    height: 25px;
+    font-size: 15px;    
+}
+
+.input_type_button 
+{
+    font-size: 14px;
+}
+
+.input_type_buttonblue
+{
+    font-size: 14px;
+}
+
+.input_type_buttonred
+{
+    font-size: 14px;
+}
+
+
+/* GENERAL STYLE DEFINITIONS */
+
+h1
+{
+    font-size: 25px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+h2
+{
+    font-size: 20px;
+}
+
+h3
+{
+    font-size: x-large;
+}
+
+h4
+{
+    font-size: larger;
+}
+
+h5
+{
+    font-size: medium;
+}
+
+h6
+{
+    font-size: small;
+}

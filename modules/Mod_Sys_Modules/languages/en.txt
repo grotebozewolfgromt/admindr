@@ -1,0 +1,28 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+modulename_menu;Modules;Modules
+overview_column_sNameDefault;Default name;Default name
+overview_column_sNameInternal;internal name;internal name
+overview_column_bVisible;visible;visible
+overview_column_i_volgorde;order;order
+overview_column_sName;category;category
+modulename_title;modules;modules
+overview_column_checks;checks;checks
+item_uploadmodule;upload module;upload module
+cmsmodulelist_moduleexists_folder_yes;folder exists;folder exists
+cmsmodulelist_moduleexists_index_yes;index file exists;index file exists
+tabsheets_module_name_installed;installed;installed
+tabsheets_module_explanation_manage all available modules in system;manage all available modules in system;manage all available modules in system
+tabsheets_module_name_not installed;not installed;not installed
+tabsheets_module_explanation_manage modules that are not installed yet;manage modules that are not installed yet;manage modules that are not installed yet
+tabsheets_module_name_module categories;module categories;module categories
+tabsheets_module_explanation_manage categories of modules;manage categories of modules;manage categories of modules
+button_install;install;install
+button_delete;delete;delete
+column-display-on-mobile-header;Module;Module
+message_nomodulestodisplay;[ all available modules are installed ];[ all available modules are installed ]
+form_field_internalname;internal name (read-only);internal name (read-only)
+form_field_category;category;category
+form_field_isvisible;is visible (in menus etc);is visible (in menus etc)
+pagetitle_detailsave_installedmodules_edit;Edit module: [modulename];Edit module: [modulename]
+form_field_categoryname;category name;category name
+pagetitle_detailsave_modulecategories_edit;Edit category: [modulecategory];Edit category: [modulecategory]

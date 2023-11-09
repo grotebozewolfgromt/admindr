@@ -1,0 +1,38 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+overview_column_dtInvoiceDate;Inv Date;Inv Date
+overview_column_sInvoiceNumber;Inv No;Inv No
+overview_column_sFirstNameInitials;Company;Company
+overview_column_sLastName;Name;Name
+overview_column_sEAE;Email;Email
+overview_column_crTotalPriceInclVAT;Total;Total
+modulename_title;Transactions;Transactions
+modulename_menu;Invoices + orders;Invoices + orders
+tabsheets_module_name_Transactions;Transactions;Transactions
+tabsheets_module_explanation_Manage all invoices and orders;Manage all invoices and orders;Manage all invoices and orders
+tabsheets_module_name_Trans. Types;Trans. Types;Trans. Types
+tabsheets_module_explanation_Manage types of transactions;Manage types of transactions;Manage types of transactions
+list_column_sName;Type name;Type name
+list_column_bIsStock;Stock;Stock
+list_column_bIsFinancial;Financial;Financial
+list_column_bIsDefaultInvoice;Invoice;Invoice
+list_column_bIsDefaultOrder;Order;Order
+list_column_sColor;Color;Color
+list_column_iNewNumberIncrement;Increment;Increment
+tab_title_transactiontypes;Transaction types;Transaction types
+tab_title_transactions;Transactions;Transactions
+form_field_name;Name;Name
+form_field_isstock;Stock managing transaction (stock reduced or increased when transaction completed);Stock managing transaction (stock reduced or increased when transaction completed)
+form_field_isfinancial;Is financial transaction;Is financial transaction
+form_field_isdefaultselected;Is selected by default (in user interface elements);Is selected by default (in user interface elements)
+form_field_isdefaultinvoice;Is default invoice (when an invoice (in webshop) is needed, this type is selected);Is default invoice (when an invoice (in webshop) is needed, this type is selected)
+form_field_isdefaultorder;Is default order (when an order (in webshop) is needed, this type is selected);Is default order (when an order (in webshop) is needed, this type is selected)
+form_field_color;Color (hexadecimal value from #00000 to #FFFFFF) (including #-sign);Color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)
+form_field_newincrementednumber;New transaction starts at number;New transaction starts at number
+pagetitle_detailsave_transactionstypes_edit;Edit transaction type: [name];Edit transaction type: [name]
+list_column_sColorBackground;Color;Color
+list_column_iPaymentMadeWithinDays;Pay days;Pay days
+form_field_colorforeground;Foreground color (hexadecimal value from #00000 to #FFFFFF) (including #-sign);Foreground color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)
+form_field_colorbackground;Background color (hexadecimal value from #00000 to #FFFFFF) (including #-sign);Background color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)
+form_field_addressseller;Address seller;Address seller
+form_field_vatno;VAT number seller;VAT number seller
+form_field_paymentwithindays;Must be payed within (amount of days);Must be payed within (amount of days)

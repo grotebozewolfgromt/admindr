@@ -1,0 +1,11 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+form_error_maxlengthexceeded;The maximumlength [length] of this field is exceeded;The maximumlength [length] of this field is exceeded
+loginform_field_username;username;username
+loginform_field_password;password;password
+loginform_field_keepmeloggedin;keep me logged in;keep me logged in
+loginform_button_login;log in;log in
+logincontroller_logoutcompleted;log out completed;log out completed
+previous_results_paginator;Previous;Previous
+Results [x] - [y];Results [x] - [y];Results [x] - [y]
+next_results_paginator;Next;Next
+logincontroller_loginfailed;login failed, user credentials are not valid;login failed, user credentials are not valid

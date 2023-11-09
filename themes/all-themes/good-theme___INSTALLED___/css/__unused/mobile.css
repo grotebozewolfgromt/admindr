@@ -1,0 +1,100 @@
+/* 
+    Document   : mobile.css
+    Created on : 22 july 2015
+    Author     : drenirie
+    Description:
+        mobiele stylesheet van het cms
+*/
+
+
+div#header
+{
+    height: 80px;
+    font-size: 50px;
+}
+
+
+div#loginfieldbox
+{
+    width: 90%;
+    min-height: 400px;
+    margin-top: 0px;    
+}
+
+img#loginuserimage
+{
+	visibility: hidden;
+    padding-top: 0px;
+    padding-bottom: 0px;	
+}
+
+
+.errormessageform
+{   
+    font-size: 40px;
+    margin-left:5px;
+    margin-bottom:20px;    
+}
+
+.form_input_errorlist
+{
+    margin-top: 5px;
+    margin-bottom: 5px;
+	font-size: 40px;    
+}
+
+/* INPUT TYPES */
+.input_type_text
+{
+    height: 60px;
+    font-size: 35px;    
+}
+
+
+.input_type_button 
+{
+    font-size: 30px;
+}
+
+.input_type_buttonblue
+{
+    font-size: 30px;
+}
+
+.input_type_buttonred
+{
+    font-size: 30px;
+}
+
+/* GENERAL STYLE DEFINITIONS */
+h1
+{
+    font-size: 50px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+h2
+{
+    font-size: 40px;
+}
+
+h3
+{
+    font-size: x-large;
+}
+
+h4
+{
+    font-size: larger;
+}
+
+h5
+{
+    font-size: medium;
+}
+
+h6
+{
+    font-size: small;
+}

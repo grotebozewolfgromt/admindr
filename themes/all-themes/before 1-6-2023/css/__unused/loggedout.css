@@ -1,0 +1,71 @@
+/* 
+    Document   : login.css
+    Created on : 23-jul-2012, 17:16:08
+    Author     : drenirie
+    Description:
+        stylesheet voor het loginscherm
+*/
+
+div#loginfieldbox
+{
+    vertical-align: middle;
+
+    display: block;
+
+    background-color: #ffffff;
+    border-radius: 5px; /* ronde hoeken */
+
+    margin-left: auto;
+    margin-right: auto;
+    
+    padding: 25px;    
+    
+    border-color: #e5e5e5;
+    border-style: solid;
+    border-width: 1px;
+        
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2); /*schaduwrand */
+}
+
+div#loginfieldbox table
+{
+	width: 100%;
+}
+
+
+img#loginuserimage
+{
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/*img#imgSpinner
+{
+    height: 16px;
+    width: 16px;
+}*/
+
+
+
+
+
+
+
+
+
+.input_type_text
+{
+    width: 100%;
+}
+
+.input_type_button
+{
+    /*
+    width: 100%;*/
+}
+
+
+
+

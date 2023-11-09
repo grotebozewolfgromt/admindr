@@ -1,0 +1,10 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+overview_column_s_domein;website name;website name
+overview_column_sURL;url;url
+overview_column_sLanguage;default;default
+modulename_title;Websites;Websites
+modulename_menu;Websites;Websites
+form_field_websitename;website name;website name
+form_field_url;url;url
+form_field_defaultlanguage;default language;default language
+pagetitle_detailsave_websites_edit;Edit website: [website];Edit website: [website]

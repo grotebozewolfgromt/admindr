@@ -1,0 +1,68 @@
+/* 
+    Document   : paginator
+    Created on : 14-aug-2014, 17:43:57
+    Author     : drenirie
+    Description:
+        paginator
+*/
+
+/* paginator for results in multipage pages */
+div#paginator
+{
+    font-size: 15px;    
+
+}
+div#paginator-navigation
+{
+
+    text-align: center;
+}
+
+div#paginator .currentpage
+{
+    padding-left: 10px;
+    padding-right: 10px;    
+    font-weight: bold;
+}
+
+div#paginator ul
+{
+    list-style: none;
+    margin-left: 0px;
+    padding-left: 0px;    
+}
+
+div#paginator li
+{
+    min-width: 30px;
+    border-width: 1px;
+    border-color: #DDDDDD;
+    border-style: solid;
+    text-align: center;
+    display: inline;
+    margin: 5px;
+    padding: 0px;
+}
+
+div#paginator a
+{
+    padding-left: 10px;
+    padding-right: 10px;
+    text-decoration: none;
+}
+
+div#paginator a:hover
+{
+    background-color: #0088cc;
+    color: #FFFFFF;
+    text-decoration: underline;
+}
+
+div#paginator-results-per-page
+{
+    font-size: 13px;
+    color: #555555;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+}

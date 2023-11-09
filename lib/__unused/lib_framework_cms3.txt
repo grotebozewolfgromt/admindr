@@ -1,0 +1,722 @@
+<?php
+use drenirie\framework\classes\authentication\TACLAbstract;
+
+/**
+ * In this library exist only framework-itself related functions
+ * this library contains the functions that are typically framework related
+ * such as displaying error messages, logs and tracepoints
+ *
+ *
+ * IMPORTANT:
+ * -This library is language independant, so don't use language specific element
+ * -This library uses the variables of the config file!
+ *
+ * 16 mei 2010: includes system model directory
+ * 16 juli 2011: bij error wordt de description van een object meegenomen
+ * 27 juni 2012: error mogleijkheid extra info meegeven
+ * 27 juni 2012: logDev
+ * 28 juni 2012: de inhoud uit lib_app.php (applications/system/library) verplaatst naar lib_framework.php (/library)
+ * 4 juli 2012: objApplication ipv global objWebsite
+ * 24 sept 2012: lib_framework.php: error() gaf in de live omgeving teveel error informatie. Dit is nu vager
+ * 1 mrt 2014: lib_framework.php: error() logt errors naar logfile wanneer in live omgeving
+ * 24 mrt 2014: lib_framework.php: isAllowed() toegevoegd
+ * 27 mrt 2014: optimalisaties in autoloader waardoor deze sneller werkt
+ * 4 apr 2015: optimalisaties door count buiten loop te zetten
+ * 4 apr 2015: autoloader kijkt nu ook naar de HTMLDOM klassen
+ * 4 apr 2015: lib_framework: functies toegevoegd om performance te meten (starttest() en endtest())
+ * 17 apr 2015: lib_framework: autoLoaderPSR0 toegevoegd
+ * 23 jun 2015: lib_framework: isAllowed() doet nu een get_class op de resource
+ * 13 jul 2015: lib_framework: autoloaderPS0() -> check file alleen in development environment 
+ * 15 april 2015: lib_framework:  autoloaderPS0() -> check file alleen in development environment --> maar nu goed
+ * 
+ *
+ * IMPORTANT:
+ * This library is language independant, so don't use language specific element
+ *
+ * @author Dennis Renirie
+ */
+
+/**
+ * this function will be called because of the spl_autoload_register() procedure in the bootstrap file
+ *
+ * you never call this function literaly, but PHP calls it automatically
+ * when you're trying to instantiate a class wich doesn't exist.
+ * When this happens we include a php file with the same name as the class
+ *
+ * 
+ *
+ * @param string $sClassName
+ */
+/*
+function autoLoader($sClassName)
+{
+	//array with known classes and their paths. for performance reasons
+	//if you add your own class the framework wont have search all directories for it
+	//and doesnt do a resource expensive is_file operation
+	$arrKnownClasses['TObject'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TObject.php';		
+	$arrKnownClasses['TDBConnection'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TDBConnection.php';		
+	$arrKnownClasses['TDBConnectionMySQL'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TDBConnectionMySQL.php';			
+	$arrKnownClasses['TDBPreparedStatement'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TDBPreparedStatement.php';				
+	$arrKnownClasses['TDBPreparedStatementMySQL'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TDBPreparedStatementMySQL.php';					
+	$arrKnownClasses['TDBQuery'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TDBQuery.php';													
+	$arrKnownClasses['TDBResultset'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TDBResultset.php';								
+	$arrKnownClasses['TDBResultsetMySQL'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TDBResultsetMySQL.php';									
+	$arrKnownClasses['TIni'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TIni.php';		
+	$arrKnownClasses['TObjectList'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TObjectList.php';		
+	$arrKnownClasses['TRecord'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TRecord.php';			
+	$arrKnownClasses['TRecordList'] = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'TRecordList.php';				
+	if (array_key_exists($sClassName, $arrKnownClasses))
+	{
+		require $arrKnownClasses[$sClassName];
+		return true;
+	}
+	
+	
+	//if not in the known classes, look further
+	
+    //classes directory
+    $sIncludeFile = GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.$sClassName . '.php';
+    if (is_file($sIncludeFile))
+    {
+        require $sIncludeFile;
+        return true;
+    }
+    
+    
+    //soms staan er meer klassen in 1 bestand, deze moeten we even handmatig 'detecteren'
+     
+    //html generator classes --> meerdere klasses in 1 file, dat snapt de class-auto-loader niet, dus even handmatig includen
+    if (strrpos($sClassName, 'HTMLDOM') !== false)
+    {
+	    	require_once GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'generic.php';
+	    	require_once GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'custom.php';
+	    	require_once GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'table.php';
+	    	require_once GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'form.php';
+	    	require_once GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'FormGenerator.php';
+	    	require_once GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'FormGenerator_validator.php';
+    		require_once GLOBAL_PATH_FRAMEWORK_CLASSES_LOCAL.'list.php';
+    
+    		return true;
+    }
+    
+    
+    
+    
+     * 'Intelligent' de applicatie specifieke informatie inladen
+     * Je hebt alleen maar de klassen, controllers en models van deze applicatie nodig
+     * Je kunt botweg alles inladen van alle applicaties, maar dat maakt het framework onnodig traag (omdat je ze toch niet nodig hebt) 
+    
+
+         
+    global $objApplication;
+    
+    if($objApplication != null)
+    {
+        $objWebsite = $objApplication->getCurrentWebsite();
+        
+        if ($objWebsite != null) //als er een applicatie object is:
+        {
+            
+            
+            //controllers directory
+            $sIncludeFile = drenirie\framework\classes\patterns\TBusinessLogicWebsiteAbstract::getPathLocalPrivateControllers().$sClassName . '.php'; 
+            if (is_file($sIncludeFile))
+            {
+                require $sIncludeFile;
+                return true;
+            }
+
+            //models directory --> zijn er niet meer, alles zit bij modules
+//            $sIncludeFile = TBusinessLogicWebsiteAbstract::getPathLocalPrivateModels().$sClassName . '.php'; 
+//            if (is_file($sIncludeFile))
+//            {
+//                require_once $sIncludeFile;
+//                return true;
+//                
+//            }
+
+            //classes directory
+            $sIncludeFile = drenirie\framework\classes\patterns\TBusinessLogicWebsiteAbstract::getPathLocalPrivateClasses().$sClassName . '.php';                                
+            if (is_file($sIncludeFile))
+            {
+                require $sIncludeFile;    
+                return true;
+            }
+            // echo 'objApp exists';
+
+            
+        }
+
+
+
+        //de modules
+        //de module array uit Application gebruiken, want deze is gecached
+        if ($objApplication != null)
+        {
+            if($objApplication->getModules()!= null)
+            {
+                $arrModuleFolders = $objApplication->getModules()->getModuleFolders();
+                $objModules = $objApplication->getModules();
+                //@var $objModules TModules 
+
+
+                if (count($arrModuleFolders) > 0) //alleen als de array modules bevat (er zijn geen directories in module directory)
+                {
+                		$iCountMods = $objModules->count();
+                    for($iTeller = 0; $iTeller < $iCountMods; $iTeller++)
+                    {
+                        // @var $objModule TModule 
+                        $objModule = $objModules->get($iTeller);
+
+                        //--> models folder
+                        $sModelsFolder = $objModule->getPathLocalModels();
+                        if (is_dir($sModelsFolder))
+                        {
+                            $sIncludeFile = $sModelsFolder.$sClassName . '.php';
+                            if (is_file($sIncludeFile))
+                            {
+                                require $sIncludeFile;
+                                return true;
+                            }
+                        } //if isdir
+                        
+                    } //foreach folder
+                    
+                    //--> controllers in website private directory (we zitten buiten de loop omdat we alleen de huidige website hoeven te hebben, NIET alle websites)                    
+                    $sControllersFolder = drenirie\framework\classes\patterns\TBusinessLogicWebsiteAbstract::getPathLocalPrivateControllers().$objApplication->getCurrentWebsite()->getURLHandler()->getModule();
+                    if (is_dir($sControllersFolder))
+                    {
+	                    	$sIncludeFile = $sControllersFolder.DIRECTORY_SEPARATOR.$sClassName. '.php';
+	                    	if (is_file($sIncludeFile))
+	                    	{
+	                    		require $sIncludeFile;
+	                    		return true;
+	                    	}
+                    } //if isdir
+                    
+                }//count
+            } //if $objApplication->getModules()!=null
+        }//if $objApplication!= null
+
+
+        
+    }//if $objApplication != null
+    else
+    {
+        error('autoloader(): objApplication == null, trying to load class: '.$sClassName);
+        return false;
+    }
+          
+    return false;
+}
+
+*/
+
+/**
+ * the new autoloader based on the PSR-0 standard using namespaces representing directory structure
+ * 
+ * opbouw voor framework: 		vendor\framework\classes\(subdirs\)classname.php
+ * opbouw voor modules: 			vendor\framework\modules\modulename\(subdirs\)classname.php
+ * opbouw voor current website:	vendor\website\(subdirs\)classname.php
+ */
+function autoLoaderPSR0($sClassName)
+{
+	$sPath = '';
+	
+	$arrDirs = explode('\\', $sClassName); //performance test show that explode is faster than substr() by a ratio 1 to 10
+	$iCountDirs = count($arrDirs);
+	if ($iCountDirs == 1)
+	{		
+		error('no namespace specified for '.$sClassName. '. Therefore dont know wich path to look for the class. See naming conventions in autoLoaderPSR0()');
+		return false;
+	}
+		
+	
+	//look for framework classes or module classes?
+	if ($arrDirs[1] == 'framework')
+	{
+		$iStartDir = 2; //start looking in directory no: 2 of 0/1/2/3/4
+		$sPath = GLOBAL_PATH_FRAMEWORK_LOCAL_PRIVATE.DIRECTORY_SEPARATOR;
+	}
+	elseif($arrDirs[1] == 'website')
+	{
+		$iStartDir = 2; //start looking in directory no: 1 of 0/1/2/3/4
+		$sPath = GLOBAL_PATH_WEBSITE_LOCAL_PRIVATE.DIRECTORY_SEPARATOR;
+	}
+	else
+	{
+		error('unspecified library-or-module path "'.$arrDirs[1].'" for '.$sClassName. '. See naming conventions in autoLoaderPSR0()');
+		return false;
+	}
+	
+	//alles weer aan elkaar plakken --> performance test show that a string-concatenation loop is faster than using substring for therestoftheclassname AND using strtr for replacing the '\' TOGETHER!
+	for ($iArrIndex = $iStartDir; $iArrIndex < $iCountDirs; $iArrIndex++)
+	{	
+		$sPath.= $arrDirs[$iArrIndex];
+		if (($iArrIndex < $iCountDirs -1))//overal dir separator behalve de laatste
+			$sPath.= DIRECTORY_SEPARATOR;
+	}
+
+	
+	$sPath.= '.php';
+
+// 	vardump($sClassName);
+// 	vardump($sLibOrMod);
+// 	vardump($sTheRestOfThePath);
+// 	vardump($sPath);
+	
+//     vardump($iPosFirstBlackslash);
+//     vardump($iPosSecondBlackslash);
+
+	
+	if (GLOBAL_DEVELOPMENTENVIRONMENT) //extra check in debugging mode for detecting problems
+		if(!file_exists($sPath))
+			error('autoloader: file not found ('.$sPath.'). Looking for class "'.$sClassName.'". Paths maybe misconfigured in config file. This also maybe a typo but more likely a namespace-alias issue: you probably used a class in a file that you didnt alias by using i.e. "use drenirie\framework\classes\db\someclass"');
+	
+	require $sPath;
+    
+    
+    return true;
+}
+
+
+/**
+  * Het weergegeven van een error
+  *
+  * @param mixed string of Exception(object) met de foutmelding
+  * @param TObject $objSenderObject
+  *
+  */
+ function error($mError, $objSenderObject = null, $sExtraErrorInformation = '')
+ {
+     //log errors
+     if (is_string($mError))
+        logThis('Error occured: '.$mError);
+     
+     
+     if (GLOBAL_DEVELOPMENTENVIRONMENT)
+     {
+         if ($mError instanceof Exception)
+         {
+            echo error('<font color="FF0000">an error occured on line <b>'.$mError->getLine().'</b> in '.basename($mError->getFile()).'</font><br><font color="FF0000"><b>*** MESSAGE: *** ------------------------------</b></font><br> "'.$mError->getMessage().' '.$sExtraErrorInformation.'"<br><font color="FF0000"><b>*** STACK TRACE *** ------------------------------</b></font><br>'.nl2br($mError->getTraceAsString()).'');
+         }
+         else
+         {
+            if (is_string($mError))
+            {
+                $sError = $mError;//= zeker weten een stringstring
+
+//                 if (stristr ($sError, 'SELECT') && stristr ($sError, 'FROM')) //als het een SQL query is dan syntax coloring
+//                 {
+//                     //$sError = str_replace (";", ";<BR>", $sError);
+//                     $sError = str_replace ("SELECT", "<BR><B>SELECT</B>", $sError);
+//                     $sError = str_replace ("FROM", "<BR><B>FROM</B>", $sError);
+//                     $sError = str_replace ("WHERE", "<BR><B>WHERE</B>", $sError);
+//                     $sError = str_replace ("ORDER BY", "<BR><B>ORDER BY</B>", $sError);
+//                     $sError = str_replace ("LIKE", "<BR><B>LIKE</B>", $sError);
+//                     $sError = str_replace ("DELETE", "<BR><B>DELETE</B>", $sError);
+//                     $sError = str_replace ("ALTER", "<BR><B>ALTER</B>", $sError);
+//                     $sError = str_replace ("AND", "<BR><B>AND</B>", $sError);
+//                     $sError = str_replace ("OR", "<BR><B>OR</B>", $sError);
+//                     $sError = str_replace ("LIMIT", "<BR><B>LIMIT</B>", $sError);
+//                     $sError = str_replace ("ASC", "<B>ASC</B>", $sError);
+//                     $sError = str_replace ("DESC", "<B>DESC</B>", $sError);
+//                     $sError = str_replace ("AS", "<B>AS</B>", $sError);
+
+//                 }
+
+                echo '<br>';
+                if ($objSenderObject != null)
+                {
+                    echo '<font color="FF0000"><b>in class '.get_class($objSenderObject).' </b></font>'.$sError.'<br>';
+                }
+                else
+                    echo $sError.'<br>';
+
+            }
+            else
+                echo '<font color="FF0000"><b>'.transf('This is embarrassing: in the errorhandling an error occured: the errormessage is not of type string').'</b></font><br>';
+
+            //TODO: een officiele exception raisen met fatsoenlijke omschrijving
+         }
+     }
+     else//not development environment
+     {
+         if ($mError instanceof Exception)
+         {
+            echo error($mError->getMessage());
+         }
+         else
+         {
+             if ($objSenderObject != null)
+                echo 'Sorry, an error occured in a class<br>';
+             else
+                echo 'Sorry, an error occured<br>';
+             
+             logThis('an error occured on line '.$mError->getLine().' in '.basename($mError->getFile()).' "'.$mError->getMessage().' '.$sExtraErrorInformation.'"');
+         }
+     }
+ }
+
+ /**
+  * weergeven van waarden voor debug doeleinden
+  * 
+  * Waarom deze functie gebruiken  ?
+  * Omdat je in een development omgeving graag waarden naar het scherm geschreven
+  * wil hebben met bijvoorbeeld vardump, maar je vergeet vaak waar je deze
+  * statements in de code geplaatst hebt.
+  * Gebruik daarom dit statement, omdat je dan door alleen deze procedure aan te passen
+  * in 1 keer alle debug waardes niet meer laat weergeven
+  *
+  * @param mixed $mDumpValue value to dump to the screen
+  * @param string $sTracepoint text to identify the vardump by (is printed to screen)
+  */
+ function vardump($mDumpValue, $sTracepoint = '')
+ {
+     if (GLOBAL_DEVELOPMENTENVIRONMENT)//alleen weergeven in development environment
+     {
+//      	for ($iLineCounter = 0; $iLineCounter < 100; ++$iLineCounter)     		
+//      		echo '<br>';
+		if ($sTracepoint != '')
+			tracepoint($sTracepoint);
+
+        echo '<div><font color="0000FF"><pre>called vardump()'."\n";
+        var_dump($mDumpValue);
+        echo '</pre></font></div>';
+        
+        //tracepoint($sTracepoint);
+     }
+ }
+ 
+ /**
+  * call vardump() and call die()
+  * @param string $sDumpValue
+  */
+ function vardumpdie($sDumpValue, $sTracepoint = '')
+ {
+     vardump($sDumpValue, $sTracepoint);
+     die();
+ }
+
+ /**
+  * dump a variable to the screen. only display, not trace the whole variable like vardump
+  *
+  * @param string $sDumpValue
+  */
+ function dump($sDumpValue)
+ {
+     if (GLOBAL_DEVELOPMENTENVIRONMENT) //alleen weergeven in development environment
+        echo '<font color="0000FF"><pre>"'.$sDumpValue.'"</pre></font>';
+ }
+
+ /**
+  * Het loggen van waardes naar een bestand
+  *
+  *
+  *
+  * @param mixed $sLogValue waarde om te loggen
+  * @return bool logging ok ?
+  */
+ function logThis($sLogValue)
+ {
+     $sFileName = GLOBAL_PATH_FRAMEWORK_LOGFILES_LOCAL.DIRECTORY_SEPARATOR.'logfile_'.str_replace('.', '', $_SERVER["HTTP_HOST"]).'_'.date('Y-m-d').'.txt';
+     $sLogValue = date('d-m-Y H:i:s').' : '.$sLogValue;
+     if (!addToFile($sLogValue, $sFileName, PHP_EOL))
+     {
+        if (GLOBAL_DEVELOPMENTENVIRONMENT)
+            error('error occured writing value "'.$sLogValue.'" to logfile '.$sFileName);
+        else
+            error('error occured writing to logfile');
+        return false;
+     }
+     else
+     {
+        if (GLOBAL_DEVELOPMENTENVIRONMENT)
+            chmod($sFileName, 0777);
+        else
+            chmod($sFileName, 0755);
+     	                
+        return true;
+     }
+ }
+
+ /**
+  * exact dezelfde functie als logThis(), maar checkt of het in de development omgeving is
+  * (dit omdat deze logs vaak per ongeluk in de code blijven staan)
+  * 
+  * @param string $sLogValue
+  * @return boolean false als in development omgeving en schrijferror, anders true 
+  */
+ function logDev($sLogValue)
+ {
+     //pas bij het lezen van de config file wordt GLOBAL_DEVELOPMENTENVIRONMENT geset. 
+     //Maar als er gelogd wordt VOOR het lezen van de config file, wordt er aangenomen
+     //dat er gelogd moet worden
+     
+     $iErrorReportingLevel = error_reporting(); //je krijgt iedere keer een foutmelding als je een ongedefinieerde constante gebruikt, daarom error level even uitschakelen
+     error_reporting(0);
+     
+     if (defined(GLOBAL_DEVELOPMENTENVIRONMENT)) 
+     {
+        if (GLOBAL_DEVELOPMENTENVIRONMENT)
+        {
+            error_reporting($iErrorReportingLevel);
+            return logThis($sLogValue);
+        }
+        else
+        {
+            error_reporting($iErrorReportingLevel);
+            return true;
+        }
+     }
+     else
+     {
+         error_reporting($iErrorReportingLevel);
+         return logThis($sLogValue);
+     }
+
+ }
+ 
+ /**
+  * in de code wil je soms kijken of je wel op een bepaalde plek in je code
+  * komt.
+  * Omdat deze items vaak per ongeluk blijven staan na debugging, deze functie.
+  * Je kunt dus veilig tracepoints plaatsen in je code. bij publiceren wijzig
+  * je deze functie (bijvoorbeeld middels een variabele debug in een config bestand)
+  *
+  * @param <type> $sRecognisableText
+  */
+ function tracepoint($sRecognizableTracepointText = 'TRACEPOINT !!!!')
+ {
+     if (GLOBAL_DEVELOPMENTENVIRONMENT) //alleen weergeven in development environment
+        echo '<br><font color="0000FF">tracepoint : '.$sRecognizableTracepointText.'</font><br>';
+ }
+
+/**
+ * custom error handler for this application
+ * for the live version, not the development version
+ * 
+ * @param integer $iErrorNo
+ * @param string $sErrorString
+ * @param file $sErrorFile
+ * @param integer $iErrorLine
+ * @return bool
+ */
+function customErrorHandlerLive($severity, $message, $file, $line)
+{
+	if (!(error_reporting() & $severity)) {
+		// This error code is not included in error_reporting
+		return;
+	}
+	logThis($severity.': '. $message .' in: '. $file.' on line:'. $line.' error id:'.uniqueid());
+	throw new ErrorException('Sorry, an error occured. Please contact the webmaster and refer to errormessage with id '.uniqueid(), 0, '', '', 0);	
+//old code as of 15th july 2015
+//     switch ($iErrorNo) 
+//     {
+//         case E_USER_WARNING:
+//             echo "";
+//             break;
+
+//         case E_USER_NOTICE:
+//             echo "";
+//             break;
+
+//         default:
+//             echo "Sorry, an error occured. Please contact the webmaster and refer to this errormessage.<br />\n";
+//             break;
+//     }
+
+//     logDev("error #$iErrorNo on line $iErrorLine in file $sErrorFile: $sErrorString");
+    
+//     /* Don't execute PHP internal error handler */
+//     return true;
+}
+
+/**
+ * custom error handler for this application
+ * for the live version, not the development version
+ *
+ * @param integer $iErrorNo
+ * @param string $sErrorString
+ * @param file $sErrorFile
+ * @param integer $iErrorLine
+ * @return bool
+ */
+function customErrorHandlerDevelopment($severity, $message, $file, $line)
+{
+	//always throw exceptions in the object way
+	if (!(error_reporting() & $severity)) {
+		// This error code is not included in error_reporting
+		return;
+	}
+	logThis($severity.': '. $message .' in: '. $file.' on line:'. $line.' error id:'.uniqueid());
+	throw new ErrorException($message, 0, $severity, $file, $line);
+//OLD CODE as of 15 juli 2015	
+//     switch ($iErrorNo) {
+//     case E_USER_ERROR:
+//         echo "<b>ERROR</b> [$iErrorNo] $sErrorString<br />\n";
+//         echo "  Fatal error on line $iErrorLine in file $sErrorFile";
+//         echo ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
+//         echo "Aborting...<br />\n";
+//         exit(1);
+//         break;
+
+//     case E_USER_WARNING:
+//         echo "<b>WARNING</b> [$iErrorNo] $sErrorString<br />\n";
+//         break;
+
+//     case E_USER_NOTICE:
+//         echo "<b>NOTICE</b> [$iErrorNo] $sErrorString<br />\n";
+//         break;
+
+//     default:
+//         echo "Unknown error type: [$iErrorNo] $sErrorString<br />\n";
+//         break;
+//     }
+
+//     /* Don't execute PHP internal error handler */
+//     return true;
+}
+
+/**
+ * exception handler voor development environment
+ * 
+ * @param object $objException
+ */
+function customExceptionHandlerDevelopment($objException)
+{
+  echo "Uncaught exception: " , $objException->getMessage(), "\n";
+}
+
+/**
+ * exception handler voor de live omgeving
+ *
+ * @param object $objException
+ */
+function customExceptionHandlerLive($objException)
+{
+  echo "Sorry, Uncaught exception\n";
+}
+
+/**
+ * THE TRecordList way
+ * 
+ * deze functie verkort het raadplegen van rechten.
+ * Het gaat uit van de current user uit de bootstrap.
+ * Deze functie raadpleegt de ACL van de current website
+ * 
+ * @param TACLResource $objResource (can be null if you want to know a permission for all resources)
+ * @param string $sPermission -> gebruik zo veel mogelijk de standaard permissions van TACL::PERMISSION_...
+ */
+function isAllowed($objResource, $sPermission = TACL::PERMISSION_ALL)
+{
+	/* TIJDELIJK UITGESCHAKELD IVM OVERZETTING NAAR NIEUW ACL SYSTEEM MET TMODEL
+	 
+    global $objApplication;
+
+// logDev('isAllowed():'.get_class($objResource).' -> '.$sPermission);   
+    
+    if ($objApplication) //als bootstrap er is
+    {
+    	
+    	$objACL = $objApplication->getACL();
+    		
+        if ($objACL)
+        {
+            if ($objResource != null)
+                return $objACL->isAllowed($objApplication->getCurrentUser()->getUserGroup(), get_class($objResource), $sPermission);
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+    else
+        return false;
+        */
+    return true; 
+}
+
+/**
+ * THE TModel-way
+ * 
+ * deze functie verkort het raadplegen van rechten.
+ * Het gaat uit van de current user uit de bootstrap.
+ * Deze functie raadpleegt de ACL van de current website
+ * 
+ * @param object $objResource (can be null if you want to know a permission for all resources)
+ * @param string $sPermission -> gebruik zo veel mogelijk de standaard permissions van TACL::PERMISSION_...
+ */
+// function isAuthorised($objResource, $sPermission = TACL::PERMISSION_ALL)
+// {
+// 	global $objApplication;	
+	
+// 	if ($objApplication) //als bootstrap er is
+// 	{
+		 
+// 		$arrACL = $objApplication->getACLCached(); //1d array
+// 		$objACL = $objApplication->getACLModel();
+	
+// 		if ($arrACL)
+// 		{
+// 			if (is_object($objResource))
+// 			{
+// 				$sKey = get_class($objResource).'_'.$sPermission;
+// 				if (!array_key_exists($sKey, $arrACL))
+// 				{
+// 					$arrACL[$sKey] = $objACL->getDefaultAllow();//default allowed (or not)
+// 					updaten database --> kan niet omdat dit voor framwork is en in generalisatie van ACL geen usergroup is opgenomen
+// 				}
+// 				return $arrACL[$sKey];
+// 			}
+// 			else
+// 				return false;
+// 		}
+// 		else
+// 			return false;
+// 	}
+// 	else
+// 		return false;	
+// }
+
+
+/**
+ * start a performance test
+ */
+$arrPerformanceTests = array(); //for performance testing reasons
+function starttest($sID = 'framework')
+{
+	global $arrPerformanceTests;
+	
+	$arrPerformanceTests[$sID] = microtime(true); 	
+}
+
+/**
+ * end and print a performance test to the screen
+ * @param string $sID
+ */
+function stoptest($sID = 'framework')
+{
+	global $arrPerformanceTests;
+		
+	$iEndTest = microtime(true);
+	$iTestTime = $iEndTest - $arrPerformanceTests[$sID];
+	if (GLOBAL_DEVELOPMENTENVIRONMENT)
+		echo 'performance test. Execution time "', $sID, '": ',$iTestTime."<br> secs\n";
+}
+
+/**
+ * if you want to retrieve a classname without the namespace prefix
+ * get_class returns the class including the namespaced
+ * @param object $objObject
+ */
+function get_class_short($objObject)
+{
+	$objReflect = new \ReflectionClass($objObject); 
+	return $objReflect->getShortName();
+}
+
+
+
+
+?>

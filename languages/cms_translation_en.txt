@@ -1,0 +1,36 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+form_button_save;save;save
+form_button_close;close;close
+form_error_maxlengthexceeded;The maximumlength [length] of this field is exceeded;The maximumlength [length] of this field is exceeded
+form_error_requiredfield;This is a required field;This is a required field
+form_error_notavalidemailaddress;This not a valid email address;This not a valid email address
+skin_loggedin_message_surelogout;Want to log out of [applicationname]?;Want to log out of [applicationname]?
+skin_loggedin_message_sureexecutebulkaction;Want to execute action on selected items?;Want to execute action on selected items?
+message_error_clicktodismiss;click to dismiss;click to dismiss
+skin_loggedin_websitesname;websites;websites
+file_dropzone_numberoffilesdragged;files;files
+form_error_charactersnotallowed;One or more characters are not allowed;One or more characters are not allowed
+index_htmltitle;[applicationname] login;[applicationname] login
+index_htmlmetadescription;Protected sitemanager environment;Protected sitemanager environment
+loginform_lostpassword_link;I forgot my password;I forgot my password
+loginform_createaccount_link;Create a new account;Create a new account
+loginform_cookiesettings_link;Cookie settings;Cookie settings
+login_serviceonlyavailable_countries;This service is available in:;This service is available in:
+overview_bulkactions_title;[BULK ACTIONS];[BULK ACTIONS]
+overview_bulkactions_delete;delete;delete
+overview_bulkactions_checkout;check out for editing (lock record);check out for editing (lock record)
+overview_bulkactions_checkin;check in (done editing & unlock record);check in (done editing & unlock record)
+overview_bulkactions_lock;lock;lock
+overview_bulkactions_unlock;unlock;unlock
+boolean_yes;yes;yes
+boolean_no;no;no
+recordlist_move_up;move record up;move record up
+recordlist_move_down;move record down;move record down
+recordlist_edit;edit record;edit record
+recordlist_translate;translate record to other language;translate record to other language
+overview_edit_quicksearch_default;search;search
+column-display-on-mobile-header;Record;Record
+item_create;New;New
+recordlist_record_checkedout;Record CHECKED OUT by [source], not available for editing;Record CHECKED OUT by [source], not available for editing
+overview_bulkactions_button_execute;execute;execute
+paginator_showingXtoYofZ;Showing [start] to [finish] of [total] entries;Showing [start] to [finish] of [total] entries

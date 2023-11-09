@@ -1,0 +1,215 @@
+/* 
+    Document   : login.css
+    Created on : 5 april 2019
+    Author     : drenirie
+    Description: stylesheet voor het loginscherm
+*/
+
+body
+{
+    background-color: #eeeeee;
+    
+    
+    font-family: Century Gothic, arial, Helvetica, Verdana, sans-serif;
+    font-size:0.85em; /* logisch */
+    line-height: 150%;
+    letter-spacing: 0.07em;
+    -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */    
+}
+
+#page
+{
+    max-width: 100%; /* TE breed verkleint het overzicht en leesbaarheid */
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+div#loginfieldouterbox
+{
+    width: 100%;
+    max-width: 500px;
+        margin-left: auto;
+    margin-right: auto;
+}
+
+div#messageerror
+{
+    background-color: #ffffff;
+    
+    /* border definieren */
+    border-color: #dddddd;
+    border-style: solid;
+    border-width: 1px;
+
+    /* linker kant dik */
+    border-left-width: 5px;  
+    border-left-color: #F6222C;
+    
+    padding: 1em;
+    margin: 1em;
+    
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2); /*schaduwrand */
+}
+
+div#messagenormal
+{
+    background-color: #ffffff;
+    
+    /* border definieren */
+    border-color: #dddddd;
+    border-style: solid;
+    border-width: 1px;
+
+    /* linker kant dik */
+    border-left-width: 5px;  
+    border-left-color: #0076a3;
+    
+    padding: 1em;
+    margin: 1em;
+    
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2); /*schaduwrand */
+}
+
+div#loginfieldbox
+{
+    vertical-align: middle;
+
+    display: block;
+
+    background-color: #ffffff;
+
+    margin: 1em;
+
+    
+    padding: 25px;    
+    
+    border-color: #dddddd;
+    border-style: solid;
+    border-width: 1px;
+    
+    /* linker kant dik */
+    border-left-width: 5px;  
+    border-left-color: #0076a3;
+        
+        
+    box-shadow: 5px 5px 5px rgba(0,0,0,.2); /*schaduwrand */
+}
+
+div#loginfieldbox 
+{
+   
+}
+
+div#loginlostpassword
+{
+    margin-top:2em;
+}
+
+div#loginlostpassword a
+{
+    color: rgba(102, 102, 102, 0.801);
+}
+
+div#logincreateaccount
+{
+    margin-top:0.5em;
+}
+
+div#logincreateaccount a
+{
+    color: rgba(102, 102, 102, 0.801);
+}
+
+div#logincookiesettings
+{
+    margin-top:0.5em;
+}
+
+div#logincookiesettings a
+{
+    color: rgba(102, 102, 102, 0.801);
+}
+
+
+img#loginuserimage
+{
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+div#serviceavailable
+{
+    margin-top:2em;
+    font-size: smaller;
+}
+
+
+
+.input_type_text
+{
+    width: 100%;
+    height: 2em;
+    display: block;
+    margin-bottom: 1em;
+}
+
+.input_type_button
+{
+    margin-top: 2em;
+    width: 10em;
+    height: 3em;
+    display: block;
+}
+
+
+
+/* form section on the form generator */
+.formsection
+{
+    margin: 1em;
+}
+
+/* every line on a form */
+.formsection-line
+{
+    margin-top: 0.5em;
+}
+
+/* message on top of the form saying that the user needs to correct input */
+/* we don't show the message, because the CMS gives message on top of screen */
+.formsection-line-toperrormessage
+{
+    color: red;
+    /*padding: 1em;*/
+    visibility: hidden;
+    height:0px;
+}
+
+/* the title of a formline with an error (so we can color it red) */
+/*.form-description-error
+{
+    color: red;
+}*/
+
+/* a formline with an error (color border red) */
+.formsection-line-error
+{
+    border-color: red;
+    border-width: 1px;
+    border-style: solid;
+    padding: 1em;
+}
+
+/* the list of errors per form line */
+.formsection-line-errorlist
+{
+    color: red;
+}
+
+.form-description
+{
+    display:block;
+}

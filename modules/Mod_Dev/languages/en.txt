@@ -1,0 +1,12 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+Mod_Dev;dev mod;dev mod
+modulename_menu;dev mod;dev mod
+testscripts_title;test new functions;test new functions
+testscripts_explanation;test new functions and scripts and things and stuff;test new functions and scripts and things and stuff
+tabsheets_module_name_script tests;script tests;script tests
+tabsheets_module_explanation_testing new php scripts;testing new php scripts;testing new php scripts
+tabsheets_module_name_file upload;file upload;file upload
+tabsheets_module_explanation_file upload;file upload;file upload
+tabsheets_module_name_file upload w fetch;file upload w fetch;file upload w fetch
+tabsheets_module_explanation_file upload w fetch;file upload w fetch;file upload w fetch
+tabsheets_module_name_file upload w progressbar;file upload w progressbar;file upload w progressbar

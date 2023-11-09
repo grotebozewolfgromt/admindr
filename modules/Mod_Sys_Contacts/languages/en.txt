@@ -1,0 +1,44 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+overview_column_sCustomIdentifier;Identifier label;Identifier label
+overview_column_sCompanyName;Company;Company
+overview_column_sFirstNameInitials;Initials;Initials
+overview_column_sLastName;Last name;Last name
+overview_column_sBillingAddressMisc;Address 1;Address 1
+overview_column_sBillingAddressStreet;Address 2;Address 2
+overview_column_sBillingCity;City;City
+modulename_title;Contacts;Contacts
+modulename_menu;Contacts;Contacts
+form_section_personal;Personal;Personal
+form_section_billing;Billing;Billing
+form_section_delivery;Delivery;Delivery
+form_section_misc;Miscellaneous;Miscellaneous
+form_field_isclient;is client;is client
+form_field_issupplier;is supplier;is supplier
+form_field_onmailinglist;on mailing list;on mailing list
+form_field_onblacklist;on blacklist;on blacklist
+form_field_customidentifier;Label (to identify this contact just to you, so you can search for it);Label (to identify this contact just to you, so you can search for it)
+form_field_companyname;Company name;Company name
+form_field_chamberofcommerceno;Chamber of commerce registration number (encrypted, not searchable);Chamber of commerce registration number (encrypted, not searchable)
+form_field_firstnameinitials;First name (or initials);First name (or initials)
+form_field_lastname;Last name (encrypted, not searchable);Last name (encrypted, not searchable)
+form_field_lastnameprefix;Last name prefix;Last name prefix
+form_field_emailaddress;Email address (encrypted, not searchable);Email address (encrypted, not searchable)
+form_field_phonenumber1;Phone number (encrypted, not searchable);Phone number (encrypted, not searchable)
+form_field_phonenumber2;Phone number 2 (encrypted, not searchable);Phone number 2 (encrypted, not searchable)
+form_FIELD_BILLINGADDRESSSTREET;Street + house number (encrypted, not searchable);Street + house number (encrypted, not searchable)
+form_FIELD_BILLINGADDRESSMISC;Appt. building/ company dept. etc (encrypted, not searchable);Appt. building/ company dept. etc (encrypted, not searchable)
+form_field_billingpostalcodezip;Postal code/zip (encrypted, not searchable);Postal code/zip (encrypted, not searchable)
+form_field_billingcity;City;City
+form_field_billingstateregion;State/region;State/region
+form_field_billingcountry;Country;Country
+form_field_billingvatno;VAT number (encrypted, not searchable);VAT number (encrypted, not searchable)
+form_field_billingbankaccoutno;Bank account number (encrypted, not searchable);Bank account number (encrypted, not searchable)
+form_field_billingemailaddress;Email address (encrypted, not searchable);Email address (encrypted, not searchable)
+form_FIELD_DELIVERYADDRESSSTREET;Street + house number (encrypted, not searchable);Street + house number (encrypted, not searchable)
+form_FIELD_DELIVERYADDRESSMISC;Appt. building/ company dept. etc (encrypted, not searchable);Appt. building/ company dept. etc (encrypted, not searchable)
+form_field_deliverypostalcodezip;Postal code/zip (encrypted, not searchable);Postal code/zip (encrypted, not searchable)
+form_field_deliverycity;City;City
+form_field_deliverystateregion;State/region;State/region
+form_field_deliverycountry;Country;Country
+form_field_notes;Notes (only seen by you);Notes (only seen by you)
+pagetitle_detailsave_contact_edit;Edit contact: [contact];Edit contact: [contact]

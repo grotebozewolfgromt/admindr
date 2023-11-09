@@ -1,0 +1,3 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+Mod_Dev;dev mod;dev mod
+modulename_menu;dev mod;dev mod

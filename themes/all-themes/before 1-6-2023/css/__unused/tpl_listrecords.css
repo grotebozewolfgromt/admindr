@@ -1,0 +1,95 @@
+/* 
+    Document   : recordlisttable
+    Created on : 14-aug-2014, 18:54:33
+    Author     : drenirie
+    Description:
+       recordlist table definities
+*/
+
+table.listrecords {
+	width: 100%;
+        color:#666;
+	font-size:12px;
+	text-shadow: 1px 1px 0px #fff;
+	background:#eaebec;
+	margin:0px;
+	border:#ccc 1px solid;
+
+	border-radius:3px;
+
+	box-shadow: 0 1px 2px #d1d1d1;
+}
+table.listrecords th {
+	padding:10px;
+	border-top:1px solid #fafafa;
+	border-bottom:1px solid #e0e0e0;
+        text-align: left;
+
+	background: #ededed;
+	background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#ebebeb));
+	background: -moz-linear-gradient(top,  #ededed,  #ebebeb);
+}
+
+table.listrecords th:first-child {
+	text-align: left;
+	padding-left:10px;
+}
+
+table.listrecords tbody {
+     border: 1px;
+}
+
+table.listrecords tr:first-child th:first-child {
+	border-top-left-radius:3px;
+}
+table.listrecords tr:first-child th:last-child {
+	border-top-right-radius:3px;
+}
+
+table.listrecords tr:nth-child(even) {
+	text-align: left;
+	padding-left:10px;
+	background: #f6f6f6;     
+	background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f6f6f6));
+	background: -moz-linear-gradient(top,  #f8f8f8,  #f6f6f6);
+        
+}
+
+table.listrecords td {
+	padding:5px;
+	border-top: 1px solid #ffffff;
+	border-bottom:1px solid #e0e0e0;
+	border-left: 1px solid #e0e0e0;
+
+	background: #fafafa;
+	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
+	background: -moz-linear-gradient(top,  #fbfbfb,  #fafafa);
+}
+
+table.listrecords tr:hover td {
+	background: #f2f2f2;
+	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
+	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
+}
+
+#clickableloadmorerow 
+{
+	text-align:center;
+	font-weight: bold;
+}
+
+#clickableloadmorerow:hover
+{
+	cursor: pointer;
+}
+
+/*
+.recordlistadvsqueryline div
+{
+	display:inline-block; 
+}
+*/
+
+
+
+

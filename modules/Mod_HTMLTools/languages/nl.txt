@@ -1,0 +1,3 @@
+UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+Mod_HTMLTools;html tools;html tools
+modulename_menu;html tools;html tools
