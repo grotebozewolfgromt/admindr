@@ -65,11 +65,12 @@ include_once(GLOBAL_PATH_LOCAL_CMS . DIRECTORY_SEPARATOR . 'bootstrap_cms_auth.p
  */
 class detailsave_transactions extends TCRUDDetailSaveController
 {
-    private $objSelTransactionsType = null; //dr\classes\dom\tag\form\Select
-    private $objSelCurrency = null; //dr\classes\dom\tag\form\Select     
-    private $objEdtPurchaseOrderNo = null; //dr\classes\dom\tag\form\InputText
-    private $objTxtNotesInternal = null; //dr\classes\dom\tag\form\Textarea
-    private $objTxtNotesExternal = null; //dr\classes\dom\tag\form\Textarea
+    public $objSelTransactionsType = null; //dr\classes\dom\tag\form\Select
+    public $objSelCurrency = null; //dr\classes\dom\tag\form\Select     
+    public $objHidBuyer = null; //dr\classes\dom\tag\form\Select     
+    public $objEdtPurchaseOrderNo = null; //dr\classes\dom\tag\form\InputText
+    public $objTxtNotesInternal = null; //dr\classes\dom\tag\form\Textarea
+    public $objTxtNotesExternal = null; //dr\classes\dom\tag\form\Textarea
 
     private $objForm = null; ////dr\classes\dom\tag\form\Form --> NOT a form generator, because it has so many custom elements
 
@@ -83,19 +84,26 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
         //transactions-types
         $this->objSelTransactionsType = new Select();
-        $this->objSelTransactionsType->setNameAndID('edtTransactionsType');
+        $this->objSelTransactionsType->setNameAndID('edtTransactionsTypeID');
         // $this->objSelTransactionsType->setClass('fullwidthtag');
         // $this->getFormGenerator()->add($this->objSelTransactionsType, '', transm($this->getModule(), 'form_field_name', 'Name'));
 
 
         //currency
-        $this->objSelCurrency = new InputCheckbox();
-        $this->objSelCurrency->setNameAndID('edtCurrency');
+        $this->objSelCurrency = new Select();
+        $this->objSelCurrency->setNameAndID('selCurrencyID');
         // $this->getFormGenerator()->add($this->objSelCurrency, '', transm($this->getModule(), 'form_field_isstock', 'Stock managing transaction (stock reduced or increased when transaction completed)'));
 
 
+        //buyer
+        $this->objHidBuyer = new Select();
+        $this->objHidBuyer->setNameAndID('hdBuyerID');
+        // $this->getFormGenerator()->add($this->objSelCurrency, '', transm($this->getModule(), 'form_field_isstock', 'Stock managing transaction (stock reduced or increased when transaction completed)'));
+
+
+
         //purchase order number
-        $this->objEdtPurchaseOrderNo = new InputNumber();
+        $this->objEdtPurchaseOrderNo = new InputText();
         $this->objEdtPurchaseOrderNo->setNameAndID('edtPurchaseOrderNo');
         // $this->objEdtPurchaseOrderNo->setClass('fullwidthtag');   
         $this->objEdtPurchaseOrderNo->setMaxLength(50);
@@ -107,16 +115,17 @@ class detailsave_transactions extends TCRUDDetailSaveController
         //internal notes
         $this->objTxtNotesInternal = new Textarea();
         $this->objTxtNotesInternal->setNameAndID('txtInternalNotes');
-        // $this->objTxtNotesInternal->setClass('fullwidthtag');   
+        $this->objTxtNotesInternal->setClass('fullwidthtag');   
         $this->objTxtNotesInternal->addValidator($objValidator);
         // $this->getFormGenerator()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
+
 
          //external notes
          $this->objTxtNotesExternal = new Textarea();
          $this->objTxtNotesExternal->setNameAndID('txtInternalNotes');
-         // $this->objTxtNotesExternal->setClass('fullwidthtag');   
+         $this->objTxtNotesExternal->setClass('fullwidthtag');   
          $this->objTxtNotesExternal->addValidator($objValidator);
-         // $this->getFormGenerator()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
+        //  $this->getFormGenerator()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
  
     }
 
@@ -138,6 +147,9 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
         //currency
         $this->getModel()->set(TTransactions::FIELD_CURRENCYID, $this->objSelCurrency->getContentsSubmitted()->getValueAsBool());
+
+        //buyer
+        $this->getModel()->set(TTransactions::FIELD_BUYERCONTACTID, $this->objHidBuyer->getContentsSubmitted()->getValueAsBool());
 
         //purchase order number
         $this->getModel()->set(TTransactions::FIELD_PURCHASEORDERNUMBER, $this->objEdtPurchaseOrderNo->getContentsSubmitted()->getValueAsBool());
@@ -167,6 +179,14 @@ class detailsave_transactions extends TCRUDDetailSaveController
         $objCurr->where(TSysCurrencies::FIELD_ISVISIBLE, true);
         $objCurr->loadFromDB();
         $objCurr->generateHTMLSelect($this->getModel()->get(TTransactions::FIELD_CURRENCYID), $this->objSelCurrency);
+
+        //buyer contact id
+        $objContacts = new TSysContacts();
+        $objContacts->sort(TSysContacts::FIELD_CUSTOMIDENTIFIER);
+        $objContacts->where(TSysContacts::FIELD_ISCLIENT, true); 
+        $objContacts->limitNone(); //not very fun, but hope to have a better solution in the future
+        $objContacts->loadFromDB();
+        $objContacts->generateHTMLSelect($this->getModel()->get(TTransactions::FIELD_BUYERCONTACTID), $this->objHidBuyer);
 
         //purchase order number
         $this->objEdtPurchaseOrderNo->setValue($this->getModel()->get(TTransactions::FIELD_PURCHASEORDERNUMBER));

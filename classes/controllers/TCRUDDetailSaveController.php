@@ -61,9 +61,9 @@ abstract class TCRUDDetailSaveController
     
     
     private $objFormGenerator = null;//dr\classes\dom\FormGenerator
-    private $objSubmit = null;//dr\classes\dom\tag\form\InputSubmit
+    public $objSubmit = null;//dr\classes\dom\tag\form\InputSubmit
     // private $objSubmitClose = null;//dr\classes\dom\tag\form\InputSubmit
-    private $objCancel = null;//dr\classes\dom\tag\form\InputButton
+    public $objCancel = null;//dr\classes\dom\tag\form\InputButton
    
     
     private $sDefaultDateFormat = 'm/d/Y'; //default php date format
@@ -138,6 +138,7 @@ abstract class TCRUDDetailSaveController
         $arrVars['objModel'] = $this->getModel();
         $arrVars['objCRUD'] = $this;
         $arrVars['objFormGenerator'] = $this->getFormGenerator();
+        $arrVars['objController'] = $this;
         if ($this->showTabs())
             $arrVars['arrTabsheets'] = $objCurrentModule->getTabsheets(); 
         $arrVars = array_merge($GLOBALS, $arrVars); //ORDER OF PARAMETERS IS IMPORTANT -> we pick $GLOBALS as base and overwrite them with the variables from execute()

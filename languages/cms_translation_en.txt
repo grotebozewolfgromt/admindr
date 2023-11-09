@@ -1,21 +1,4 @@
 UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
-form_button_save;save;save
-form_button_close;close;close
-form_error_maxlengthexceeded;The maximumlength [length] of this field is exceeded;The maximumlength [length] of this field is exceeded
-form_error_requiredfield;This is a required field;This is a required field
-form_error_notavalidemailaddress;This not a valid email address;This not a valid email address
-skin_loggedin_message_surelogout;Want to log out of [applicationname]?;Want to log out of [applicationname]?
-skin_loggedin_message_sureexecutebulkaction;Want to execute action on selected items?;Want to execute action on selected items?
-message_error_clicktodismiss;click to dismiss;click to dismiss
-skin_loggedin_websitesname;websites;websites
-file_dropzone_numberoffilesdragged;files;files
-form_error_charactersnotallowed;One or more characters are not allowed;One or more characters are not allowed
-index_htmltitle;[applicationname] login;[applicationname] login
-index_htmlmetadescription;Protected sitemanager environment;Protected sitemanager environment
-loginform_lostpassword_link;I forgot my password;I forgot my password
-loginform_createaccount_link;Create a new account;Create a new account
-loginform_cookiesettings_link;Cookie settings;Cookie settings
-login_serviceonlyavailable_countries;This service is available in:;This service is available in:
 overview_bulkactions_title;[BULK ACTIONS];[BULK ACTIONS]
 overview_bulkactions_delete;delete;delete
 overview_bulkactions_checkout;check out for editing (lock record);check out for editing (lock record)
@@ -34,15 +17,16 @@ item_create;New;New
 recordlist_record_checkedout;Record CHECKED OUT by [source], not available for editing;Record CHECKED OUT by [source], not available for editing
 overview_bulkactions_button_execute;execute;execute
 paginator_showingXtoYofZ;Showing [start] to [finish] of [total] entries;Showing [start] to [finish] of [total] entries
+skin_loggedin_message_surelogout;Want to log out of [applicationname]?;Want to log out of [applicationname]?
+skin_loggedin_message_sureexecutebulkaction;Want to execute action on selected items?;Want to execute action on selected items?
+skin_loggedin_websitesname;websites;websites
+file_dropzone_numberoffilesdragged;files;files
+form_button_save;save;save
+form_button_close;close;close
+form_error_maxlengthexceeded;The maximumlength [length] of this field is exceeded;The maximumlength [length] of this field is exceeded
+form_error_requiredfield;This is a required field;This is a required field
 form_error_notavaliddate;This not a valid date;This not a valid date
 form_error_notavalidtime;[time] is not a valid time;[time] is not a valid time
-overview_bulkactions_success;bulk actions completed succesfully;bulk actions completed succesfully
+message_saverecord_success;Record save successful;Record save successful
 message_noitemstodisplay;[ no items to display ];[ no items to display ]
 paginator_showingXtoYofZ_noentries;Showing 0 entries;Showing 0 entries
-form_error_onlynumbersallowed;Only numbers are allowed;Only numbers are allowed
-form_error_alphabetic;Only alphabetical characters allowed;Only alphabetical characters allowed
-form_error_onlynumeric;Only numeric allowed;Only numeric allowed
-overview_bulkactions_uninstall;uninstall;uninstall
-overview_bulkactions;Bulk actions;Bulk actions
-message_noaccess_viewrecords;you don't have permission to view these records;you don't have permission to view these records
-message_saverecord_success;Record save successful;Record save successful

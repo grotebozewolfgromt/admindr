@@ -64,6 +64,8 @@ class TSysContacts extends TContactsAbstract
 
 				$this->newRecord();
 				$this->setCustomIdentifier(TSysContacts::VALUE_DEFAULT);
+				$this->setIsClient(true);
+				$this->setIsSupplier(true);
 				
 				//getting country id
 				$objCountries = new TSysCountries();

@@ -134,6 +134,7 @@ versie conflict niet opgelost
 -rename permission category invoices -> permission category transactions
 -rename database field: transactions: invoicenumber -> incrementnumber
 -basis elementen factuur - geeft nog fout
+-weergeven factuur lukt, opslaan gaat nog niet goed (ivm formgenerator isFormSubmitted())
 
 
 4 nov 2023
