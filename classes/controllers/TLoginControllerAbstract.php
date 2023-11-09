@@ -146,6 +146,8 @@ include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_math.php');
   * 11 sept 2021: TLoginControllerAbstract(): detect flood on emailaddress fingerprint password reset
   * 2 okt 2021: TLoginControllerAbstract(): extra preventTimingAttacks() added when formchecks fail
   * 21 jan 2023: TLoginControllerAbstract(): uses recaptchav3 features of FormGenerator, instead of implementing it ourselves
+  * 9 nov 2023: TLoginControllerAbstract(): undeclared successurlchangepassword, declared
+  * 9 nov 2023: TLoginControllerAbstract(): undeclared passwordrepeat field, declared
  * 
  */
 abstract class TLoginControllerAbstract
@@ -194,6 +196,7 @@ abstract class TLoginControllerAbstract
     private $objLanguage = null;//language object of the user
     private $sURLLoginForm = '';
     private $sURLLoginSuccess = '';    
+    private $sURLLoginSuccessUserChangePassword = '';    
     private $sURLPasswordRecoverEnterEmail = '';    
     private $sURLPasswordRecoverEnterPassword = '';    
     private $sMailbotFromEmailAddress = 'noreply@example.com';
@@ -209,7 +212,7 @@ abstract class TLoginControllerAbstract
     protected $objSubmit = null;//dr\classes\dom\tag\form\InputSubmit
     protected $objEdtUsername = null;//dr\classes\dom\tag\form\InputText
     protected $objEdtPassword = null;//dr\classes\dom\tag\form\InputPassword
-    protected $objEdtPasswordConfirm = null;//dr\classes\dom\tag\form\InputPassword
+    protected $objEdtPasswordRepeat = null;//dr\classes\dom\tag\form\InputPassword
     protected $objEdtEmailAddress = null;//dr\classes\dom\tag\form\InputText
     protected $objChkKeepMeLoggedIn = null;//dr\classes\dom\tag\form\InputCheck
     protected $objHdEmailToken = null;//dr\classes\dom\tag\form\InputHidden --> hidden field for password recover

@@ -34,3 +34,5 @@ item_create;New;New
 recordlist_record_checkedout;Record CHECKED OUT by [source], not available for editing;Record CHECKED OUT by [source], not available for editing
 overview_bulkactions_button_execute;execute;execute
 paginator_showingXtoYofZ;Showing [start] to [finish] of [total] entries;Showing [start] to [finish] of [total] entries
+form_error_notavaliddate;This not a valid date;This not a valid date
+form_error_notavalidtime;[time] is not a valid time;[time] is not a valid time

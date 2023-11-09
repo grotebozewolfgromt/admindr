@@ -113,7 +113,7 @@ abstract class TCRUDDetailSaveController
         } 
         else
         {         
-            showAccessDenied(transcms('message_noaccess_vieweditrecord', 'you don\'t have permission to view these records'));
+            showAccessDenied(transcms('message_noaccess_vieweditrecord', 'you don\'t have permission to view this record'));
             die();
         }
     }

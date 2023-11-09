@@ -893,7 +893,7 @@ class FormGenerator
             		if ($arrFormLine[FormGenerator::ARRAYKEY_FORMCONTENT_DESCRIPTIONVISIBLE])
             		{
 	            		$objLabel = new Label();
-                                $objLabel->setClass(FormGenerator::CSS_CLASS_FORMDESCRIPTION);// we may add error class later
+                        $objLabel->setClass(FormGenerator::CSS_CLASS_FORMDESCRIPTION);// we may add error class later
 	            		if ($bErrorsDetectedOnLine)
                         {
 	            			$objDivLine->setClass($objDivLine->getClass().' '.FormGenerator::CSS_CLASS_FORMSECTIONLINEERROR);

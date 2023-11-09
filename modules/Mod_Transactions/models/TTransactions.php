@@ -31,11 +31,12 @@ use dr\classes\types\TDateTime;
  * This helps to speed up calculating large amounts of data like of revenue, vat etc
  * (because we don't have to load all the invoice line)
  * 
- * INVOICE NUMBER:
- * The invoice number is a string.
- * In way you can include extra codes in the invoice number.
+ * INCREMENT NUMBER/INVOICE NUMBER:
+ * This increment number is a string.
+ * This can represent an invoice number.
+ * This way you can include extra codes in the invoice number.
  * For example an invoice number like this:		werGHKEweo2-jpswew3d42aas-2024-150694
- * In this case this invoice number could be:  	[accountno]-[websitecode]-[year]-[invoice-increment]
+ * In this case this number format could be:  	[accountno]-[websitecode]-[year]-[invoice-increment]
  * 
  * created 21 october 2023
  * 21 oct 2023: TInvoices: created
@@ -50,8 +51,8 @@ class TTransactions extends TModel
 	const FIELD_TRANSACTIONSTYPEID		= 'iTransactionsTypeID'; //what kind of transaction is this? Invoice, order, offer??
 	const FIELD_BUYERCONTACTID 			= 'iBuyerContactID'; //buyer: from contacts module
 	const FIELD_CREATEDBYCONTACTID 		= 'iCreatedByContactID'; //user who created the invoice (for weborder, it is the buyer itself): from contacts module
-	const FIELD_INVOICEDATE 			= 'dtInvoiceDate'; //date of the invoice (assigned only when not a draft-invoice). For orders and offers the date is 0. It is possible that an order is created, but the invoice is made 2 days later. The invoice date is needed for tax reasons. 
-	const FIELD_INVOICENUMBER 			= 'sInvoiceNumber'; //invoice number (assigned only when not a draft-invoice)
+	const FIELD_INVOICEDATE 			= 'dtInvoiceDate'; //date of the invoice (assigned only when not a finalized-state-invoice). For orders and offers the date is 0. It is possible that an order is created, but the invoice is made 2 days later. The invoice date is needed for tax reasons. 
+	const FIELD_INVOICENUMBER 			= 'sInvoiceNumber'; //invoice number (assigned only when in finalized-state-invoice) - this is a string because of extra formatting that can be added to the increment number from transaction-types
 	const FIELD_ISFINALIZED				= 'bIsFinalized'; //a finalized invoice can not be changed. Only a finalized invoice has monetary significance for tax purposes
 	const FIELD_CURRENCYID 				= 'iCurrencyID'; //id of currency
 	const FIELD_PURCHASEORDERNUMBER 	= 'sPurchaseOrderNumber';//purchase order number of buyer (completely optional)
