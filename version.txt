@@ -136,6 +136,9 @@ versie conflict niet opgelost
 -basis elementen factuur - geeft nog fout
 -weergeven factuur lukt, opslaan gaat nog niet goed (ivm formgenerator isFormSubmitted())
 
+16 nov 2023
+========
+custom form nog bezig
 
 4 nov 2023
 ========

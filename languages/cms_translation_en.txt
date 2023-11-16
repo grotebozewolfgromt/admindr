@@ -32,3 +32,12 @@ message_noitemstodisplay;[ no items to display ];[ no items to display ]
 paginator_showingXtoYofZ_noentries;Showing 0 entries;Showing 0 entries
 message_saverecord_inputerror;Input error: record NOT saved;Input error: record NOT saved
 message_error_clicktodismiss;click to dismiss;click to dismiss
+form_error_notavalidemailaddress;This not a valid email address;This not a valid email address
+form_error_charactersnotallowed;Some characters are not allowed;Some characters are not allowed
+form_error_onlynumbersallowed;Only numbers are allowed;Only numbers are allowed
+index_htmltitle;[applicationname] login;[applicationname] login
+index_htmlmetadescription;Protected sitemanager environment;Protected sitemanager environment
+loginform_lostpassword_link;I forgot my password;I forgot my password
+loginform_createaccount_link;Create a new account;Create a new account
+loginform_cookiesettings_link;Cookie settings;Cookie settings
+login_serviceonlyavailable_countries;This service is available in:;This service is available in:

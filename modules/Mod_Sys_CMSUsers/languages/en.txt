@@ -32,3 +32,40 @@ form_field_deleteafter;Auto delete account after (also deleting ALL users in acc
 section_useraccounts_detail_usersinaccount_title;Users in this account;Users in this account
 section_useraccounts_detail_usersinaccount_explanation;[amount] user(s) are part of this account:;[amount] user(s) are part of this account:
 pagetitle_detailsave_useraccount_edit;Edit user account: [identifier];Edit user account: [identifier]
+message_user_needstochangepassword;This user needs to change password for security reasons;This user needs to change password for security reasons
+userdetail_form_field_username;username;username
+userdetail_form_field_usernamepublic;public username (published on websites etc);public username (published on websites etc)
+form_field_passwordold_hint_existingrecord_leaveempty;(only if you want to change password, otherwise leave empty);(only if you want to change password, otherwise leave empty)
+userdetail_form_field_passwordold;current password;current password
+form_field_passwordnew_hint_existingrecord_leaveempty;(if you want to change password, otherwise leave empty);(if you want to change password, otherwise leave empty)
+userdetail_form_field_passwordnew;new password;new password
+form_field_passwordrepeat_hint_existingrecord_leaveempty;(only if you want to change password);(only if you want to change password)
+userdetail_form_field_passwordnewrepeat;repeat new password;repeat new password
+userdetail_form_field_emailaddress;email address;email address
+userdetail_form_field_loginexpires;login expires (user can't log in after this date) (leave empty for no expiration);login expires (user can't log in after this date) (leave empty for no expiration)
+form_field_passwordexpires;password expires (prompts user to change password on login) (leave empty for no expiration);password expires (prompts user to change password on login) (leave empty for no expiration)
+userdetail_form_field_scheduleddeletion;Auto delete user after (deleted by cron job, leave empty for no expiration);Auto delete user after (deleted by cron job, leave empty for no expiration)
+userdetail_form_field_enabled;able to log in;able to log in
+userdetail_form_field_language;language;language
+userdetail_form_field_userrole;user role;user role
+userdetail_form_field_useraccount;part of user acount;part of user acount
+section_sessions_title;Open login sessions;Open login sessions
+form_label_sessions_userloggedinhere;User is logged in [times] times on these devices:;User is logged in [times] times on these devices:
+form_label_sessions_checktodelete;(to delete session: click checkbox and click save);(to delete session: click checkbox and click save)
+message_sessions_iscurrentsession;CURRENT SESSION: ;CURRENT SESSION: 
+pagetitle_detailsave_user_edit;Edit user: [username];Edit user: [username]
+overview_column_sCodeName;Name;Name
+overview_column_sRedemptionCode;Code;Code
+overview_column_iCurrentRedeems;Redeemed;Redeemed
+overview_column_dtDateEnd;Expires on;Expires on
+overview_column_bIsEnabled;Enabled;Enabled
+modulename_title;Invitation codes;Invitation codes
+form_field_namecode;name (only you can see it);name (only you can see it)
+form_field_invitationcode;Invitation code (allowed: [allowed]);Invitation code (allowed: [allowed])
+form_field_currentredeems;Amount of times code is redeemed;Amount of times code is redeemed
+form_field_maxredeems;Limit redemptions (0=unlimited);Limit redemptions (0=unlimited)
+form_field_invitationcodes_startdatetime;Start date;Start date
+form_field_invitationcodes_enddatetime;End date;End date
+form_field_invitationcode_isenabled;Enabled;Enabled
+pagetitle_detailsave_invitationcodes_new;Create new invitation code;Create new invitation code
+pagetitle_detailsave_invitationcodes_edit;Edit invitation code: [name];Edit invitation code: [name]

@@ -290,7 +290,8 @@ class FormGenerator
 
 		//create hidden field with anti-CSRF token
         $this->objInputTypeHiddenAntiCSRFToken = new InputHidden();
-		// $this->objInputTypeHiddenAntiCSRFToken->setValue(''); //we can't set value yet, because a form submission can fail and the form is shown again to correct errors
+		if (!$this->isFormSubmitted()) //only when form submitted, don't generate a new one CSRF token
+			$this->objInputTypeHiddenAntiCSRFToken->setValue($this->generateAndRegisterAntiCSRFToken()); //we can't set value yet, because a form submission can fail and the form is shown again to correct errors
         $this->objInputTypeHiddenAntiCSRFToken->setName('hdACT'); //Anti-Csrf-Token
         $this->objForm->addNode($this->objInputTypeHiddenAntiCSRFToken);
 
@@ -800,10 +801,10 @@ class FormGenerator
 
 			
 		//====Anti Cross-Site Request Forgery token		
-			$bIsAntiCSRFTokenValid = $this->isAntiCSRFTokenValid(); //needs to be done before adding (because there the good ones are deleted)
+			$bIsAntiCSRFTokenValid = $this->isAntiCSRFTokenValid(); 
 
 			//create Cross-Site Request Forgery token	
-			$this->objInputTypeHiddenAntiCSRFToken->setValue($this->generateAndRegisterAntiCSRFToken()); 
+			//$this->objInputTypeHiddenAntiCSRFToken->setValue($this->generateAndRegisterAntiCSRFToken());  --> done in constructor
 
 
         //====begin remapping sections 
