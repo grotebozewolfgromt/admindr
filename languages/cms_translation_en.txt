@@ -30,3 +30,5 @@ form_error_notavalidtime;[time] is not a valid time;[time] is not a valid time
 message_saverecord_success;Record save successful;Record save successful
 message_noitemstodisplay;[ no items to display ];[ no items to display ]
 paginator_showingXtoYofZ_noentries;Showing 0 entries;Showing 0 entries
+message_saverecord_inputerror;Input error: record NOT saved;Input error: record NOT saved
+message_error_clicktodismiss;click to dismiss;click to dismiss

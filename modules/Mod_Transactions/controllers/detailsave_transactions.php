@@ -73,7 +73,8 @@ class detailsave_transactions extends TCRUDDetailSaveController
     public $objTxtNotesExternal = null; //dr\classes\dom\tag\form\Textarea
 
     private $objForm = null; ////dr\classes\dom\tag\form\Form --> NOT a form generator, because it has so many custom elements
-
+    public $objHidFormSubmitted = null; //dr\classes\dom\tag\form\InputHidden this field is used to detect of form is submitted. dom element is filled with number when the form is submitted.
+    public $objHidCSRFToken = null; //dr\classes\dom\tag\form\InputHidden this field is used to detect Cross Site Request Forgery
 
     /**
      * define the fields that are in the detail screen
@@ -81,6 +82,9 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     protected function populate()
     {
+        //obligatory fields for forms
+        $this->objHidFormSubmitted = $this->getFormGenerator()->getFormSubmittedDOMElement(); //use the hidden field from form generator to detect if form is submitted
+        $this->objHidCSRFToken = $this->getFormGenerator()->getCSRFTokenDOMElement(); //use the hidden field from form generator to detect if form is submitted
 
         //transactions-types
         $this->objSelTransactionsType = new Select();

@@ -434,18 +434,18 @@ abstract class TCRUDDetailSaveController
                     else
                     {
                         sendMessageError(transcms('message_saverecord_error', 'Save error: record NOT saved!!'));
-                        logDebug($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().' save error record with id '. $this->objModel->getID());                
+                        logError($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().' save error record with id '. $this->objModel->getID());                
                     } 
                 }//end: onSave()
                 else 
                 {                    
-                    logDebug($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().': onSave(): save error record with id '. $this->objModel->getID());                
+                    logError($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().': onSave(): save error record with id '. $this->objModel->getID());                
                 }
            }//end: isValid()
            else
            {
                sendMessageError(transcms('message_saverecord_inputerror', 'Input error: record NOT saved'));
-               logDebug($this->sModule.':'.$this->getAuthorisationCategory(),': record '. $this->objModel->getID(). ' not saved due to input errors');            
+               logError($this->sModule.':'.$this->getAuthorisationCategory(),': record '. $this->objModel->getID(). ' not saved due to input errors');            
            }
 
            //====== putting submitted data in the form

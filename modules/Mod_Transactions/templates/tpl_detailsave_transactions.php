@@ -1,5 +1,9 @@
 <form id="detailsave" name="detailsave" method="post" action="<?php echo getURLThisScript(); ?>">
 
+    <!-- form obligatory fields -->
+    <?php echo $objController->objHidFormSubmitted->renderHTMLNode(); //able to detect if form is submitted via FormGenerator ?>
+    <?php echo $objController->objHidCSRFToken->renderHTMLNode(); //able to detect Cross Site Request Forgery via FormGenerator ?>
+
 
     <!-- the details section -->
     <div class="formsection">

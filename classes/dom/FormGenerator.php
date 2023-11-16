@@ -249,10 +249,10 @@ class FormGenerator
     private $arrMappedHTMLElements = array();//2d array with mapped html-element-ids to sectionnames; arraystructure: $arrMap['elementid'][ARRAYKEY_MAP_SECTION] = 'sectionname'; the structure of the array looks redundant, but that way we dont have to do resource intensive loops to find elements for a formsection 
     //private $arrSectionMapper = array();//key is the htmlid the value is the sectionname 
     
-    private $objInputTypeHiddenToDetectFormSubmitted = null; //InputHidden
-    private $objInputTypeHiddenAntiCSRFToken = null; //CRSRF = Cross-Site Request Forgery.
+    private $objInputTypeHiddenToDetectFormSubmitted = null; //InputHidden. we use a hidden input field to detect if a form is submitted or not. The function getIsFormSubmitted() uses this field.
+    private $objInputTypeHiddenAntiCSRFToken = null; //InputHidden. CRSRF = Cross-Site Request Forgery.
     private $arrCustomCSSClassesFormSections= array(); //1d array['sectionname'] = 'mycustomclass'
-
+	
 	private $iSecsMinBetweenFormShowAndSubmit = 2; //minimum amount of seconds between form show and submit; default 2 seconds
 	private $iSecsMinBetweenFormSubmits = 5; //minimum amount of seconds between form submits; default 2 seconds
 
@@ -285,7 +285,7 @@ class FormGenerator
         //create hidden field to detect if form is submitted
         $this->objInputTypeHiddenToDetectFormSubmitted = new InputHidden();
         $this->objInputTypeHiddenToDetectFormSubmitted->setValue('1234567890'); //is checked later if this value is numeric
-        $this->objInputTypeHiddenToDetectFormSubmitted->setName('hdSubmitted');
+        $this->objInputTypeHiddenToDetectFormSubmitted->setName('hdSbmd');
         $this->objForm->addNode($this->objInputTypeHiddenToDetectFormSubmitted);
 
 		//create hidden field with anti-CSRF token
@@ -308,6 +308,34 @@ class FormGenerator
         unset($this->objInputTypeHiddenAntiCSRFToken);
     }
 
+
+	/**
+	 * Returns the hidden field that detects if a form is submitted
+	 * 
+	 * This is useful if you want to use a custom form, 
+	 * but want to use the functions that the form generator offers
+	 * (like checking for errors for example)
+	 * 
+	 * @return InputHidden
+	 */
+	public function getFormSubmittedDOMElement()
+	{
+		return $this->objInputTypeHiddenToDetectFormSubmitted;
+	}
+
+	/**
+	 * Returns the hidden field that detects Cross Site Request Forgery (CSRF)
+	 * 
+	 * This is useful if you want to use a custom form, 
+	 * but want to use the functions that the form generator offers
+	 * (like checking for errors for example)
+	 * 
+	 * @return InputHidden
+	 */
+	public function getCSRFTokenDOMElement()
+	{
+		return $this->objInputTypeHiddenAntiCSRFToken;
+	}	
 
 	public function setHoneyPotFieldName($sName)
 	{
@@ -453,15 +481,56 @@ class FormGenerator
     }
     
     /**
-     * returns if  the form is submitted (the user hit the submit button)
+     * returns if  the form is submitted (the user hit the submit button or submits via Javascript)
      * @return bool
      */
     public function isFormSubmitted()
     {    	
-        return (is_numeric($this->objInputTypeHiddenToDetectFormSubmitted->getContentsSubmitted()->getValue()));
+		//We could look for the submit button, but this will fail if the form is submitted via javascript
+		//instead we use a hidden field that always exists in a form to detect if the form is submitted
+        
+		return (is_numeric($this->objInputTypeHiddenToDetectFormSubmitted->getContentsSubmitted()->getValue()));
     }
 
 
+
+	/**
+	 * returns the first element on the form that is of class $sDOMClassName
+	 * 
+	 * @todo test function. function never tested
+	 * 
+	 * @return TagAbstract or null
+	 */
+	private function getDOMElementOfType($sDOMClassName)
+	{
+		$arrFormContent = $this->arrFormContent;
+        $arrSectionKeys = array_keys($arrFormContent);//new keys (these can be changed by the mapping)
+        foreach ($arrSectionKeys as $sSectionName)
+        {
+        	$arrSection = $arrFormContent[$sSectionName];
+       	
+			foreach ($arrSection as $arrFormLine)
+			{
+				$arrElementsOnLine = $arrFormLine[FormGenerator::ARRAYKEY_FORMCONTENT_DOMELEMENTS];	
+
+				//detect if specific elements are present on this form-line
+				foreach ($arrElementsOnLine as $objDOMElement)
+				{
+					if ($objDOMElement instanceof $$sDOMClassName)
+					{
+						return $objDOMElement;
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+
+
+
+	
     /**
      * are all values on the form valid?
      * 
@@ -478,16 +547,24 @@ class FormGenerator
     	
 		//check Cross Site Request Forgery token
 		if (!$this->isAntiCSRFTokenValid())
+		{
+			logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'anti Cross Site Request Forgery (CSRF) detection invalidated form validation');			
 			return false;
+		}
 
 		//check recaptcha v3
 		if (!$this->isRecaptchaV3Valid())
+		{
+			logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'recaptcha3 invalidated form validation');
 			return false;
+		}
 
 		//check flood
 		if ($this->isFloodDetectedBetweenFormSubmits() || $this->isFloodDetectedBetweenShowAndSubmitForm())
+		{
+			logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'flood detection invalidated form validation');
 			return false;
-		
+		}
 
 		//checking elements on form
     	foreach ($this->arrElementIDs as $objDOMElement)
@@ -501,6 +578,7 @@ class FormGenerator
     				if (!$objValidator->isValid($objDOMElement))
 					{
 						//vardumpdie($objDOMElement->getName(), 'liop');
+						logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'field '.$objDOMElement->getName().' wasn\'t valid');
     					return false;
 					}
     			}
@@ -717,8 +795,8 @@ class FormGenerator
 
 			//register timestamps (needs to be done AFTER checks)
 			$_SESSION[FormGenerator::SESSIONARRAYKEY_LASTFORMSHOW_TIMESTAMP] = time(); //the form is always shown, with or without it is being submitted.
-			if ($bSubmitted)
-				$_SESSION[FormGenerator::SESSIONARRAYKEY_LASTFORMSUBMIT_TIMESTAMP] = time();
+			// if ($bSubmitted) //removed 16-11-2023
+			$_SESSION[FormGenerator::SESSIONARRAYKEY_LASTFORMSUBMIT_TIMESTAMP] = time();
 
 			
 		//====Anti Cross-Site Request Forgery token		
@@ -1482,7 +1560,7 @@ class FormGenerator
 
 
 		//remove old tokens
-		//we keep only the most recent (FormGenerator::MAX_ANTICSRFTOKENS) tokens
+		//we keep only the most recent X amount of tokens (X = FormGenerator::MAX_ANTICSRFTOKENS)
 		if (count($_SESSION[FormGenerator::SESSIONARRAYKEY_ANTICSRFTOKEN]) > FormGenerator::MAX_ANTICSRFTOKENS)
 		{
 			$arrTemp = array();
