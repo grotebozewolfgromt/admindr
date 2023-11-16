@@ -141,7 +141,7 @@ use Exception;
  * @TODO: hints weergeven achter invulboxen
  * @TODO: mogelijkheid dat er nogmaals (na submitten van formulier) gevraagd wordt aan de gebruiker of alle ingevulde waardes juist zijn (dit gebeurd server side, als ok, dan wordt pas formulier in database opgeslagen)
  * @TODO: om-en-om kleuren regels in tabel
- * @TODO: extra check op request url (domein moet hetzelfde zijn)
+ * @TODO: extra check op request url (domein moet hetzelfde zijn bij request and submit)
  * @TODO: honeypot integreren
  * 
  * 
@@ -188,6 +188,9 @@ use Exception;
  * 2 okt 2021: FormGenerator: getFormStatus() added
  * 2 okt 2021: FormGenerator: hoop bugfixes ivm CSRF token
  * 20 jan 2023: FormGenerator: recapcha3 functionality added
+ * 16 nov 2023: FormGenerator: anti CSRF token naar constructor
+ * 16 nov 2023: FormGenerator: secs between submits and formshow worden nu op een andere plek gecheckt ivm custom forms
+ * 16 nov 2023: FormGenerator: secs between formshow en submit werkt nu
  * 
  * @author dennis renirie
  */
@@ -290,19 +293,30 @@ class FormGenerator
 
 		//create hidden field with anti-CSRF token
         $this->objInputTypeHiddenAntiCSRFToken = new InputHidden();
-		if (!$this->isFormSubmitted()) //only when form submitted, don't generate a new one CSRF token
-			$this->objInputTypeHiddenAntiCSRFToken->setValue($this->generateAndRegisterAntiCSRFToken()); //we can't set value yet, because a form submission can fail and the form is shown again to correct errors
+		$this->objInputTypeHiddenAntiCSRFToken->setValue($this->generateAndRegisterAntiCSRFToken()); //always set new token (even if form is valid)
         $this->objInputTypeHiddenAntiCSRFToken->setName('hdACT'); //Anti-Csrf-Token
         $this->objForm->addNode($this->objInputTypeHiddenAntiCSRFToken);
-
-
 
 
     }
 
 
-    public function __destroy()
+    public function __destruct()
     {
+		//====register timestamps for flood detection
+		//this can't be done in the constructor, because it needs to be done after the checks.
+		//(otherwise the checks will check what was set in the constructor, instead of the last time the form showed)
+		//we can't do this in the generate(), because this function isn't called on custom forms
+		if ($this->isFormSubmitted())
+		{
+			$_SESSION[FormGenerator::SESSIONARRAYKEY_LASTFORMSUBMIT_TIMESTAMP] = time();
+		}
+		else
+		{
+			$_SESSION[FormGenerator::SESSIONARRAYKEY_LASTFORMSHOW_TIMESTAMP] = time();
+		}
+
+
         unset($this->objHTMLFormInputObjects);
         unset($this->objHTMLLabels);
         unset($this->objInputTypeHiddenToDetectFormSubmitted);
@@ -395,9 +409,9 @@ class FormGenerator
 	 */
 	public function getFormStatus()
 	{
-		if ($this->isFormSubmitted())
+		if ($this->isFormSubmitted()) //least expensive operation (system resource wise)
 		{
-			if ($this->isValid())
+			if ($this->isValid()) //expensive operation (system resource wise)
 				return FormGenerator::FORMSTATUS_SUBMITTED_OK;
 			else
 				return FormGenerator::FORMSTATUS_SUBMITTED_WITHERRORS;
@@ -498,7 +512,7 @@ class FormGenerator
 	/**
 	 * returns the first element on the form that is of class $sDOMClassName
 	 * 
-	 * @todo test function. function never tested
+	 * @todo test function. function written, but never tested
 	 * 
 	 * @return TagAbstract or null
 	 */
@@ -541,9 +555,6 @@ class FormGenerator
      */
     public function isValid()
     {    	
-    	$arrMap = $this->arrMappedHTMLElements;
-   	
-    	$sOtherField = '';
     	$iCountVal = 0;
     	
 		//check Cross Site Request Forgery token
@@ -779,8 +790,7 @@ class FormGenerator
 		$arrFormContent = array();
 		$arrMap = array();
 		$objForm = null;	
-		$bFloodDetectedOnFormSubmits = false;
-		$bFloodDetectedOnFormShowAndSubmit = false;
+
 		$iFormStatus = 0; //declared as int: default: FormGenerator::FORMSTATUS_INIT;
 
 		//inits
@@ -791,13 +801,10 @@ class FormGenerator
 		$bErrorsOnForm = ($iFormStatus == FormGenerator::FORMSTATUS_SUBMITTED_WITHERRORS);        
 
 		//====flood detection: 
-			$bFloodDetectedOnFormSubmits = $this->isFloodDetectedBetweenFormSubmits();
-			$bFloodDetectedOnFormShowAndSubmit = $this->isFloodDetectedBetweenShowAndSubmitForm();
 
 			//register timestamps (needs to be done AFTER checks)
-			$_SESSION[FormGenerator::SESSIONARRAYKEY_LASTFORMSHOW_TIMESTAMP] = time(); //the form is always shown, with or without it is being submitted.
-			// if ($bSubmitted) //removed 16-11-2023
-			$_SESSION[FormGenerator::SESSIONARRAYKEY_LASTFORMSUBMIT_TIMESTAMP] = time();
+			//$_SESSION[FormGenerator::SESSIONARRAYKEY_LASTFORMSHOW_TIMESTAMP] = time(); //the form is always shown, with or without it is being submitted. --> moved to destructor because this function isn't called on custom forms
+
 
 			
 		//====Anti Cross-Site Request Forgery token		
@@ -873,11 +880,11 @@ class FormGenerator
 		
 
 		//====flood detection
-			if ($bFloodDetectedOnFormShowAndSubmit)
-				$objUL->addListItem(transw('form_input_error_flooddetected_formshowandsubmit', 'You submitted the form too quick. You can try again in a few moments.'));
+			if ($this->isFloodDetectedBetweenShowAndSubmitForm())
+				$objUL->addListItem(transw('form_input_error_flooddetected_formshowandsubmit', 'You submitted the form too quick. Wait at least [secs] seconds before trying again.', 'secs', $this->iSecsMinBetweenFormShowAndSubmit));
 
-			if ($bFloodDetectedOnFormSubmits)
-				$objUL->addListItem(transw('form_input_error_flooddetected_formsubmits', 'You submitted too many forms in a short timespan. Wait a few moments to try again.'));
+			if ($this->isFloodDetectedBetweenFormSubmits())
+				$objUL->addListItem(transw('form_input_error_flooddetected_formsubmits', 'You submitted too many forms in a short timespan. Wait at least [secs] seconds before trying again.', 'secs', $this->iSecsMinBetweenFormSubmits));
 
 
         //===add all objects from internal objectlist to form

@@ -1,12 +1,6 @@
 UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
+form_input_error_flooddetected_formsubmits;You submitted too many forms in a short timespan. Wait at least [secs] seconds before trying again.;You submitted too many forms in a short timespan. Wait at least [secs] seconds before trying again.
 previous_results_paginator;Previous;Previous
 Results [x] - [y];Results [x] - [y];Results [x] - [y]
 next_results_paginator;Next;Next
-Next [x] results (page [y]);Next [x] results (page [y]);Next [x] results (page [y])
-logincontroller_sessionexpired;Login session expired;Login session expired
-form_input_error_flooddetected_formsubmits;You submitted too many forms in a short timespan. Wait a few moments to try again.;You submitted too many forms in a short timespan. Wait a few moments to try again.
-form_error_maxlengthexceeded;The maximumlength [length] of this field is exceeded;The maximumlength [length] of this field is exceeded
-loginform_field_username;username;username
-loginform_field_password;password;password
-loginform_field_keepmeloggedin;keep me logged in;keep me logged in
-loginform_button_login;log in;log in
+form_input_error_flooddetected_formshowandsubmit;You submitted the form too quick. Wait at least [secs] seconds before trying again.;You submitted the form too quick. Wait at least [secs] seconds before trying again.

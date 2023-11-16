@@ -146,23 +146,29 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     protected function formToModel()
     {
+        global $objLoginController;
+
+
         //transaction type
-        $this->getModel()->set(TTransactions::FIELD_TRANSACTIONSTYPEID, $this->objSelTransactionsType->getContentsSubmitted()->getValueAsString());
+        $this->getModel()->set(TTransactions::FIELD_TRANSACTIONSTYPEID, $this->objSelTransactionsType->getContentsSubmitted()->getValueAsInt());
 
         //currency
-        $this->getModel()->set(TTransactions::FIELD_CURRENCYID, $this->objSelCurrency->getContentsSubmitted()->getValueAsBool());
+        $this->getModel()->set(TTransactions::FIELD_CURRENCYID, $this->objSelCurrency->getContentsSubmitted()->getValueAsInt());
 
         //buyer
-        $this->getModel()->set(TTransactions::FIELD_BUYERCONTACTID, $this->objHidBuyer->getContentsSubmitted()->getValueAsBool());
+        $this->getModel()->set(TTransactions::FIELD_BUYERCONTACTID, $this->objHidBuyer->getContentsSubmitted()->getValueAsInt());
 
         //purchase order number
-        $this->getModel()->set(TTransactions::FIELD_PURCHASEORDERNUMBER, $this->objEdtPurchaseOrderNo->getContentsSubmitted()->getValueAsBool());
+        $this->getModel()->set(TTransactions::FIELD_PURCHASEORDERNUMBER, $this->objEdtPurchaseOrderNo->getContentsSubmitted()->getValue());
 
         //internal notes
-        $this->getModel()->set(TTransactions::FIELD_NOTESINTERNAL, $this->objTxtNotesInternal->getContentsSubmitted()->getValueAsBool());
+        $this->getModel()->set(TTransactions::FIELD_NOTESINTERNAL, $this->objTxtNotesInternal->getContentsSubmitted()->getValue());
 
         //external notes
-        $this->getModel()->set(TTransactions::FIELD_NOTESEXTERNAL, $this->objTxtNotesExternal->getContentsSubmitted()->getValueAsBool());
+        $this->getModel()->set(TTransactions::FIELD_NOTESEXTERNAL, $this->objTxtNotesExternal->getContentsSubmitted()->getValue());
+
+        //auto generated
+        $this->getModel()->set(TTransactions::FIELD_CREATEDBYCONTACTID, $objLoginController->getUsers()->getID());
     }
 
     /**

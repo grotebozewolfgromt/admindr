@@ -1245,7 +1245,7 @@ abstract class TModel
 	 * 				false 	= 0 levels deep --> no auto join
 	 * 				0 		= 0 levels deep --> no auto join
 	 * 				true 	= 1 level deep 
-	 * 				1		= 1 levels deep 
+	 * 				1		= 1 level deep 
 	 * 				2		= 2 levels deep
 	 * 				3		= 3 levels deep
 	 * 				etc.
@@ -1254,6 +1254,39 @@ abstract class TModel
 	{
 		if (is_numeric($iID)) //only add when numeric
 			$this->find(TModel::FIELD_ID, $iID, COMPARISON_OPERATOR_EQUAL_TO, $this::getTable(), false);
+		$this->limitOne();
+		return $this->loadFromDB($mAutoJoinDefinedTables);
+	}	
+
+	/**
+	 * load from database when you have the unique id
+	 * This func
+	 * 
+	 * it is a shortcut for:
+	 * model->find(FIELD_UNIQUEID, id)
+	 * model->loadfromdb()
+	 * 
+	 * @param mixed $mAutoJoinDefinedTables: either int or bool. 
+	 * 				-1 		= unlimited levels
+	 * 				false 	= 0 levels deep --> no auto join
+	 * 				0 		= 0 levels deep --> no auto join
+	 * 				true 	= 1 level deep 
+	 * 				1		= 1 level deep 
+	 * 				2		= 2 levels deep
+	 * 				3		= 3 levels deep
+	 * 				etc.
+	 * 
+	 * @todo test function. function written but never tested.
+	 */	
+	public function loadFromDBByUniqueID($sUniqueID, $mAutoJoinDefinedTables = 0)
+	{
+		if (isUniqueidRealValid($sUniqueID)) //only add when numeric
+			$this->find(TModel::FIELD_UNIQUEID, $sUniqueID, COMPARISON_OPERATOR_EQUAL_TO, $this::getTable(), false);
+		else
+		{
+			logError( __CLASS__.': '.__FUNCTION__.': '.__LINE__, 'Unique ID is not a valid Unique ID (determined by isUniqueidRealValid()). Might be the result of tampering with ids');
+			return false;
+		}
 		$this->limitOne();
 		return $this->loadFromDB($mAutoJoinDefinedTables);
 	}	
@@ -2570,7 +2603,7 @@ abstract class TModel
 					{
 						if (strlen($mColValue) > $this->getFieldLength($sColumnName)) //length check
 						{
-							error('areValuesValidInteral(): length of value "'.($mColValue).'" (length:'.strlen($mColValue).') is larger than field '.$sColumnName.' (maxlength: '.$this->getFieldLength($sColumnName).') in databasetable '.$this::getTable());
+							logError(__CLASS__.':'.__FUNCTION__.':'.__LINE__,' length of value "'.($mColValue).'" (length:'.strlen($mColValue).') is larger than field '.$sColumnName.' (maxlength: '.$this->getFieldLength($sColumnName).') in databasetable '.$this::getTable());
 							return false;
 						}
 					}
@@ -2595,7 +2628,7 @@ abstract class TModel
 							//but if it is not nullable, then replace value with 0	
 							if (!$this->getFieldNullable($sColumnName))
 							{
-								error_log(__CLASS__.''.__FUNCTION__.' column: '.$sColumnName.' mColValue is not numeric ('. $mColValue.') but it is a numeric field. Made value 0');
+								logError(__CLASS__.':'.__FUNCTION__.':'.__LINE__, ' column: '.$sColumnName.' mColValue is not numeric ('. $mColValue.') but it is a numeric field. Made value 0');
 								$this->set($sColumnName, 0);//make it numeric
 								break;
 							}

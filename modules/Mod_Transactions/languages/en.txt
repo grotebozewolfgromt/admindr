@@ -22,3 +22,4 @@ tabsheets_module_name_Transactions;Transactions;Transactions
 tabsheets_module_explanation_Manage all invoices and orders;Manage all invoices and orders;Manage all invoices and orders
 tabsheets_module_name_Trans. Types;Trans. Types;Trans. Types
 tabsheets_module_explanation_Manage types of transactions;Manage types of transactions;Manage types of transactions
+pagetitle_detailsave_transactions_edit;Edit transaction;Edit transaction
