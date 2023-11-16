@@ -139,6 +139,8 @@ versie conflict niet opgelost
 16 nov 2023
 ========
 custom form nog bezig
+opslaan transactie werkt nu
+
 
 4 nov 2023
 ========
