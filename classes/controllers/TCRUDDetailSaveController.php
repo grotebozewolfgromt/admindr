@@ -383,9 +383,11 @@ abstract class TCRUDDetailSaveController
                     logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'start DB transaction FAILED');
                 }
 
+                //==== SAVE PRE
                 if ($this->onSavePre())
                 {               
                     $bSaveSuccess = false;
+
 
                     //checkout system: check in again
                     $this->objModel->resetRecordPointer();
@@ -398,6 +400,7 @@ abstract class TCRUDDetailSaveController
                         }
                     }
 
+                    //==== MODEL SAVE
                     //save if it is EXISTING record
                     if (isset($_GET[ACTION_VARIABLE_ID])) 
                     {
@@ -416,22 +419,37 @@ abstract class TCRUDDetailSaveController
                             logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'auth() for saving NEW record FAILED');
                     }
 
+                    //==== SAVE POST
                     if (!$this->onSavePost($bSaveSuccess)) 
                     {
                         $bSaveSuccess = false;
                         logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'onSavePost() FAILED');
                     }
 
-
-                    //handle button presses
+                    //====> COMMIT/ROLLBACK DB TRANSACTION <====
                     if ($bSaveSuccess)
                     {
-                        //====> COMMIT DB TRANSACTION <====
+                        //COMMIT DB TRANSACTION
                         if (!$objDBConnection->commit())
                         {
                             logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'commit DB transaction FAILED');
                         }
+                    }
+                    else
+                    {
+                        logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'bSaveSuccess() == false. rolling back DB transaction');
 
+                        //ROLLBACK DB TRANSACTION
+                        if (!$objDBConnection->rollback())
+                        {
+                            logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'commit DB transaction FAILED');
+                        }                        
+                    }                    
+
+                    //====handle button presses
+                    if ($bSaveSuccess)
+                    {
+                     
                         //BUTTON save & close clicked
                         // if (!$this->objSubmitClose->getContentsSubmitted(Form::METHOD_POST)->isEmpty())//"submit & close" has a value if clicked
                         // {
@@ -459,15 +477,6 @@ abstract class TCRUDDetailSaveController
                     }
                     else
                     {
-                        logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'bSaveSuccess() == false. rolling back DB transaction');
-
-
-                        //====> ROLLBACK DB TRANSACTION <====
-                        if (!$objDBConnection->rollback())
-                        {
-                            logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'commit DB transaction FAILED');
-                        }
-
                         sendMessageError(transcms('message_saverecord_error', 'Save error: record NOT saved!!'));
                         logError($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().' save error record with id '. $this->objModel->getID());                
                     } 
