@@ -416,7 +416,12 @@ abstract class TCRUDDetailSaveController
                             logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'auth() for saving NEW record FAILED');
                     }
 
-                    $this->onSavePost($bSaveSuccess);
+                    if (!$this->onSavePost($bSaveSuccess))
+                    {
+                        $bSaveSuccess = false;
+                        logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'onSavePost() FAILED');
+                    }
+
 
                     //handle button presses
                     if ($bSaveSuccess)
@@ -454,6 +459,9 @@ abstract class TCRUDDetailSaveController
                     }
                     else
                     {
+                        logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'bSaveSuccess() == false. rolling back DB transaction');
+
+
                         //====> ROLLBACK DB TRANSACTION <====
                         if (!$objDBConnection->rollback())
                         {
@@ -466,13 +474,13 @@ abstract class TCRUDDetailSaveController
                 }//end: onSave()
                 else 
                 {                    
-                    logError($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().': onSave(): save error record with id '. $this->objModel->getID());                
+                    logError($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().': onSavePre() failed: save error record with id '. $this->objModel->getID());                
                 }
            }//end: isValid()
            else
            {
                sendMessageError(transcms('message_saverecord_inputerror', 'Input error: record NOT saved'));
-               logError($this->sModule.':'.$this->getAuthorisationCategory(),': record '. $this->objModel->getID(). ' not saved due to input errors');            
+               logError($this->sModule.':'.$this->getAuthorisationCategory(),': record '. $this->objModel->getID(). ' not saved due to input errors, objFormGenerator->isValid() failed');            
            }
 
            //====== putting submitted data in the form
