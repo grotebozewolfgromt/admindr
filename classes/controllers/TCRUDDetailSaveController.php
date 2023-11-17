@@ -391,7 +391,7 @@ abstract class TCRUDDetailSaveController
                         }
                     }
 
-                    //save if it is existing record
+                    //save if it is EXISTING record
                     if (isset($_GET[ACTION_VARIABLE_ID])) 
                     {
                         // if ((!$this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) ==> removed 17-11-2023
