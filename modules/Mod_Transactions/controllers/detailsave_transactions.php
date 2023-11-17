@@ -93,7 +93,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
     public $objHidCSRFToken = null; //dr\classes\dom\tag\form\InputHidden this field is used to detect Cross Site Request Forgery
 
 
-    private $objTransactionLines = null; //TTransactionsLines
+    public $objTransactionLines = null; //TTransactionsLines
 
     /**
      * 

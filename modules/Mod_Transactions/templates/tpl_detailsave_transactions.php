@@ -128,7 +128,12 @@
                 </div>                   
             </div>
 
-            <div class="formsection-line transactionlines-grid-row">
+            <?php 
+                $objController->objTransactionLines->resetRecordPointer();
+                while($objController->objTransactionLines->next())
+                {
+                ?>
+                <div class="formsection-line transactionlines-grid-row">
                 <!-- quantity -->
                 <div>
                     <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_quantity_description', 'Quantity'); ?></div>
@@ -164,7 +169,10 @@
                     <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_unitpriceexclvat_description', 'Unit price (excl VAT)'); ?></div>                                        
                     <?php echo $objController->objEdtPriceExclVAT->renderHTMLNode(); ?>
                 </div>                   
-            </div>
+                </div>
+                <?php
+                }
+            ?>
 
             <!-- add line button -->
             <input type="button" onclick="addTransactionsLine()" value="<?php echo transm($objController->getModule(), 'detailsave_transactions_button_addline', 'Add line +'); ?>" class="button_normal" id="transactions-button-add-line">

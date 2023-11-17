@@ -31,6 +31,8 @@ namespace dr\classes\controllers;
  * 29 nov 2020: TCRUDDetailSaveController: the bottom control panel is added AFTER modelToForm() which allows for quicker programming with dynamic elements like user-sessions for users or permissions for userroles
  * 15 nov 2022: TCRUDDetailSaveController: "cancel" button is now "close"
  * 15 nov 2022: TCRUDDetailSaveController: functionality of "save & close" button removed
+ * 17 nov 2023: TCRUDDetailSaveController: transactions integrated
+ * 17 nov 2023: TCRUDDetailSaveController: isNewRecord() added
  */
 
 use dr\classes\models\TModel;
@@ -311,7 +313,7 @@ abstract class TCRUDDetailSaveController
             if ($_GET[ACTION_VARIABLE_CANCEL] == ACTION_VALUE_CANCEL) //is cancel button pressed?
             {
                 //checkout system: CHECKIN
-                if (isset($_GET[ACTION_VARIABLE_ID])) //no ID? no need to check in (new records don't have an ID yet)
+                if (!$this->isNewRecord()) //no ID? no need to check in (new records don't have an ID yet)
                 {
                     if ($this->objModel->getTableUseCheckout() && $this->getUseCheckinout()) 
                         $this->objModel->checkinNowDB($_GET[ACTION_VARIABLE_ID]);
@@ -328,10 +330,10 @@ abstract class TCRUDDetailSaveController
      */
     protected function handleNewEditRecord()
     {
-        global $objLoginController;
+
         
         //HANDLE: edit or create
-        if (isset($_GET[ACTION_VARIABLE_ID])) 
+        if (!$this->isNewRecord()) 
         {
 
             //checkout system: CHECKOUT:
@@ -403,7 +405,7 @@ abstract class TCRUDDetailSaveController
 
                     //==== SAVE the MODEL
                     //save if it is EXISTING record
-                    if (isset($_GET[ACTION_VARIABLE_ID])) 
+                    if (!$this->isNewRecord()) 
                     {
                         // if ((!$this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) ==> removed 17-11-2023
                         if (auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE))
@@ -462,7 +464,7 @@ abstract class TCRUDDetailSaveController
                         // else //BUTTON save clicked
                         {
                             //if it is a new record that is just saved, we need to reload the page as a record to edit (otherwise the TModel will always try add the record instead of updating it)
-                            if (!isset($_GET[ACTION_VARIABLE_ID]))
+                            if (!$this->isNewRecord())
                             {
                                 $sURL = '';
                                 $sURL = $this->getURLThisScript();
@@ -501,6 +503,21 @@ abstract class TCRUDDetailSaveController
        }        
     }
 
+    /**
+     * determine if this is a new record, or editing an existing one
+     * 
+     * we can see this by looking at the url, if it has an id it will return false, otherwise true
+     */
+    public function isNewRecord()
+    {
+        if (isset($_GET[ACTION_VARIABLE_ID]))
+        {
+            if (is_numeric($_GET[ACTION_VARIABLE_ID]))
+                return false;
+        }
+
+        return true;
+    }
 
 //=====================================================================================
 
