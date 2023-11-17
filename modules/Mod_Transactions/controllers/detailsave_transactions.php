@@ -39,6 +39,7 @@ use dr\classes\dom\validator\DateMin;
 use dr\classes\dom\validator\DateMax;
 use dr\classes\dom\validator\DateTime;
 use dr\classes\dom\validator\Time;
+use dr\classes\locale\TTranslation;
 use dr\classes\models\TContactsAbstract;
 use dr\classes\models\TSysCMSUserAccounts;
 use dr\classes\types\TDateTime;
@@ -271,6 +272,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
                 $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITPURCHASEPRICEEXCLVAT, new TCurrency($this->objEdtPurchasePriceExclVAT->getValueSubmitted()[$iLC]));
                 $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITDISCOUNTEXCLVAT, new TCurrency($this->objEdtDiscountPriceExclVAT->getValueSubmitted()[$iLC]));
                 $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITPRICEEXCLVAT, new TCurrency($this->objEdtPriceExclVAT->getValueSubmitted()[$iLC]));
+                $this->objTransactionLines->set(TTransactionsLines::FIELD_ORDER, ($iLC+1)); //use a new order value
             }
         }      
         //save is done in onSavePost(), 
@@ -344,8 +346,10 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
 
         //==== TRANSACTIONS LINES ====
-        if ($this->getModel()->getNewAll())
+        if (!$this->isNewRecord())
         {
+            // $this->objTransactionLines->select();
+            $this->objTransactionLines->where(TTransactionsLines::FIELD_TRANSACTIONSID, $_GET[ACTION_VARIABLE_ID]);
             $this->objTransactionLines->sort(TTransactionsLines::FIELD_ORDER);
             $this->objTransactionLines->limit(1000);
             $this->objTransactionLines->loadFromDB();
@@ -391,7 +395,8 @@ class detailsave_transactions extends TCRUDDetailSaveController
         //We only get id on a new transaction after the transaction is created
              
         //delete old lines
-        //@todo
+        $this->objTransactionLines->where(TTransactionsLines::FIELD_TRANSACTIONSID, $_GET[ACTION_VARIABLE_ID]);
+        $this->objTransactionLines->deleteFromDB(true);
 
         //go through all transaction lines and update the transaction id, so we can save the lines
         $this->objTransactionLines->resetRecordPointer();

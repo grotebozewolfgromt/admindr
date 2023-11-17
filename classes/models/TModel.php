@@ -252,6 +252,7 @@ include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_security.php')
  * 15 nov 2022: TModel: loadFromDB support voor levels of join, eerste parameter ($mAutoJoinDefinedTables = 0) is nu een mixed parameter. true voorheen betekende oneindig, nu betekent het 1 level
  * 28 nov 2022: TModel: added: isChecksumValidAllRecords()
  * 31 okt 2023: TModel: checksum is md5 instead of sha1 for speed reasons
+ * 17 nov 2023: TModel: saveToDB() custom order numbers allowed > 0
  * 
  */
 
@@ -3002,8 +3003,10 @@ abstract class TModel
 
                 //update order
                 if ($this->getTableUseOrderField())
-                    if ($this->getNew()) //alleen als de order nieuw is, dan eentje ophogen
+				{
+                    if ($this->getOrder() == 0) //new records have zero. Also, don't overwrite new records with custom assigned order numbers which are always higher than 0 (custom order numbers can happen)
                         $this->setOrder($objPrepStat->getIDPlus1($this::getTable(), TModel::FIELD_ORDER ) );
+				}
 
                 //checksum
                 if ($this->getTableUseChecksumField())

@@ -141,6 +141,9 @@ versie conflict niet opgelost
 bug forms arrays fixed 
 eigen transactions zijn nu ingebouwd in cruddetailssave controller. hierdoor mogelijk om transactie te starten met meerdere db tabellen (voorheen alleen eigen model)
 test transaction fail werkt. nu laden lines
+laden factuurregels werkt nu
+ * 17 nov 2023: TModel: saveToDB() custom order numbers allowed > 0
+
 
 16 nov 2023
 ========

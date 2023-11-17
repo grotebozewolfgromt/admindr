@@ -132,45 +132,53 @@
                 $objController->objTransactionLines->resetRecordPointer();
                 while($objController->objTransactionLines->next())
                 {
-                ?>
-                <div class="formsection-line transactionlines-grid-row">
-                <!-- quantity -->
-                <div>
-                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_quantity_description', 'Quantity'); ?></div>
-                    <?php echo $objController->objEdtQuantity->renderHTMLNode(); ?>
-                </div>
+                    $objController->objEdtQuantity->setValue($objController->objTransactionLines->getQuantity()->getValue());
+                    $objController->objEdtDescription->setValue($objController->objTransactionLines->getDescription());
+                    $objController->objEdtVATPercentage->setValue($objController->objTransactionLines->getVATPercentage()->getValue());
+                    $objController->objEdtPurchasePriceExclVAT->setValue($objController->objTransactionLines->getUnitPurchasePriceExclVAT()->getValue());
+                    $objController->objEdtDiscountPriceExclVAT->setValue($objController->objTransactionLines->getUnitDiscountExclVat()->getValue());
+                    $objController->objEdtPriceExclVAT->setValue($objController->objTransactionLines->getUnitPurchasePriceExclVAT()->getValue());
+                    ?>
 
-                <!-- description -->
-                <div>
-                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_description_description', 'Description'); ?></div>                    
-                    <?php echo $objController->objEdtDescription->renderHTMLNode(); ?>
-                </div>
+                    <div class="formsection-line transactionlines-grid-row">
+                        <!-- quantity -->
+                        <div>
+                            <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_quantity_description', 'Quantity'); ?></div>
+                            <?php echo $objController->objEdtQuantity->renderHTMLNode(); ?>
+                        </div>
 
-                <!-- vat percentage -->
-                <div>
-                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_vatpercentage_description', 'VAT Percentage'); ?></div>                                        
-                    <?php echo $objController->objEdtVATPercentage->renderHTMLNode(); ?>
-                </div>                
+                        <!-- description -->
+                        <div>
+                            <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_description_description', 'Description'); ?></div>                    
+                            <?php echo $objController->objEdtDescription->renderHTMLNode(); ?>
+                        </div>
 
-                <!-- purchase price -->
-                <div>
-                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_purchasepriceexclvat_description', 'Purchase price (excl VAT)'); ?></div>                                        
-                    <?php echo $objController->objEdtPurchasePriceExclVAT->renderHTMLNode(); ?>
-                </div>   
-                
-                <!-- discount price -->
-                <div>
-                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_discountprice_description', 'Discount (excl VAT)'); ?></div>                                        
-                    <?php echo $objController->objEdtDiscountPriceExclVAT->renderHTMLNode(); ?>
-                </div>               
-                
-                <!-- unit price excluding vat -->
-                <div>
-                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_unitpriceexclvat_description', 'Unit price (excl VAT)'); ?></div>                                        
-                    <?php echo $objController->objEdtPriceExclVAT->renderHTMLNode(); ?>
-                </div>                   
-                </div>
-                <?php
+                        <!-- vat percentage -->
+                        <div>
+                            <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_vatpercentage_description', 'VAT Percentage'); ?></div>                                        
+                            <?php echo $objController->objEdtVATPercentage->renderHTMLNode(); ?>
+                        </div>                
+
+                        <!-- purchase price -->
+                        <div>
+                            <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_purchasepriceexclvat_description', 'Purchase price (excl VAT)'); ?></div>                                        
+                            <?php echo $objController->objEdtPurchasePriceExclVAT->renderHTMLNode(); ?>
+                        </div>   
+                        
+                        <!-- discount price -->
+                        <div>
+                            <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_discountprice_description', 'Discount (excl VAT)'); ?></div>                                        
+                            <?php echo $objController->objEdtDiscountPriceExclVAT->renderHTMLNode(); ?>
+                        </div>               
+                        
+                        <!-- unit price excluding vat -->
+                        <div>
+                            <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_unitpriceexclvat_description', 'Unit price (excl VAT)'); ?></div>                                        
+                            <?php echo $objController->objEdtPriceExclVAT->renderHTMLNode(); ?>
+                        </div>                   
+                    </div>
+
+                    <?php
                 }
             ?>
 

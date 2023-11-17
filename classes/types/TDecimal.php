@@ -144,10 +144,11 @@ class TDecimal
     }
     
     /**
-     * het letterlijk omzetten van de interne waarde naar een leesbare string ZONDER float afronding
-     * er wordt GEEN rekening gehouden met de locale, daarvoor is getValueFormatted()
+     * translating the internal value into a string.
+     * This does NOT anticipate on the locale settings, use getValueFormatted() for that.
+     * this function always outputs values in the same way (non locale), which setValue() also accepts
      * 
-     * LET OP: de punt (.) is onze decimale komma!
+     * WARNING: the stop (.) is the decimal separator
      * 
      * @return string 
      */    
@@ -163,10 +164,11 @@ class TDecimal
     }    
     
     /**
-     * het setten van een waarde
-     * er wordt GEEN rekening gehouden met de locale, daarvoor is setValueFormatted()
+     * set the internal value with a string.
+     * This does NOT anticipate on the locale settings, use setValueFormatted() for that.
+     * this function always accepts values in the same way (non locale), which getValue() also produces
      * 
-     * LET OP: gebruik de punt (.) is als decimaal scheider (dus is onze komma!)
+     * WARNING: the stop (.) is the decimal separator
      * 
      * @param string $sValue
      */
