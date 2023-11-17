@@ -1,3 +1,15 @@
+<style>
+    /* we do the stylesheet inline, because it only applies to this page */
+    .formsection-line
+    {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
+    }
+    .formsection-line input[type=text]
+    {
+        width: 100%;
+    }
+</style>
 <form id="detailsave" name="detailsave" method="post" action="<?php echo getURLThisScript(); ?>">
 
     <!-- form obligatory fields -->
@@ -40,6 +52,45 @@
     <div class="formsection">
         <div class="formsection-header"><?php echo transm($objController->getModule(), 'detailsave_transactions_section_lines_name', 'Lines'); ?></div>
 
+        <div class="transactionlines-grid">
+            <div class="formsection-line">
+                <!-- quantity -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_quantity_description', 'Quantity'); ?></div>
+                    <?php echo $objController->objEdtQuantity->renderHTMLNode(); ?>
+                </div>
+
+                <!-- description -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_description_description', 'Description'); ?></div>                    
+                    <?php echo $objController->objEdtDescription->renderHTMLNode(); ?>
+                </div>
+
+                <!-- vat percentage -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_vatpercentage_description', 'VAT Percentage'); ?></div>                                        
+                    <?php echo $objController->objEdtVATPercentage->renderHTMLNode(); ?>
+                </div>                
+
+                <!-- purchase price -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_purchasepriceexclvat_description', 'Purchase price (excl VAT)'); ?></div>                                        
+                    <?php echo $objController->objEdtPurchasePriceExclVAT->renderHTMLNode(); ?>
+                </div>   
+                
+                <!-- discount price -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_discountprice_description', 'Discount (excl VAT)'); ?></div>                                        
+                    <?php echo $objController->objEdtDiscountPriceExclVAT->renderHTMLNode(); ?>
+                </div>               
+                
+                <!-- unit price excluding vat -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_unitpriceexclvat_description', 'Unit price (excl VAT)'); ?></div>                                        
+                    <?php echo $objController->objEdtPriceExclVAT->renderHTMLNode(); ?>
+                </div>                   
+            </div>
+        </div>
     </div> 
 
     

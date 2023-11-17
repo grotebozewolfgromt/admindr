@@ -23,3 +23,20 @@ tabsheets_module_explanation_Manage all invoices and orders;Manage all invoices 
 tabsheets_module_name_Trans. Types;Trans. Types;Trans. Types
 tabsheets_module_explanation_Manage types of transactions;Manage types of transactions;Manage types of transactions
 pagetitle_detailsave_transactions_edit;Edit transaction;Edit transaction
+overview_column_sIncrementNumber;Inv No;Inv No
+detailsave_transactions_field_quantity_description;Quantity;Quantity
+detailsave_transactions_field_description_description;Description;Description
+detailsave_transactions_field_vatpercentage_description;VAT Percentage;VAT Percentage
+detailsave_transactions_field_purchasepriceexclvat_description;Purchase price (excl VAT);Purchase price (excl VAT)
+detailsave_transactions_field_discountprice_description;Discount;Discount
+detailsave_transactions_field_unitpriceexclvat_description;Unit price (excl VAT);Unit price (excl VAT)
+list_column_sName;Type name;Type name
+list_column_bIsStock;Stock;Stock
+list_column_bIsFinancial;Financial;Financial
+list_column_bIsDefaultInvoice;Invoice;Invoice
+list_column_bIsDefaultOrder;Order;Order
+list_column_sColorBackground;Color;Color
+list_column_iNewNumberIncrement;Increment;Increment
+list_column_iPaymentMadeWithinDays;Pay days;Pay days
+list_column_i_volgorde;Order;Order
+tab_title_transactiontypes;Transaction types;Transaction types

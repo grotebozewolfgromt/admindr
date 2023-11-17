@@ -220,7 +220,7 @@ class TSysCurrencies extends TModel
 					$this->set(TSysCurrencies::FIELD_DECIMALPRECISION, $arrColumns[4]);
 					if ($arrColumns[5] == '1')
 						$this->set(TSysCurrencies::FIELD_ISSYSTEMDEFAULT, true);
-					$this->set(TSysCurrencies::FIELD_ISSYSTEMDEFAULT, true);
+					$this->set(TSysCurrencies::FIELD_ISVISIBLE, true);
 					
 
 					if (!$this->saveToDB())

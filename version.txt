@@ -140,6 +140,11 @@ versie conflict niet opgelost
 ========
 custom form nog bezig
 opslaan transactie werkt nu
+* 17 nov 2023: forminputabstract support for arrays
+ * 17 nov 2023: forminputabstract BUGFIX: nasty bug! komma in parameter bij filteren for XSS
+ * 17 nov 2023: forminputabstract getValueSubmitted() added for fast reading of values
+
+TODO: BUG: arrays in form generate geven geen []
 
 
 4 nov 2023

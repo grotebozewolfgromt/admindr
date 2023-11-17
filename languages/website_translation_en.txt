@@ -4,3 +4,11 @@ previous_results_paginator;Previous;Previous
 Results [x] - [y];Results [x] - [y];Results [x] - [y]
 next_results_paginator;Next;Next
 form_input_error_flooddetected_formshowandsubmit;You submitted the form too quick. Wait at least [secs] seconds before trying again.;You submitted the form too quick. Wait at least [secs] seconds before trying again.
+logincontroller_sessionexpired;Login session expired;Login session expired
+form_error_maxlengthexceeded;The maximumlength [length] of this field is exceeded;The maximumlength [length] of this field is exceeded
+loginform_field_username;username;username
+loginform_field_password;password;password
+loginform_field_keepmeloggedin;keep me logged in;keep me logged in
+loginform_button_login;log in;log in
+logincontroller_loginfailed;login failed, user credentials are not valid;login failed, user credentials are not valid
+Next [x] results (page [y]);Next [x] results (page [y]);Next [x] results (page [y])

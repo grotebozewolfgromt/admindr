@@ -55,7 +55,7 @@ class TTransactions extends TModel
 	const FIELD_BUYERCONTACTID 			= 'iBuyerContactID'; //buyer: from contacts module
 	const FIELD_CREATEDBYCONTACTID 		= 'iCreatedByContactID'; //user who created the invoice (for weborder, it is the buyer itself): from contacts module
 	const FIELD_INVOICEDATE 			= 'dtInvoiceDate'; //date of the invoice (assigned only when not a finalized-state-invoice). For orders and offers the date is 0. It is possible that an order is created, but the invoice is made 2 days later. The invoice date is needed for tax reasons. 
-	const FIELD_INCREMENTNUMBER 		= 'sInvoiceNumber'; //invoice number (assigned only when in finalized-state-invoice) - this is a string because of extra formatting that can be added to the increment number from transaction-types
+	const FIELD_INCREMENTNUMBER 		= 'sIncrementNumber'; //invoice number (assigned only when in finalized-state-invoice) - this is a string because of extra formatting that can be added to the increment number from transaction-types
 	const FIELD_ISFINALIZED				= 'bIsFinalized'; //a finalized invoice can not be changed. Only a finalized invoice has monetary significance for tax purposes
 	const FIELD_CURRENCYID 				= 'iCurrencyID'; //id of currency
 	const FIELD_PURCHASEORDERNUMBER 	= 'sPurchaseOrderNumber';//purchase order number of buyer (completely optional)

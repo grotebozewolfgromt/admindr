@@ -6,19 +6,29 @@ use dr\classes\dom\tag\TagAbstract;
 use dr\classes\dom\validator\ValidatorAbstract;
 use dr\classes\dom\validator\FormInputContents;
 /**
- * parent klasse voor alle formulier input
- * deze klasse verkrijgt de waardes die gesubmit zijn en kan deze waardes
- * controleren
+ * parent class for all form input
+ * this class gets all values that are submitted
  *
- * Deze klasse leest de waardes uit de $_POST of $_GET array bij de setName()
- * procedure (dan pas weet je hoe deze variabele heet en dan pas kun je 'm voor
- * het eerst uitlezen)
+ * this class reads all values from $_POST or $_GET array when getContentsSubmitted() is called
+ * 
+ * ARRAYS: edtQuantity[]
+ * Some fields can be array of fields which php converts automatically to an array.
+ * for example the field 'edQuantity': <input type="text" name="edtQuantity[]">  <--HAS PARENTHESES
+ * You can't name the field edtQuantity[] (with the square brackets), because then you can't retrieve the values
+ * Therefore the field still needs to be named 'edtQuantity', but in the constructor add TRUE,
+ * so this class knows to look for 'edtQuantity' in the $_POST array, 
+ * The name when requested with getName() is WITH the square brackets
+ * 
+ * 
  * 
  * 29 apr 2015 FORMINPUT allow html toegevoegd
  * 8 juli 2015: FORINPUT bugfix in getContentsSubmitted() vergelijk post method
  * 24 apr 2016: FormInputAbstract autofocus toegevoegd
  * 2 mei 2019: setName() heeft extra parameter waarmee tegelijk ook de id geset kan worden
  * 23 jun 2021: getContentsSubmitted() doesn't use prefixes anymore
+ * 17 nov 2023: support for arrays
+ * 17 nov 2023: BUGFIX: nasty bug! komma in parameter bij filteren for XSS
+ * 17 nov 2023: getValueSubmitted() added for fast reading of values
  */
 abstract class FormInputAbstract extends TagAbstract
 {
@@ -31,13 +41,15 @@ abstract class FormInputAbstract extends TagAbstract
 	private $bShowValuesOnReloadForm = true; //voor bijvoorbeeld wachtwoorden is het niet wenselijk om deze bij een reload van het formulier weer te geven
 	private $iAllowHTML = FILTERXSS_ALLOW_HTML_NONE; //default no HTML allowed
 	private $bAutoFocus = false;
+	protected $bIsArray = false; //is this an array of fields? 
         
-	public function __construct()
+	public function __construct($bIsArray = false)
 	{
 		parent::__construct();
 		$this->objContentsInit = new FormInputContents($this);
 		$this->objContentsSubmitted = new FormInputContents($this);
 		$this->objValidators = new TObjectList();
+		$this->bIsArray = $bIsArray;
 	}
 
 	public function  __destruct()
@@ -47,7 +59,27 @@ abstract class FormInputAbstract extends TagAbstract
 		unset($this->objValidators);
 	}
         
-        
+	/**
+	 * getting the name of this HTML tag
+	 * example: frmContact in  <form name="frmContact">
+	 *
+	 * overloaded from parent
+	 * 
+	 * @return string
+	 */
+	public function getName($bWithParentheses = true)
+	{
+		if ($bWithParentheses)
+		{
+			if ($this->bIsArray)
+			{
+				return parent::getName().'[]';		
+			}
+		}
+
+		return parent::getName();
+	}
+	
 	/**
 	 * when form loads the field will be automatically focussed
 	 * 
@@ -135,25 +167,56 @@ abstract class FormInputAbstract extends TagAbstract
 	 */
 	public function getContentsSubmitted($sFormMethod = Form::METHOD_POST)
 	{
+		$sFieldName = '';
+		$sFieldName = $this->getName(false); //we want the name without parentheses
+		
 
 		//read the values from the proper array
 		if ($sFormMethod == Form::METHOD_POST)
 		{
-			if (isset($_POST[$this->getName()]))  //only when exists at all
-				$this->objContentsSubmitted->setValue(filterXSS($_POST[$this->getName()]), $this->getAllowHTML());
+			if (isset($_POST[$sFieldName]))  //only when exists at all
+				$this->objContentsSubmitted->setValue(filterXSS($_POST[$sFieldName], $this->getAllowHTML()));
 
-			if (isset($_FILES[$this->getName()])) //only when exists at all
-				$this->objContentsSubmitted->setFileArray($_FILES[$this->getName()]);
+			if (isset($_FILES[$sFieldName])) //only when exists at all
+				$this->objContentsSubmitted->setFileArray($_FILES[$sFieldName]);
 		}
 		elseif ($sFormMethod == Form::METHOD_GET)
 		{
-			if (isset($_GET[$this->getName()]))
-				$this->objContentsSubmitted->setValue(filterXSS($_GET[$this->getName()]), $this->getAllowHTML());
-//			if (isset($_GET[$this->getName()]))
-//				$this->objContentsSubmitted->setValue($_GET[$this->getName()]);
+			if (isset($_GET[$sFieldName]))
+				$this->objContentsSubmitted->setValue(filterXSS($_GET[$sFieldName], $this->getAllowHTML()));
 		}
 
 		return $this->objContentsSubmitted;
+	}
+
+
+	/**
+	 * easier alternative for getContentsSubmitted()
+	 * 
+	 * This function just returns the value
+	 */
+	public function getValueSubmitted($sFormMethod = Form::METHOD_POST)
+	{
+		$sFieldName = '';
+		$sFieldName = $this->getName(false); //we want the name without parentheses
+		
+
+		//read the values from the proper array
+		if ($sFormMethod == Form::METHOD_POST)
+		{
+			if (isset($_POST[$sFieldName]))  //only when exists at all
+				return filterXSS($_POST[$sFieldName], $this->getAllowHTML());
+
+			if (isset($_FILES[$sFieldName])) //only when exists at all
+				return $_FILES[$sFieldName];
+		}
+		elseif ($sFormMethod == Form::METHOD_GET)
+		{
+			if (isset($_GET[$sFieldName]))
+				return filterXSS($_GET[$sFieldName], $this->getAllowHTML());
+		}
+
+		return $this->objContentsSubmitted;		
 	}
 
 

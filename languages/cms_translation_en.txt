@@ -42,3 +42,5 @@ loginform_createaccount_link;Create a new account;Create a new account
 loginform_cookiesettings_link;Cookie settings;Cookie settings
 login_serviceonlyavailable_countries;This service is available in:;This service is available in:
 message_saverecord_error;Save error: record NOT saved!!;Save error: record NOT saved!!
+form_error_alphabetic;Only alphabetical characters allowed;Only alphabetical characters allowed
+form_error_onlynumeric;Only numeric allowed;Only numeric allowed

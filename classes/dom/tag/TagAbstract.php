@@ -391,7 +391,7 @@ abstract class TagAbstract
 	public function getNodeByID($sHTMLElementID)
 	{
 		$objTempNode = null;
-		tracepoint('volendam:'. $sHTMLElementID)			;
+		// tracepoint('volendam:'. $sHTMLElementID)			;
 		vardump($this->arrSubNodes);
 		foreach ($this->arrSubNodes as $objNode)
 		{

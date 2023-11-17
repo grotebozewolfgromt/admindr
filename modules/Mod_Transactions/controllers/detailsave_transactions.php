@@ -50,13 +50,19 @@ use  dr\classes\models\TSysCMSUsersAccounts;
 use dr\classes\models\TSysContacts;
 use dr\classes\models\TSysCurrencies;
 use dr\classes\models\TUsersAbstract;
+use dr\classes\types\TCurrency;
+use dr\classes\types\TDecimal;
 use dr\modules\Mod_Transactions\Mod_Transactions;
 use dr\modules\Mod_Transactions\models\TTransactionsTypes;
 use dr\modules\Mod_Sys_CMSUsers\Mod_Sys_CMSUsers;
 use dr\modules\Mod_Transactions\models\TTransactions;
+use dr\modules\Mod_Transactions\models\TTransactionsLines;
 
 // include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_jquery.php');
 include_once(GLOBAL_PATH_LOCAL_CMS . DIRECTORY_SEPARATOR . 'bootstrap_cms_auth.php');
+
+
+
 
 /**
  * Description of TCRUDDetailSaveCMSUsers
@@ -65,6 +71,7 @@ include_once(GLOBAL_PATH_LOCAL_CMS . DIRECTORY_SEPARATOR . 'bootstrap_cms_auth.p
  */
 class detailsave_transactions extends TCRUDDetailSaveController
 {
+    //fields
     public $objSelTransactionsType = null; //dr\classes\dom\tag\form\Select
     public $objSelCurrency = null; //dr\classes\dom\tag\form\Select     
     public $objHidBuyer = null; //dr\classes\dom\tag\form\Select     
@@ -72,9 +79,31 @@ class detailsave_transactions extends TCRUDDetailSaveController
     public $objTxtNotesInternal = null; //dr\classes\dom\tag\form\Textarea
     public $objTxtNotesExternal = null; //dr\classes\dom\tag\form\Textarea
 
-    private $objForm = null; ////dr\classes\dom\tag\form\Form --> NOT a form generator, because it has so many custom elements
+    //lines
+    public $objEdtQuantity = null; //dr\classes\dom\tag\form\InputText
+    public $objEdtDescription = null; //dr\classes\dom\tag\form\InputText
+    public $objEdtVATPercentage = null; //dr\classes\dom\tag\form\InputText
+    public $objEdtPurchasePriceExclVAT = null; //dr\classes\dom\tag\form\InputText
+    public $objEdtDiscountPriceExclVAT = null; //dr\classes\dom\tag\form\InputText
+    public $objEdtPriceExclVAT = null; //dr\classes\dom\tag\form\InputText
+
+
+    // private $objForm = null; ////dr\classes\dom\tag\form\Form --> NOT a form generator, because it has so many custom elements
     public $objHidFormSubmitted = null; //dr\classes\dom\tag\form\InputHidden this field is used to detect of form is submitted. dom element is filled with number when the form is submitted.
     public $objHidCSRFToken = null; //dr\classes\dom\tag\form\InputHidden this field is used to detect Cross Site Request Forgery
+
+
+    private $objTransactionLines = null; //TTransactionsLines
+
+    /**
+     * 
+     */
+    public function __construct()
+    {
+        $this->objTransactionLines = new TTransactionsLines();
+
+        parent::__construct();
+    }
 
     /**
      * define the fields that are in the detail screen
@@ -116,6 +145,69 @@ class detailsave_transactions extends TCRUDDetailSaveController
         // $this->getFormGenerator()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
 
 
+        //==== LINES
+
+            //quantity
+            $this->objEdtQuantity = new InputText(true);
+            $this->objEdtQuantity->setNameAndID('edtQuantity');
+            // $this->objEdtQuantity->setClass('fullwidthtag');   
+            $this->objEdtQuantity->setMaxLength(10);
+            $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
+            $this->objEdtQuantity->addValidator($objValidator);
+            // $this->getFormGenerator()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
+
+
+            //description
+            $this->objEdtDescription = new InputText();
+            $this->objEdtDescription->setNameAndID('edtDescription');
+            // $this->objEdtDescription->setClass('fullwidthtag');   
+            $this->objEdtDescription->setMaxLength(50);
+            $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
+            $this->objEdtDescription->addValidator($objValidator);
+            // $this->getFormGenerator()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
+
+
+            //vat percentage
+            $this->objEdtVATPercentage = new InputText();
+            $this->objEdtVATPercentage->setNameAndID('edtVATPercentage');
+            // $this->objEdtVATPercentage->setClass('fullwidthtag');   
+            $this->objEdtVATPercentage->setMaxLength(50);
+            $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
+            $this->objEdtVATPercentage->addValidator($objValidator);
+            // $this->getFormGenerator()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
+        
+
+            //purchase price
+            $this->objEdtPurchasePriceExclVAT = new InputText();
+            $this->objEdtPurchasePriceExclVAT->setNameAndID('edtPurchasePrice');
+            // $this->objEdtPurchasePriceExclVAT->setClass('fullwidthtag');   
+            $this->objEdtPurchasePriceExclVAT->setMaxLength(50);
+            $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
+            $this->objEdtPurchasePriceExclVAT->addValidator($objValidator);
+            // $this->getFormGenerator()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
+
+
+            //discount price
+            $this->objEdtDiscountPriceExclVAT = new InputText();
+            $this->objEdtDiscountPriceExclVAT->setNameAndID('edtDiscountPrice');
+            // $this->objEdtDiscountPriceExclVAT->setClass('fullwidthtag');   
+            $this->objEdtDiscountPriceExclVAT->setMaxLength(50);
+            $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
+            $this->objEdtDiscountPriceExclVAT->addValidator($objValidator);
+            // $this->getFormGenerator()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
+            
+
+            //unit price
+            $this->objEdtPriceExclVAT = new InputText();
+            $this->objEdtPriceExclVAT->setNameAndID('edtUnitPrice');
+            // $this->objEdtPriceExclVAT->setClass('fullwidthtag');   
+            $this->objEdtPriceExclVAT->setMaxLength(50);
+            $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
+            $this->objEdtPriceExclVAT->addValidator($objValidator);
+            // $this->getFormGenerator()->add($this->objEdtPurchaseOrderNo, '', transm($this->getModule(), 'form_field_newincrementednumber', 'New transaction starts at number'));
+                 
+
+
         //internal notes
         $this->objTxtNotesInternal = new Textarea();
         $this->objTxtNotesInternal->setNameAndID('txtInternalNotes');
@@ -126,7 +218,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
          //external notes
          $this->objTxtNotesExternal = new Textarea();
-         $this->objTxtNotesExternal->setNameAndID('txtInternalNotes');
+         $this->objTxtNotesExternal->setNameAndID('txtExternalNotes');
          $this->objTxtNotesExternal->setClass('fullwidthtag');   
          $this->objTxtNotesExternal->addValidator($objValidator);
         //  $this->getFormGenerator()->add($this->objTxtAddress, '', transm($this->getModule(), 'form_field_addressseller', 'Address seller'));
@@ -146,8 +238,9 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     protected function formToModel()
     {
+ 
         global $objLoginController;
-
+        $iCountLines = 0;
 
         //transaction type
         $this->getModel()->set(TTransactions::FIELD_TRANSACTIONSTYPEID, $this->objSelTransactionsType->getContentsSubmitted()->getValueAsInt());
@@ -161,13 +254,42 @@ class detailsave_transactions extends TCRUDDetailSaveController
         //purchase order number
         $this->getModel()->set(TTransactions::FIELD_PURCHASEORDERNUMBER, $this->objEdtPurchaseOrderNo->getContentsSubmitted()->getValue());
 
+
+        //====LINES
+// vardumpdie($this->objEdtDescription->getValueSubmitted(), 'pierper');
+        $iTotalLines = count($this->objEdtDescription->getValueSubmitted());
+        //@todo delete old lines
+
+        //add new lines
+        for ($iLC = 0; $iLC < $iTotalLines; $iLC++)
+        {
+            $this->objTransactionLines->newRecord();
+            
+            $this->objTransactionLines->set(TTransactionsLines::FIELD_QUANTITY, new TDecimal($this->objEdtQuantity->getValueSubmitted()[$iLC], 4));
+            $this->objTransactionLines->setDescription($this->objEdtDescription->getValueSubmitted[$iLC]);
+            $this->objTransactionLines->set(TTransactionsLines::FIELD_VATPERCENTAGE, new TCurrency($this->objEdtVATPercentage->getValueSubmitted()[$iLC]));
+            $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITPURCHASEPRICEEXCLVAT, new TCurrency($this->objEdtPurchasePriceExclVAT->getValueSubmitted()[$iLC]));
+            $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITDISCOUNTEXCLVAT, new TCurrency($this->objEdtDiscountPriceExclVAT->getValueSubmitted()[$iLC]));
+            $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITPRICEEXCLVAT, new TCurrency($this->objEdtPriceExclVAT->getValueSubmitted()[$iLC]));
+        }
+        
+
+
+
+
+
+        //====THE REST
+
         //internal notes
         $this->getModel()->set(TTransactions::FIELD_NOTESINTERNAL, $this->objTxtNotesInternal->getContentsSubmitted()->getValue());
 
         //external notes
         $this->getModel()->set(TTransactions::FIELD_NOTESEXTERNAL, $this->objTxtNotesExternal->getContentsSubmitted()->getValue());
 
-        //auto generated
+
+        //====AUTO GENERATED
+
+        //user who created the transaction
         $this->getModel()->set(TTransactions::FIELD_CREATEDBYCONTACTID, $objLoginController->getUsers()->getID());
     }
 
@@ -176,6 +298,16 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     protected function modelToForm()
     {
+        //transactions-lines
+        if ($this->getModel()->getNewAll())
+        {
+            $this->objTransactionLines->sort(TTransactionsLines::FIELD_ORDER);
+            $this->objTransactionLines->limit(1000);
+            $this->objTransactionLines->loadFromDB();
+        }
+        
+
+
         //transactions-types
         $objTypes = new TTransactionsTypes();
         $objTypes->sort(TTransactionsTypes::FIELD_ORDER);
@@ -223,7 +355,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     public function onSavePre()
     {
-        return true;
+        return $this->objTransactionLines->saveToDBAll();
     }
 
     /**

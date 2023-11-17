@@ -15,9 +15,9 @@ class InputText extends InputAbstract
 	private $sOnChange = '';
 	private $sPlaceHolder = ''; //new in html5
 
-	public function __construct()
+	public function __construct($bIsArray = false)
 	{
-		parent::__construct();
+		parent::__construct($bIsArray);
 		$this->setType('text');
 	}
 

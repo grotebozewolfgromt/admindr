@@ -20,9 +20,9 @@ class InputRadio extends InputAbstract
 	private $sLabel = '';
 	private $bChecked = false;
 
-	public function __construct()
+	public function __construct($bIsArray = false)
 	{
-		parent::__construct();
+		parent::__construct($bIsArray);
 		$this->setType('radio');
 	}
 

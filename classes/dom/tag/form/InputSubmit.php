@@ -13,9 +13,9 @@ class InputSubmit extends InputAbstract
 {
 
         
-	public function __construct()
+	public function __construct($bIsArray = false)
 	{
-		parent::__construct();
+		parent::__construct($bIsArray);
 		$this->setType('submit');
 	}
         

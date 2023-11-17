@@ -15,9 +15,9 @@ class InputButton extends InputAbstract
 	private $sDataCallback = ''; //used by google recaptcha
 	private $sDataAction = ''; //used by google recaptcha
 
-	public function __construct()
+	public function __construct($bIsArray = false)
 	{
-		parent::__construct();
+		parent::__construct($bIsArray);
 		$this->setType('button');
 	}
 

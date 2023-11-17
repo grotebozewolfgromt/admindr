@@ -11,9 +11,9 @@ namespace dr\classes\dom\tag\form;
  */
 class InputHidden extends InputAbstract
 {
-	public function __construct()
+	public function __construct($bIsArray = false)
 	{
-		parent::__construct();
+		parent::__construct($bIsArray);
 		$this->setType('hidden');
 	}
 

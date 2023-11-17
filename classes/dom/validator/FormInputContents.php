@@ -76,6 +76,7 @@ class FormInputContents
 		return $this->sValue;
 	}
 
+
 	/**
 	 * alias for getValue
 	 * @return string

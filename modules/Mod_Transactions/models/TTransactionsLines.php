@@ -29,7 +29,7 @@ class TTransactionsLines extends TModel
 	const FIELD_UNITPRICEEXCLVAT			= 'crUnitPriceExclVAT'; //TCurrency: price per unit
 	const FIELD_UNITPURCHASEPRICEEXCLVAT	= 'crUnitPurchasePriceExclVAT'; //TCurrency: purchase price per unit
 	const FIELD_VATPERCENTAGE				= 'dcVATPercentage'; //TDecimal vat percentage
-	const FIELD_DISCOUNTPERUNIT				= 'crDiscountPerUnit'; //TDecimal amount of discount deducted from unit price
+	const FIELD_UNITDISCOUNTEXCLVAT			= 'crUnitDiscountExclVAT'; //TDecimal amount of discount deducted from unit price
 
 
 	// const FIELD_META_TOTALPRICEINCLVAT	= 'crTotalPriceInclVAT'; //calculated total amount of invoice INCLUDING VAT
@@ -102,6 +102,7 @@ class TTransactionsLines extends TModel
 	} 	
 		
 
+
 	/**
 	 * get unit price
 	 * 
@@ -122,6 +123,26 @@ class TTransactionsLines extends TModel
 		$this->set(TTransactionsLines::FIELD_UNITPRICEEXCLVAT, $objPrice);
 	} 		
 
+
+	/**
+	 * get unit purchase price
+	 * 
+	 * @return TCurrency
+	 */
+	public function getUnitPurchasePriceExclVAT()
+	{
+		return $this->get(TTransactionsLines::FIELD_UNITPURCHASEPRICEEXCLVAT);
+	}
+
+	/**
+	 * set unit price
+	 * 
+	 * @param TCurrency $objPrice
+	 */
+	public function setUnitPurchasePriceExclVAT($objPrice)
+	{
+		$this->set(TTransactionsLines::FIELD_UNITPURCHASEPRICEEXCLVAT, $objPrice);
+	} 		
 
 	/**
 	 * get vat percentage
@@ -148,9 +169,9 @@ class TTransactionsLines extends TModel
 	 * 
 	 * @return TCurrency
 	 */
-	public function getDiscountPerUnit()
+	public function getUnitDiscountExclVat()
 	{
-		return $this->get(TTransactionsLines::FIELD_DISCOUNTPERUNIT);
+		return $this->get(TTransactionsLines::FIELD_UNITDISCOUNTEXCLVAT);
 	}
 
 	/**
@@ -158,9 +179,9 @@ class TTransactionsLines extends TModel
 	 * 
 	 * @param TCurrency $objDiscount
 	 */
-	public function setDiscountPerUnit($objDiscount)
+	public function setUnitDiscountExclVat($objDiscount)
 	{
-		$this->set(TTransactionsLines::FIELD_DISCOUNTPERUNIT, $objDiscount);
+		$this->set(TTransactionsLines::FIELD_UNITDISCOUNTEXCLVAT, $objDiscount);
 	} 	
 
 	/**
@@ -287,7 +308,7 @@ class TTransactionsLines extends TModel
         $this->setFieldEncryptionDisabled(TTransactionsLines::FIELD_VATPERCENTAGE);	
 
 		//discount per unit
-		$this->setFieldCopyProps(TTransactionsLines::FIELD_DISCOUNTPERUNIT, TTransactionsLines::FIELD_UNITPRICEEXCLVAT);
+		$this->setFieldCopyProps(TTransactionsLines::FIELD_UNITDISCOUNTEXCLVAT, TTransactionsLines::FIELD_UNITPRICEEXCLVAT);
 	}
 	
 	
@@ -307,7 +328,7 @@ class TTransactionsLines extends TModel
 					TTransactionsLines::FIELD_UNITPRICEEXCLVAT,
 					TTransactionsLines::FIELD_UNITPURCHASEPRICEEXCLVAT,
 					TTransactionsLines::FIELD_VATPERCENTAGE,
-					TTransactionsLines::FIELD_DISCOUNTPERUNIT
+					TTransactionsLines::FIELD_UNITDISCOUNTEXCLVAT
 				);
 	}
 	
