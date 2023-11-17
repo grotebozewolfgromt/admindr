@@ -392,7 +392,7 @@ abstract class TCRUDDetailSaveController
                     }
 
                     //save if it is existing record
-                    if ((!$this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) 
+                    if ((!$this->objModel->getDirtyAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) 
                         $bSaveSuccess = $this->objModel->saveToDBAll(true, true, true);
 
                     //save if it is new record
