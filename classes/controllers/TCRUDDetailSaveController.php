@@ -359,9 +359,10 @@ abstract class TCRUDDetailSaveController
      */
     protected function handleSubmitted()
     {
+        global $objDBConnection;
 
-       if ($this->objFormGenerator->isFormSubmitted())
-       {
+        if ($this->objFormGenerator->isFormSubmitted())
+        {
             //check for max_vars
             if ((int)ini_get('max_input_vars') ==  count($_POST))  
             {
@@ -376,8 +377,14 @@ abstract class TCRUDDetailSaveController
                 
            if ($this->objFormGenerator->isValid()) //========== SAVE to database =========
            {
-               if ($this->onSavePre())
-               {               
+                //====> START DB TRANSACTION <====
+                if (!$objDBConnection->startTransaction())
+                {
+                    logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'start DB transaction FAILED');
+                }
+
+                if ($this->onSavePre())
+                {               
                     $bSaveSuccess = false;
 
                     //checkout system: check in again
@@ -396,7 +403,7 @@ abstract class TCRUDDetailSaveController
                     {
                         // if ((!$this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) ==> removed 17-11-2023
                         if (auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE))
-                            $bSaveSuccess = $this->objModel->saveToDBAll(true, true);
+                            $bSaveSuccess = $this->objModel->saveToDBAll(true, false);
                         else
                             logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'auth() for saving EXISTING record FAILED');
                     }
@@ -404,17 +411,22 @@ abstract class TCRUDDetailSaveController
                     {                        
                         // if (($this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CREATE)) ==> removed 17-11-2023
                         if (auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CREATE))
-                            $bSaveSuccess = $this->objModel->saveToDBAll(true, true);
+                            $bSaveSuccess = $this->objModel->saveToDBAll(true, false);
                         else
                             logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'auth() for saving NEW record FAILED');
                     }
 
-                        
                     $this->onSavePost($bSaveSuccess);
 
                     //handle button presses
                     if ($bSaveSuccess)
                     {
+                        //====> COMMIT DB TRANSACTION <====
+                        if (!$objDBConnection->commit())
+                        {
+                            logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'commit DB transaction FAILED');
+                        }
+
                         //BUTTON save & close clicked
                         // if (!$this->objSubmitClose->getContentsSubmitted(Form::METHOD_POST)->isEmpty())//"submit & close" has a value if clicked
                         // {
@@ -442,6 +454,12 @@ abstract class TCRUDDetailSaveController
                     }
                     else
                     {
+                        //====> ROLLBACK DB TRANSACTION <====
+                        if (!$objDBConnection->rollback())
+                        {
+                            logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'commit DB transaction FAILED');
+                        }
+
                         sendMessageError(transcms('message_saverecord_error', 'Save error: record NOT saved!!'));
                         logError($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().' save error record with id '. $this->objModel->getID());                
                     } 
