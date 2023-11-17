@@ -28,3 +28,6 @@ detailsave_transactions_section_notes_name;Notes;Notes
 detailsave_transactions_field_internalnotes_description;Internal notes - only visible to you;Internal notes - only visible to you
 detailsave_transactions_field_externalnotes_description;External notes - shown on invoice;External notes - shown on invoice
 detailsave_transactions_section_history_name;History;History
+pagetitle_detailsave_transactions_edit;Edit transaction;Edit transaction
+overview_column_crMETATotalPriceInclVAT;Total;Total
+detailsave_transactions_button_addline;Add line +;Add line +

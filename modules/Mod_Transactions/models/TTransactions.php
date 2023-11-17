@@ -66,11 +66,11 @@ class TTransactions extends TModel
 	const FIELD_PSPTRANSACTIONID		= 'sPSPTransactionID'; //Payment Service Provider transaction id. Paypal, Stripe, IDeal all return transaction id's
 	const FIELD_IPADDRESSBUYER			= 'sIAB'; //for tax purposes the ip adress of the buyer. encrypted
 	
-	const FIELD_META_TOTALPRICEINCLVAT			= 'crTotalPriceInclVAT'; //calculated total amount of invoice INCLUDING VAT
-	const FIELD_META_TOTALPRICEEXCLVAT			= 'crTotalPriceExclVAT'; //calculated total amount of invoice EXCLUDING VAT
-	const FIELD_META_TOTALPURCHASEPRICEEXCLVAT	= 'crTotalPurchasePriceExclVAT'; //calculated total purchase price EXCLUDING VAT
-	const FIELD_META_TOTALVAT					= 'crTotalVAT'; //calculated total amount VAT on invoice
-	const FIELD_META_AMOUNTDUE					= 'crAmountDue'; //the amount that the buyer still has to pay
+	const FIELD_META_TOTALPRICEINCLVAT			= 'crMETATotalPriceInclVAT'; //calculated total amount of invoice INCLUDING VAT
+	const FIELD_META_TOTALPRICEEXCLVAT			= 'crMETATotalPriceExclVAT'; //calculated total amount of invoice EXCLUDING VAT
+	const FIELD_META_TOTALPURCHASEPRICEEXCLVAT	= 'crMETATotalPurchasePriceExclVAT'; //calculated total purchase price EXCLUDING VAT
+	const FIELD_META_TOTALVAT					= 'crMETATotalVAT'; //calculated total amount VAT on invoice
+	const FIELD_META_AMOUNTDUE					= 'crMETAAmountDue'; //the amount that the buyer still has to pay
 	
 	const ENCRYPTION_IPADDR_PASSPHRASE 			= 'MvR%6s_PlcXzw2$4'; //passphrase for the encryption algo	
 

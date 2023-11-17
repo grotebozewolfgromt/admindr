@@ -1,6 +1,6 @@
 <style>
     /* we do the stylesheet inline, because it only applies to this page */
-    .formsection-line
+    .transactionlines-grid-row
     {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(100px,1fr));
@@ -9,7 +9,42 @@
     {
         width: 100%;
     }
+
+    #template-transactionslines
+    {
+        display: none;
+    }
 </style>
+
+<script>
+    /* we do the javascript inline, because it only applies to this page */
+    
+    /**
+     * function addTransactionsLine()
+     * 
+     * handles all the actions from the button 'add line'
+     */
+    function addTransactionsLine()
+    {
+        objParentNode = document.getElementsByClassName('transactionlines-grid')[0];
+
+        //retrieve the template line + duplicate it
+        objTemplateDiv = document.getElementById('template-transactionslines');
+        objNewLine = objTemplateDiv.cloneNode(true);
+        objNewLine.id = '';//we want to get rid of the id to make it visible
+        
+        //temp remove the button (otherwise the new line is added below button)
+        objButtonAddLine = document.getElementById('transactions-button-add-line');
+        objParentNode.removeChild(objButtonAddLine);
+
+        //add new line node       
+        objParentNode.appendChild(objNewLine);
+        
+        //add button again
+        objParentNode.appendChild(objButtonAddLine);
+    }
+</script>
+
 <form id="detailsave" name="detailsave" method="post" action="<?php echo getURLThisScript(); ?>">
 
     <!-- form obligatory fields -->
@@ -53,7 +88,9 @@
         <div class="formsection-header"><?php echo transm($objController->getModule(), 'detailsave_transactions_section_lines_name', 'Lines'); ?></div>
 
         <div class="transactionlines-grid">
-            <div class="formsection-line">
+
+            <!-- this is the template we copy with javascript to make a new line -->
+            <div class="formsection-line transactionlines-grid-row" id="template-transactionslines">
                 <!-- quantity -->
                 <div>
                     <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_quantity_description', 'Quantity'); ?></div>
@@ -90,8 +127,50 @@
                     <?php echo $objController->objEdtPriceExclVAT->renderHTMLNode(); ?>
                 </div>                   
             </div>
-        </div>
-    </div> 
+
+            <div class="formsection-line transactionlines-grid-row">
+                <!-- quantity -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_quantity_description', 'Quantity'); ?></div>
+                    <?php echo $objController->objEdtQuantity->renderHTMLNode(); ?>
+                </div>
+
+                <!-- description -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_description_description', 'Description'); ?></div>                    
+                    <?php echo $objController->objEdtDescription->renderHTMLNode(); ?>
+                </div>
+
+                <!-- vat percentage -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_vatpercentage_description', 'VAT Percentage'); ?></div>                                        
+                    <?php echo $objController->objEdtVATPercentage->renderHTMLNode(); ?>
+                </div>                
+
+                <!-- purchase price -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_purchasepriceexclvat_description', 'Purchase price (excl VAT)'); ?></div>                                        
+                    <?php echo $objController->objEdtPurchasePriceExclVAT->renderHTMLNode(); ?>
+                </div>   
+                
+                <!-- discount price -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_discountprice_description', 'Discount (excl VAT)'); ?></div>                                        
+                    <?php echo $objController->objEdtDiscountPriceExclVAT->renderHTMLNode(); ?>
+                </div>               
+                
+                <!-- unit price excluding vat -->
+                <div>
+                    <div class="form-description" for=""><?php echo transm($objController->getModule(), 'detailsave_transactions_field_unitpriceexclvat_description', 'Unit price (excl VAT)'); ?></div>                                        
+                    <?php echo $objController->objEdtPriceExclVAT->renderHTMLNode(); ?>
+                </div>                   
+            </div>
+
+            <!-- add line button -->
+            <input type="button" onclick="addTransactionsLine()" value="<?php echo transm($objController->getModule(), 'detailsave_transactions_button_addline', 'Add line +'); ?>" class="button_normal" id="transactions-button-add-line">
+        </div><!-- END transactionlines-grid -->
+
+    </div><!-- END formsection --> 
 
     
     <!-- notes section -->

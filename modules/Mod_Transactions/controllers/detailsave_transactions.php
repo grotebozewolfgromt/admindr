@@ -238,9 +238,10 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     protected function formToModel()
     {
- 
         global $objLoginController;
-        $iCountLines = 0;
+
+
+        //===== HEADER ====
 
         //transaction type
         $this->getModel()->set(TTransactions::FIELD_TRANSACTIONSTYPEID, $this->objSelTransactionsType->getContentsSubmitted()->getValueAsInt());
@@ -255,7 +256,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
         $this->getModel()->set(TTransactions::FIELD_PURCHASEORDERNUMBER, $this->objEdtPurchaseOrderNo->getContentsSubmitted()->getValue());
 
 
-        //====LINES
+        //==== LINES ====
         $iTotalLines = count($this->objEdtDescription->getValueSubmitted()); //get length of array of one of the arrays, doesn't matter which one
         if ($iTotalLines > 0)
         {
@@ -274,10 +275,10 @@ class detailsave_transactions extends TCRUDDetailSaveController
         }      
         //save is done in onSavePost(), 
         //because there we have the transactionid to store in transaction lines
-        //BUT we need to read the lines here, because we need to calculate the meta fields to save them in the transaction
+        //BUT we need to read the lines here from the fields, because we need to calculate the meta fields to save them in TTransaction
 
 
-        //====THE REST
+        //==== NOTES ===
 
         //internal notes
         $this->getModel()->set(TTransactions::FIELD_NOTESINTERNAL, $this->objTxtNotesInternal->getContentsSubmitted()->getValue());
@@ -286,7 +287,12 @@ class detailsave_transactions extends TCRUDDetailSaveController
         $this->getModel()->set(TTransactions::FIELD_NOTESEXTERNAL, $this->objTxtNotesExternal->getContentsSubmitted()->getValue());
 
 
-        //====AUTO GENERATED
+        //==== HISTORY ===
+
+
+
+
+        //==== AUTO GENERATED ====
 
         //user who created the transaction
         $this->getModel()->set(TTransactions::FIELD_CREATEDBYCONTACTID, $objLoginController->getUsers()->getID());
@@ -295,12 +301,12 @@ class detailsave_transactions extends TCRUDDetailSaveController
         $this->getModel()->set(TTransactions::FIELD_DATEFINALIZED, new TDateTime());
 
         //meta fields
-vardumpdie($this->objTransactionLines->calculateTotalPriceInclVat(), 'humpiedumpie');
         $this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEINCLVAT, $this->objTransactionLines->calculateTotalPriceInclVat());
-        // $this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEEXCLVAT, 0);
-        // $this->getModel()->set(TTransactions::FIELD_META_TOTALPURCHASEPRICEEXCLVAT, 0);
-        // $this->getModel()->set(TTransactions::FIELD_META_TOTALVAT, 0);
-        // $this->getModel()->set(TTransactions::FIELD_META_AMOUNTDUE, 0);
+        $this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEEXCLVAT, $this->objTransactionLines->calculateTotalPriceExclVat());
+        $this->getModel()->set(TTransactions::FIELD_META_TOTALPURCHASEPRICEEXCLVAT, $this->objTransactionLines->calculateTotalPurchasePriceExclVat());
+        $this->getModel()->set(TTransactions::FIELD_META_TOTALVAT, $this->objTransactionLines->calculateTotalVat());
+        // $this->getModel()->set(TTransactions::FIELD_META_AMOUNTDUE, 0);--> @todo from transaction payments
+
     }
 
     /**
@@ -308,15 +314,8 @@ vardumpdie($this->objTransactionLines->calculateTotalPriceInclVat(), 'humpiedump
      */
     protected function modelToForm()
     {
-        //transactions-lines
-        if ($this->getModel()->getNewAll())
-        {
-            $this->objTransactionLines->sort(TTransactionsLines::FIELD_ORDER);
-            $this->objTransactionLines->limit(1000);
-            $this->objTransactionLines->loadFromDB();
-        }
-        
-
+       
+        //==== HEADER ====
 
         //transactions-types
         $objTypes = new TTransactionsTypes();
@@ -342,6 +341,18 @@ vardumpdie($this->objTransactionLines->calculateTotalPriceInclVat(), 'humpiedump
 
         //purchase order number
         $this->objEdtPurchaseOrderNo->setValue($this->getModel()->get(TTransactions::FIELD_PURCHASEORDERNUMBER));
+
+
+        //==== TRANSACTIONS LINES ====
+        if ($this->getModel()->getNewAll())
+        {
+            $this->objTransactionLines->sort(TTransactionsLines::FIELD_ORDER);
+            $this->objTransactionLines->limit(1000);
+            $this->objTransactionLines->loadFromDB();
+        }
+        //fields are actually set in the template
+
+        //===== NOTES ====
 
         //internal notes
         $this->objTxtNotesInternal->setValue($this->getModel()->get(TTransactions::FIELD_NOTESINTERNAL));

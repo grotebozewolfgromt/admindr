@@ -577,20 +577,79 @@ class TTransactionsLines extends TModel
 	public function calculateTotalPriceInclVat()
 	{
 		$objTotal = new TCurrency(0, 4);
+		$objInclVat = null;
 
 		$this->resetRecordPointer();
 		while($this->next())
-		{
-			$objTotal->add($this->getUnitDiscountExclVat()->getIncludingVAT($this->getVATPercentage()));
+		{			
+			$objInclVat = $this->getUnitPriceExclVAT()->getIncludingVAT($this->getVATPercentage());
+			$objInclVat->multiply($this->getQuantity()); //calculate total per line
+			
+			$objTotal->add($objInclVat);			
 		}
 
 		return $objTotal;
 	}
 
-	        //$this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEINCLVAT, 0);
-        // $this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEEXCLVAT, 0);
-        // $this->getModel()->set(TTransactions::FIELD_META_TOTALPURCHASEPRICEEXCLVAT, 0);
-        // $this->getModel()->set(TTransactions::FIELD_META_TOTALVAT, 0);
-        // $this->getModel()->set(TTransactions::FIELD_META_AMOUNTDUE, 0);
+	/**
+	 * calculate the total price of the transaction excluding vat
+	 * 
+	 * @return TCurrency retuns new currency object
+	 */
+	public function calculateTotalPriceExclVat()
+	{
+		$objTotal = new TCurrency(0, 4);
+		$objExclVat = null;
+
+		$this->resetRecordPointer();
+		while($this->next())
+		{			
+			$objExclVat = clone $this->getUnitPriceExclVAT(); //we don't want to calculate on the actual object
+			$objExclVat->multiply($this->getQuantity()); //calculate total per line
+			
+			$objTotal->add($objExclVat);			
+		}
+
+		return $objTotal;
+	}	
+
+
+	/**
+	 * calculate the total PURCHASE price of the transaction excluding vat
+	 * 
+	 * @return TCurrency retuns new currency object
+	 */
+	public function calculateTotalPurchasePriceExclVat()
+	{
+		$objTotal = new TCurrency(0, 4);
+		$objExclVat = null;
+
+		$this->resetRecordPointer();
+		while($this->next())
+		{			
+			$objExclVat = clone $this->getUnitPurchasePriceExclVAT(); //we don't want to calculate on the actual object
+			$objExclVat->multiply($this->getQuantity()); //calculate total per line
+			
+			$objTotal->add($objExclVat);			
+		}
+
+		return $objTotal;
+	}	
+	
+	/**
+	 * calculate the total VAT of the transaction
+	 * 
+	 * @return TCurrency retuns new currency object
+	 */
+	public function calculateTotalVat()
+	{
+		$objVat = null;
+
+		$objVat = $this->calculateTotalPriceInclVat();
+		$objVat->subtract($this->calculateTotalPriceExclVat()); //total excl vat
+	
+		return $objVat;
+	}	
+        
 } 
 ?>
