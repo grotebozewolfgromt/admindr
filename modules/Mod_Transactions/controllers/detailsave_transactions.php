@@ -149,7 +149,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
             //quantity
             $this->objEdtQuantity = new InputText(true);
-            $this->objEdtQuantity->setNameAndID('edtQuantity');
+            $this->objEdtQuantity->setName('edtQuantity');
             // $this->objEdtQuantity->setClass('fullwidthtag');   
             $this->objEdtQuantity->setMaxLength(10);
             $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
@@ -159,7 +159,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
             //description
             $this->objEdtDescription = new InputText();
-            $this->objEdtDescription->setNameAndID('edtDescription');
+            $this->objEdtDescription->setName('edtDescription');
             // $this->objEdtDescription->setClass('fullwidthtag');   
             $this->objEdtDescription->setMaxLength(50);
             $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '50'), 50);
@@ -169,7 +169,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
             //vat percentage
             $this->objEdtVATPercentage = new InputText();
-            $this->objEdtVATPercentage->setNameAndID('edtVATPercentage');
+            $this->objEdtVATPercentage->setName('edtVATPercentage');
             // $this->objEdtVATPercentage->setClass('fullwidthtag');   
             $this->objEdtVATPercentage->setMaxLength(50);
             $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
@@ -179,7 +179,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
             //purchase price
             $this->objEdtPurchasePriceExclVAT = new InputText();
-            $this->objEdtPurchasePriceExclVAT->setNameAndID('edtPurchasePrice');
+            $this->objEdtPurchasePriceExclVAT->setName('edtPurchasePrice');
             // $this->objEdtPurchasePriceExclVAT->setClass('fullwidthtag');   
             $this->objEdtPurchasePriceExclVAT->setMaxLength(50);
             $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
@@ -189,7 +189,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
             //discount price
             $this->objEdtDiscountPriceExclVAT = new InputText();
-            $this->objEdtDiscountPriceExclVAT->setNameAndID('edtDiscountPrice');
+            $this->objEdtDiscountPriceExclVAT->setName('edtDiscountPrice');
             // $this->objEdtDiscountPriceExclVAT->setClass('fullwidthtag');   
             $this->objEdtDiscountPriceExclVAT->setMaxLength(50);
             $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);
@@ -199,7 +199,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
             //unit price
             $this->objEdtPriceExclVAT = new InputText();
-            $this->objEdtPriceExclVAT->setNameAndID('edtUnitPrice');
+            $this->objEdtPriceExclVAT->setName('edtUnitPrice');
             // $this->objEdtPriceExclVAT->setClass('fullwidthtag');   
             $this->objEdtPriceExclVAT->setMaxLength(50);
             $objValidator = new Maximumlength(transcms('form_error_maxlengthexceeded', 'The maximumlength [length] of this field is exceeded', 'length', '10'), 10);

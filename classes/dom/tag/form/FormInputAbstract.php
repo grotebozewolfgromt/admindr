@@ -45,10 +45,11 @@ abstract class FormInputAbstract extends TagAbstract
         
 	public function __construct($bIsArray = false)
 	{
-		parent::__construct();
+		parent::__construct($bIsArray);
 		$this->objContentsInit = new FormInputContents($this);
 		$this->objContentsSubmitted = new FormInputContents($this);
 		$this->objValidators = new TObjectList();
+		
 		$this->bIsArray = $bIsArray;
 	}
 

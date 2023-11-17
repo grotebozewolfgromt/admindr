@@ -15,9 +15,9 @@ abstract class InputAbstract extends FormInputAbstract
 	private $iSize = '';
 	private $iMaxLength = '';
 
-	public function __construct()
+	public function __construct($bIsArray = false)
 	{
-		parent::__construct();
+		parent::__construct($bIsArray);
 		$this->setTagName('input');
 		$this->setHasClosingTag(false);
 

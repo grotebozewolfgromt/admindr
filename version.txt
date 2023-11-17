@@ -136,6 +136,11 @@ versie conflict niet opgelost
 -basis elementen factuur - geeft nog fout
 -weergeven factuur lukt, opslaan gaat nog niet goed (ivm formgenerator isFormSubmitted())
 
+17 nov 2023
+============
+bug forms arrays fixed 
+
+
 16 nov 2023
 ========
 custom form nog bezig
@@ -144,7 +149,7 @@ opslaan transactie werkt nu
  * 17 nov 2023: forminputabstract BUGFIX: nasty bug! komma in parameter bij filteren for XSS
  * 17 nov 2023: forminputabstract getValueSubmitted() added for fast reading of values
 
-TODO: BUG: arrays in form generate geven geen []
+
 
 
 4 nov 2023
