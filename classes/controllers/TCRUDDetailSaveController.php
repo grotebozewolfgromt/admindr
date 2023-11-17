@@ -400,7 +400,8 @@ abstract class TCRUDDetailSaveController
                         }
                     }
 
-                    //==== MODEL SAVE
+
+                    //==== SAVE the MODEL
                     //save if it is EXISTING record
                     if (isset($_GET[ACTION_VARIABLE_ID])) 
                     {
@@ -418,6 +419,7 @@ abstract class TCRUDDetailSaveController
                         else
                             logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'auth() for saving NEW record FAILED');
                     }
+
 
                     //==== SAVE POST
                     if (!$this->onSavePost($bSaveSuccess)) 

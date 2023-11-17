@@ -139,6 +139,7 @@ versie conflict niet opgelost
 17 nov 2023
 ============
 bug forms arrays fixed 
+eigen transactions zijn nu ingebouwd in cruddetailssave controller. hierdoor mogelijk om transactie te starten met meerdere db tabellen (voorheen alleen eigen model)
 
 
 16 nov 2023
