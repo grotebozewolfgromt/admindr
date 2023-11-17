@@ -269,7 +269,7 @@ abstract class TUsersSessionsAbstract extends TModel
             
             if ($this->count() > 0)
             {
-                // logDebug(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'nu this->count() > 0');    
+                logDebug(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'nu this->count() > 0');    
 
                 if ($this->getFingerprintBrowser() == $sFingerprint) //fingerprint
                 {

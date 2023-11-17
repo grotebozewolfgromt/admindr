@@ -359,10 +359,9 @@ abstract class TCRUDDetailSaveController
      */
     protected function handleSubmitted()
     {
-        global $objDBConnection;
 
-        if ($this->objFormGenerator->isFormSubmitted())
-        {
+       if ($this->objFormGenerator->isFormSubmitted())
+       {
             //check for max_vars
             if ((int)ini_get('max_input_vars') ==  count($_POST))  
             {
@@ -377,9 +376,6 @@ abstract class TCRUDDetailSaveController
                 
            if ($this->objFormGenerator->isValid()) //========== SAVE to database =========
            {
-                //====> start db transaction <====
-            //    $objDBConnection->startTransaction();
-
                if ($this->onSavePre())
                {               
                     $bSaveSuccess = false;
@@ -395,42 +391,20 @@ abstract class TCRUDDetailSaveController
                         }
                     }
 
-
                     //save if it is existing record
-                    // if ((!$this->objModel->getDirtyAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) 
-                        $bSaveSuccess = $this->objModel->saveToDBAll(true, true);
-                    // else
-                        // logDebug(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'not dirty or auth() failed on existing record. this is not an error');
+                    if ((!$this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) 
+                        $bSaveSuccess = $this->objModel->saveToDBAll(true, true, true);
 
                     //save if it is new record
-                    // if (($this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CREATE)) 
-                        // $bSaveSuccess = $this->objModel->saveToDBAll(true, true);
-                    // else
-                    //     logDebug(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'not new or auth() failed on new record. this is not an error');
+                    if (($this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CREATE)) 
+                        $bSaveSuccess = $this->objModel->saveToDBAll(true, true, true);
 
-                    //just checking for debug purposes if the save actions gave error, proper error handling later    
-                    if (!$bSaveSuccess)
-                        logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, get_class($this->objModel).' DB SAVE FAILED!!');
-
-
-                    //post save
-                    if (!$this->onSavePost($bSaveSuccess))
-                    {
-                        logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'onSavePost() failed');
-                        $bSaveSuccess = false;
-                    }
-
+                        
+                    $this->onSavePost($bSaveSuccess);
 
                     //handle button presses
                     if ($bSaveSuccess)
                     {
-                        //====> commit transaction <=====
-                        // if (!$objDBConnection->commit())
-                        // {
-                        //     sendMessageError(transcms('message_saverecord_error_databasecommitfailed', 'Database commit error. Record NOT saved!!'));
-                        //     logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'Database commit FAILED');                
-                        // }
-
                         //BUTTON save & close clicked
                         // if (!$this->objSubmitClose->getContentsSubmitted(Form::METHOD_POST)->isEmpty())//"submit & close" has a value if clicked
                         // {
@@ -458,12 +432,6 @@ abstract class TCRUDDetailSaveController
                     }
                     else
                     {
-                        //====> rollback transaction <=====
-                        // if (!$objDBConnection->rollback())
-                        // {                           
-                        //     logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'Database rollback FAILED');                
-                        // }                        
-
                         sendMessageError(transcms('message_saverecord_error', 'Save error: record NOT saved!!'));
                         logError($this->sModule.':'.$this->getAuthorisationCategory(), $this->getAuthorisationCategory().' save error record with id '. $this->objModel->getID());                
                     } 
