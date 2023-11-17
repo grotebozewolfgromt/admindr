@@ -126,20 +126,11 @@ todo: background uploading files/images
 -there is a running issue automatically logging out: this has to do with the browserfingerprint which returns sometimes a different fingerprint. The debugLog() logs the generated fingerprints
 
 
-9 nov 2023
-=======
-versie conflict niet opgelost
--bezig met detailsave_transactions
--rename getForm() -> getFormGenerator() in TCRUDDetailSaveController
--rename permission category invoices -> permission category transactions
--rename database field: transactions: invoicenumber -> incrementnumber
--basis elementen factuur - geeft nog fout
--weergeven factuur lukt, opslaan gaat nog niet goed (ivm formgenerator isFormSubmitted())
 
 17 nov 2023
 ============
 bug forms arrays fixed 
-
+transactions button addline works
 
 16 nov 2023
 ========
@@ -150,6 +141,15 @@ opslaan transactie werkt nu
  * 17 nov 2023: forminputabstract getValueSubmitted() added for fast reading of values
 
 
+9 nov 2023
+=======
+versie conflict niet opgelost
+-bezig met detailsave_transactions
+-rename getForm() -> getFormGenerator() in TCRUDDetailSaveController
+-rename permission category invoices -> permission category transactions
+-rename database field: transactions: invoicenumber -> incrementnumber
+-basis elementen factuur - geeft nog fout
+-weergeven factuur lukt, opslaan gaat nog niet goed (ivm formgenerator isFormSubmitted())
 
 
 4 nov 2023
