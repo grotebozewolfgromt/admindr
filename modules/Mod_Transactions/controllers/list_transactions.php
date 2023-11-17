@@ -48,7 +48,7 @@ class list_transactions extends TCRUDListController
             TSysContacts::FIELD_COMPANYNAME, 
             TSysContacts::FIELD_EMAILADDRESSENCRYPTED, 
                                ), $objTempContacts);
-        $this->executeDB();
+        $this->executeDB(1);
       
         //===show what?
         $arrTableColumnsShow = array(

@@ -144,6 +144,7 @@ test transaction fail werkt. nu laden lines
 laden factuurregels werkt nu
  * 17 nov 2023: TModel: saveToDB() custom order numbers allowed > 0
 factuurmodule heeft nog heel veel bugs
+dubbele facturen in factuurlijst weg
 
 
 16 nov 2023
