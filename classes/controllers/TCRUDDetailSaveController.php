@@ -392,12 +392,22 @@ abstract class TCRUDDetailSaveController
                     }
 
                     //save if it is existing record
-                    if ((!$this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) 
-                        $bSaveSuccess = $this->objModel->saveToDBAll(true, true);
-
-                    //save if it is new record
-                    if (($this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CREATE)) 
-                        $bSaveSuccess = $this->objModel->saveToDBAll(true, true);
+                    if (isset($_GET[ACTION_VARIABLE_ID])) 
+                    {
+                        // if ((!$this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE)) ==> removed 17-11-2023
+                        if (auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CHANGE))
+                            $bSaveSuccess = $this->objModel->saveToDBAll(true, true);
+                        else
+                            logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'auth() for saving EXISTING record FAILED');
+                    }
+                    else //save if it is NEW record
+                    {                        
+                        // if (($this->objModel->getNewAll()) && auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CREATE)) ==> removed 17-11-2023
+                        if (auth($this->sModule, $this->getAuthorisationCategory(), TModuleAbstract::PERM_OP_CREATE))
+                            $bSaveSuccess = $this->objModel->saveToDBAll(true, true);
+                        else
+                            logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'auth() for saving NEW record FAILED');
+                    }
 
                         
                     $this->onSavePost($bSaveSuccess);
