@@ -1,18 +1,7 @@
 UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
-pagetitle_detailsave_transactions_new;Create new transaction;Create new transaction
-detailsave_transactions_section_details_name;Details;Details
-detailsave_transactions_field_transactiontype_description;Transaction type;Transaction type
-detailsave_transactions_field_currency_description;Currency;Currency
-detailsave_transactions_field_purchaseorderno_description;Purchase order number;Purchase order number
-detailsave_transactions_section_lines_name;Lines;Lines
-detailsave_transactions_section_notes_name;Notes;Notes
-detailsave_transactions_field_internalnotes_description;Internal notes - only visible to you;Internal notes - only visible to you
-detailsave_transactions_field_externalnotes_description;External notes - shown on invoice;External notes - shown on invoice
-detailsave_transactions_section_history_name;History;History
 modulename_menu;Invoices + orders;Invoices + orders
-detailsave_transactions_field_buyer_description;Buyer;Buyer
-overview_column_dtInvoiceDate;Inv Date;Inv Date
-overview_column_sInvoiceNumber;Inv No;Inv No
+overview_column_dtDateFinalized;Date;Date
+overview_column_sIncrementNumber;Inc No;Inc No
 overview_column_sFirstNameInitials;Company;Company
 overview_column_sLastName;Name;Name
 overview_column_sEAE;Email;Email
@@ -22,21 +11,20 @@ tabsheets_module_name_Transactions;Transactions;Transactions
 tabsheets_module_explanation_Manage all invoices and orders;Manage all invoices and orders;Manage all invoices and orders
 tabsheets_module_name_Trans. Types;Trans. Types;Trans. Types
 tabsheets_module_explanation_Manage types of transactions;Manage types of transactions;Manage types of transactions
-pagetitle_detailsave_transactions_edit;Edit transaction;Edit transaction
-overview_column_sIncrementNumber;Inv No;Inv No
+pagetitle_detailsave_transactions_new;Create new transaction;Create new transaction
+detailsave_transactions_section_details_name;Details;Details
+detailsave_transactions_field_transactiontype_description;Transaction type;Transaction type
+detailsave_transactions_field_currency_description;Currency;Currency
+detailsave_transactions_field_buyer_description;Buyer;Buyer
+detailsave_transactions_field_purchaseorderno_description;Purchase order number;Purchase order number
+detailsave_transactions_section_lines_name;Lines;Lines
 detailsave_transactions_field_quantity_description;Quantity;Quantity
 detailsave_transactions_field_description_description;Description;Description
 detailsave_transactions_field_vatpercentage_description;VAT Percentage;VAT Percentage
 detailsave_transactions_field_purchasepriceexclvat_description;Purchase price (excl VAT);Purchase price (excl VAT)
-detailsave_transactions_field_discountprice_description;Discount;Discount
+detailsave_transactions_field_discountprice_description;Discount (excl VAT);Discount (excl VAT)
 detailsave_transactions_field_unitpriceexclvat_description;Unit price (excl VAT);Unit price (excl VAT)
-list_column_sName;Type name;Type name
-list_column_bIsStock;Stock;Stock
-list_column_bIsFinancial;Financial;Financial
-list_column_bIsDefaultInvoice;Invoice;Invoice
-list_column_bIsDefaultOrder;Order;Order
-list_column_sColorBackground;Color;Color
-list_column_iNewNumberIncrement;Increment;Increment
-list_column_iPaymentMadeWithinDays;Pay days;Pay days
-list_column_i_volgorde;Order;Order
-tab_title_transactiontypes;Transaction types;Transaction types
+detailsave_transactions_section_notes_name;Notes;Notes
+detailsave_transactions_field_internalnotes_description;Internal notes - only visible to you;Internal notes - only visible to you
+detailsave_transactions_field_externalnotes_description;External notes - shown on invoice;External notes - shown on invoice
+detailsave_transactions_section_history_name;History;History

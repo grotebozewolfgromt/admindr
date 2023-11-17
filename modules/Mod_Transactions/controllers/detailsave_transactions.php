@@ -158,7 +158,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
 
             //description
-            $this->objEdtDescription = new InputText();
+            $this->objEdtDescription = new InputText(true);
             $this->objEdtDescription->setName('edtDescription');
             // $this->objEdtDescription->setClass('fullwidthtag');   
             $this->objEdtDescription->setMaxLength(50);
@@ -168,7 +168,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
 
             //vat percentage
-            $this->objEdtVATPercentage = new InputText();
+            $this->objEdtVATPercentage = new InputText(true);
             $this->objEdtVATPercentage->setName('edtVATPercentage');
             // $this->objEdtVATPercentage->setClass('fullwidthtag');   
             $this->objEdtVATPercentage->setMaxLength(50);
@@ -178,7 +178,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
         
 
             //purchase price
-            $this->objEdtPurchasePriceExclVAT = new InputText();
+            $this->objEdtPurchasePriceExclVAT = new InputText(true);
             $this->objEdtPurchasePriceExclVAT->setName('edtPurchasePrice');
             // $this->objEdtPurchasePriceExclVAT->setClass('fullwidthtag');   
             $this->objEdtPurchasePriceExclVAT->setMaxLength(50);
@@ -188,7 +188,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
 
             //discount price
-            $this->objEdtDiscountPriceExclVAT = new InputText();
+            $this->objEdtDiscountPriceExclVAT = new InputText(true);
             $this->objEdtDiscountPriceExclVAT->setName('edtDiscountPrice');
             // $this->objEdtDiscountPriceExclVAT->setClass('fullwidthtag');   
             $this->objEdtDiscountPriceExclVAT->setMaxLength(50);
@@ -198,7 +198,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
             
 
             //unit price
-            $this->objEdtPriceExclVAT = new InputText();
+            $this->objEdtPriceExclVAT = new InputText(true);
             $this->objEdtPriceExclVAT->setName('edtUnitPrice');
             // $this->objEdtPriceExclVAT->setClass('fullwidthtag');   
             $this->objEdtPriceExclVAT->setMaxLength(50);
@@ -256,26 +256,25 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
 
         //====LINES
-// vardumpdie($this->objEdtDescription->getValueSubmitted(), 'pierper');
-        $iTotalLines = count($this->objEdtDescription->getValueSubmitted());
-        //@todo delete old lines
-
-        //add new lines
-        for ($iLC = 0; $iLC < $iTotalLines; $iLC++)
+        $iTotalLines = count($this->objEdtDescription->getValueSubmitted()); //get length of array of one of the arrays, doesn't matter which one
+        if ($iTotalLines > 0)
         {
-            $this->objTransactionLines->newRecord();
-            
-            $this->objTransactionLines->set(TTransactionsLines::FIELD_QUANTITY, new TDecimal($this->objEdtQuantity->getValueSubmitted()[$iLC], 4));
-            $this->objTransactionLines->setDescription($this->objEdtDescription->getValueSubmitted[$iLC]);
-            $this->objTransactionLines->set(TTransactionsLines::FIELD_VATPERCENTAGE, new TCurrency($this->objEdtVATPercentage->getValueSubmitted()[$iLC]));
-            $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITPURCHASEPRICEEXCLVAT, new TCurrency($this->objEdtPurchasePriceExclVAT->getValueSubmitted()[$iLC]));
-            $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITDISCOUNTEXCLVAT, new TCurrency($this->objEdtDiscountPriceExclVAT->getValueSubmitted()[$iLC]));
-            $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITPRICEEXCLVAT, new TCurrency($this->objEdtPriceExclVAT->getValueSubmitted()[$iLC]));
-        }
-        
+            $this->objTransactionLines->resetRecordPointer();
+            for ($iLC = 0; $iLC < $iTotalLines; $iLC++)
+            {
+                $this->objTransactionLines->newRecord();
 
-
-
+                $this->objTransactionLines->set(TTransactionsLines::FIELD_QUANTITY, new TDecimal($this->objEdtQuantity->getValueSubmitted()[$iLC], 4));
+                $this->objTransactionLines->set(TTransactionsLines::FIELD_DESCRIPTION, $this->objEdtDescription->getValueSubmitted()[$iLC]);
+                $this->objTransactionLines->set(TTransactionsLines::FIELD_VATPERCENTAGE, new TCurrency($this->objEdtVATPercentage->getValueSubmitted()[$iLC]));
+                $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITPURCHASEPRICEEXCLVAT, new TCurrency($this->objEdtPurchasePriceExclVAT->getValueSubmitted()[$iLC]));
+                $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITDISCOUNTEXCLVAT, new TCurrency($this->objEdtDiscountPriceExclVAT->getValueSubmitted()[$iLC]));
+                $this->objTransactionLines->set(TTransactionsLines::FIELD_UNITPRICEEXCLVAT, new TCurrency($this->objEdtPriceExclVAT->getValueSubmitted()[$iLC]));
+            }
+        }      
+        //save is done in onSavePost(), 
+        //because there we have the transactionid to store in transaction lines
+        //BUT we need to read the lines here, because we need to calculate the meta fields to save them in the transaction
 
 
         //====THE REST
@@ -291,6 +290,17 @@ class detailsave_transactions extends TCRUDDetailSaveController
 
         //user who created the transaction
         $this->getModel()->set(TTransactions::FIELD_CREATEDBYCONTACTID, $objLoginController->getUsers()->getID());
+
+        //date
+        $this->getModel()->set(TTransactions::FIELD_DATEFINALIZED, new TDateTime());
+
+        //meta fields
+vardumpdie($this->objTransactionLines->calculateTotalPriceInclVat(), 'humpiedumpie');
+        $this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEINCLVAT, $this->objTransactionLines->calculateTotalPriceInclVat());
+        // $this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEEXCLVAT, 0);
+        // $this->getModel()->set(TTransactions::FIELD_META_TOTALPURCHASEPRICEEXCLVAT, 0);
+        // $this->getModel()->set(TTransactions::FIELD_META_TOTALVAT, 0);
+        // $this->getModel()->set(TTransactions::FIELD_META_AMOUNTDUE, 0);
     }
 
     /**
@@ -355,7 +365,7 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     public function onSavePre()
     {
-        return $this->objTransactionLines->saveToDBAll();
+        return true;
     }
 
     /**
@@ -366,6 +376,26 @@ class detailsave_transactions extends TCRUDDetailSaveController
      */
     public function onSavePost($bWasSaveSuccesful)
     {
+        //we need the transaction id first. 
+        //We only get id on a new transaction after the transaction is created
+             
+        //delete old lines
+        //@todo
+
+        //go through all transaction lines and update the transaction id, so we can save the lines
+        $this->objTransactionLines->resetRecordPointer();
+        while ($this->objTransactionLines->next())
+        {
+            $this->objTransactionLines->set(TTransactionsLines::FIELD_TRANSACTIONSID, $this->getModel()->getID());
+        }
+
+        if (!$this->objTransactionLines->saveToDBAll())
+            return false;
+
+        //history
+        //@todo
+
+        return true;
     }
 
 

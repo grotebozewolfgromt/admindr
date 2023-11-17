@@ -39,7 +39,7 @@ class list_transactions extends TCRUDListController
             TTransactions::FIELD_CHECKOUTSOURCE,
             TTransactions::FIELD_LOCKED,
             TTransactions::FIELD_LOCKEDSOURCE,
-            TTransactions::FIELD_INVOICEDATE,            
+            TTransactions::FIELD_DATEFINALIZED,            
             TTransactions::FIELD_INCREMENTNUMBER,
             TTransactions::FIELD_META_TOTALPRICEINCLVAT,
                                     ));
@@ -52,8 +52,8 @@ class list_transactions extends TCRUDListController
       
         //===show what?
         $arrTableColumnsShow = array(
-            array('', TTransactions::FIELD_INVOICEDATE, transm($sCurrentModule, 'overview_column_'.TTransactions::FIELD_INVOICEDATE, 'Inv Date')),
-            array('', TTransactions::FIELD_INCREMENTNUMBER, transm($sCurrentModule, 'overview_column_'.TTransactions::FIELD_INCREMENTNUMBER, 'Inv No')),
+            array('', TTransactions::FIELD_DATEFINALIZED, transm($sCurrentModule, 'overview_column_'.TTransactions::FIELD_DATEFINALIZED, 'Date')),
+            array('', TTransactions::FIELD_INCREMENTNUMBER, transm($sCurrentModule, 'overview_column_'.TTransactions::FIELD_INCREMENTNUMBER, 'Inc No')),
             array(TSysContacts::getTable(), TSysContacts::FIELD_COMPANYNAME, transm($sCurrentModule, 'overview_column_'.TSysContacts::FIELD_FIRSTNAMEINITALS, 'Company')),
             array(TSysContacts::getTable(), TSysContacts::FIELD_LASTNAME, transm($sCurrentModule, 'overview_column_'.TSysContacts::FIELD_LASTNAME, 'Name')),
             array(TSysContacts::getTable(), TSysContacts::FIELD_EMAILADDRESSENCRYPTED, transm($sCurrentModule, 'overview_column_'.TSysContacts::FIELD_EMAILADDRESSENCRYPTED, 'Email')),

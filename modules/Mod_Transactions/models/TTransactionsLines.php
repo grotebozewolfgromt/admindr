@@ -4,7 +4,7 @@ namespace dr\modules\Mod_Transactions\models;
 
 use dr\classes\models\TModel;
 use dr\classes\types\TCurrency;
-use dr\classes\types\TDateTime;
+use dr\classes\types\TDecimal;
 
 
 /**
@@ -568,5 +568,29 @@ class TTransactionsLines extends TModel
 		return false;
 	}        
 
+
+	/**
+	 * calculate the total price of the transaction including vat
+	 * 
+	 * @return TCurrency retuns new currency object
+	 */
+	public function calculateTotalPriceInclVat()
+	{
+		$objTotal = new TCurrency(0, 4);
+
+		$this->resetRecordPointer();
+		while($this->next())
+		{
+			$objTotal->add($this->getUnitDiscountExclVat()->getIncludingVAT($this->getVATPercentage()));
+		}
+
+		return $objTotal;
+	}
+
+	        //$this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEINCLVAT, 0);
+        // $this->getModel()->set(TTransactions::FIELD_META_TOTALPRICEEXCLVAT, 0);
+        // $this->getModel()->set(TTransactions::FIELD_META_TOTALPURCHASEPRICEEXCLVAT, 0);
+        // $this->getModel()->set(TTransactions::FIELD_META_TOTALVAT, 0);
+        // $this->getModel()->set(TTransactions::FIELD_META_AMOUNTDUE, 0);
 } 
 ?>

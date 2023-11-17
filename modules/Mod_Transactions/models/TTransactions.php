@@ -54,7 +54,7 @@ class TTransactions extends TModel
 	const FIELD_TRANSACTIONSTYPEID		= 'iTransactionsTypeID'; //what kind of transaction is this? Invoice, order, offer??
 	const FIELD_BUYERCONTACTID 			= 'iBuyerContactID'; //buyer: from contacts module
 	const FIELD_CREATEDBYCONTACTID 		= 'iCreatedByContactID'; //user who created the invoice (for weborder, it is the buyer itself): from contacts module
-	const FIELD_INVOICEDATE 			= 'dtInvoiceDate'; //date of the invoice (assigned only when not a finalized-state-invoice). For orders and offers the date is 0. It is possible that an order is created, but the invoice is made 2 days later. The invoice date is needed for tax reasons. 
+	const FIELD_DATEFINALIZED			= 'dtDateFinalized'; //date of the invoice (assigned only when not a finalized-state-invoice). For orders and offers the date is 0. It is possible that an order is created, but the invoice is made 2 days later. The invoice date is needed for tax reasons. This can be different than record-created-date and record-changed-date
 	const FIELD_INCREMENTNUMBER 		= 'sIncrementNumber'; //invoice number (assigned only when in finalized-state-invoice) - this is a string because of extra formatting that can be added to the increment number from transaction-types
 	const FIELD_ISFINALIZED				= 'bIsFinalized'; //a finalized invoice can not be changed. Only a finalized invoice has monetary significance for tax purposes
 	const FIELD_CURRENCYID 				= 'iCurrencyID'; //id of currency
@@ -145,7 +145,7 @@ class TTransactions extends TModel
 	 */
 	public function getInvoiceDate()
 	{
-		return $this->get(TTransactions::FIELD_INVOICEDATE);
+		return $this->get(TTransactions::FIELD_DATEFINALIZED);
 	}
 	
 	/**
@@ -157,7 +157,7 @@ class TTransactions extends TModel
 	 */
 	public function setInvoiceDate($objInvoiceDate)
 	{
-		$this->set(TTransactions::FIELD_INVOICEDATE, $objInvoiceDate);
+		$this->set(TTransactions::FIELD_DATEFINALIZED, $objInvoiceDate);
 	} 
 
 
@@ -555,24 +555,24 @@ class TTransactions extends TModel
 		$this->setFieldCopyProps(TTransactions::FIELD_CREATEDBYCONTACTID, TTransactions::FIELD_BUYERCONTACTID);
 
         //invoice date
-        $this->setFieldDefaultValue(TTransactions::FIELD_INVOICEDATE, 0);
-        $this->setFieldType(TTransactions::FIELD_INVOICEDATE, CT_DATETIME);
-        $this->setFieldLength(TTransactions::FIELD_INVOICEDATE, 0);
-        $this->setFieldDecimalPrecision(TTransactions::FIELD_INVOICEDATE, 0);
-        $this->setFieldPrimaryKey(TTransactions::FIELD_INVOICEDATE, false);
-        $this->setFieldNullable(TTransactions::FIELD_INVOICEDATE, false);
-        $this->setFieldEnumValues(TTransactions::FIELD_INVOICEDATE, null);
-        $this->setFieldUnique(TTransactions::FIELD_INVOICEDATE, false);
-        $this->setFieldIndexed(TTransactions::FIELD_INVOICEDATE, true);
-        $this->setFieldForeignKeyClass(TTransactions::FIELD_INVOICEDATE, null);
-        $this->setFieldForeignKeyTable(TTransactions::FIELD_INVOICEDATE, null);
-        $this->setFieldForeignKeyField(TTransactions::FIELD_INVOICEDATE, null);
-        $this->setFieldForeignKeyJoin(TTransactions::FIELD_INVOICEDATE, null);
-        $this->setFieldForeignKeyActionOnUpdate(TTransactions::FIELD_INVOICEDATE, null);
-        $this->setFieldForeignKeyActionOnDelete(TTransactions::FIELD_INVOICEDATE, null);
-        $this->setFieldAutoIncrement(TTransactions::FIELD_INVOICEDATE, false);
-        $this->setFieldUnsigned(TTransactions::FIELD_INVOICEDATE, false);	
-		$this->setFieldEncryptionDisabled(TTransactions::FIELD_INVOICEDATE);	
+        $this->setFieldDefaultValue(TTransactions::FIELD_DATEFINALIZED, 0);
+        $this->setFieldType(TTransactions::FIELD_DATEFINALIZED, CT_DATETIME);
+        $this->setFieldLength(TTransactions::FIELD_DATEFINALIZED, 0);
+        $this->setFieldDecimalPrecision(TTransactions::FIELD_DATEFINALIZED, 0);
+        $this->setFieldPrimaryKey(TTransactions::FIELD_DATEFINALIZED, false);
+        $this->setFieldNullable(TTransactions::FIELD_DATEFINALIZED, false);
+        $this->setFieldEnumValues(TTransactions::FIELD_DATEFINALIZED, null);
+        $this->setFieldUnique(TTransactions::FIELD_DATEFINALIZED, false);
+        $this->setFieldIndexed(TTransactions::FIELD_DATEFINALIZED, true);
+        $this->setFieldForeignKeyClass(TTransactions::FIELD_DATEFINALIZED, null);
+        $this->setFieldForeignKeyTable(TTransactions::FIELD_DATEFINALIZED, null);
+        $this->setFieldForeignKeyField(TTransactions::FIELD_DATEFINALIZED, null);
+        $this->setFieldForeignKeyJoin(TTransactions::FIELD_DATEFINALIZED, null);
+        $this->setFieldForeignKeyActionOnUpdate(TTransactions::FIELD_DATEFINALIZED, null);
+        $this->setFieldForeignKeyActionOnDelete(TTransactions::FIELD_DATEFINALIZED, null);
+        $this->setFieldAutoIncrement(TTransactions::FIELD_DATEFINALIZED, false);
+        $this->setFieldUnsigned(TTransactions::FIELD_DATEFINALIZED, false);	
+		$this->setFieldEncryptionDisabled(TTransactions::FIELD_DATEFINALIZED);	
 			
 		//invoice number
 		$this->setFieldDefaultValue(TTransactions::FIELD_INCREMENTNUMBER, '');
@@ -777,7 +777,7 @@ class TTransactions extends TModel
 	public function getFieldsPublic()
 	{
 		return array(TTransactions::FIELD_CREATEDBYCONTACTID, 
-					TTransactions::FIELD_INVOICEDATE,
+					TTransactions::FIELD_DATEFINALIZED,
 					TTransactions::FIELD_INCREMENTNUMBER,
 					TTransactions::FIELD_ISFINALIZED,
 					TTransactions::FIELD_CURRENCYID,

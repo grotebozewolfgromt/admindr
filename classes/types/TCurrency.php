@@ -1,6 +1,7 @@
 <?php
 namespace dr\classes\types;
 
+use dr\classes\types\TDecimal;
 /**
  * Description of TCurrency
  * represents a currency value. deze klasse HEEFT NIETS MET TFLOAT te maken!
@@ -108,11 +109,10 @@ class TCurrency extends TDecimal
     }     
     
     /**
-     * return new TCurrency object including sales taxes
+     * return new TCurrency object including VAT
+     * (assuming current value is excluding VAT)
      * 
-     * bedrag omrekenen naar inclusief btw
-     * 
-     * @param TPercentage $objVATPercentage
+     * @param TDecimal $objVATPercentage
      * @return TCurrency 
      */
     function getIncludingVAT(TDecimal $objVATPercentage)
@@ -130,11 +130,10 @@ class TCurrency extends TDecimal
     
 
     /**
-     * return new TCurrency object excluding sales taxes
+     * return new TCurrency object excluding VAT
+     * (assuming current amount is including VAT)
      * 
-     * bedrag omrekenen naar exclusief btw 
-     * 
-     * @param TPercentage $objVATPercentage
+     * @param TDecimal $objVATPercentage
      * @return TCurrency 
      */
     function getExcludingVAT(TDecimal $objVATPercentage)
