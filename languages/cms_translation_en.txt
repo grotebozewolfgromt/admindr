@@ -44,3 +44,4 @@ login_serviceonlyavailable_countries;This service is available in:;This service 
 message_saverecord_error;Save error: record NOT saved!!;Save error: record NOT saved!!
 form_error_alphabetic;Only alphabetical characters allowed;Only alphabetical characters allowed
 form_error_onlynumeric;Only numeric allowed;Only numeric allowed
+form_error_colorinvalid;Color needs to in Hex values (from #00000 to #FFFFFF), [value] given.;Color needs to in Hex values (from #00000 to #FFFFFF), [value] given.

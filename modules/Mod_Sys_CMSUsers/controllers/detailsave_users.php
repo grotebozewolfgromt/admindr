@@ -468,7 +468,7 @@ class detailsave_users extends TCRUDDetailSaveController
      * @param boolean $bWasSaveSuccesful did saveToDB() return false or true?
      * @return boolean returns true on success otherwise false
      */
-    public function onSavePost($bWasSaveSuccesful){}
+    public function onSavePost($bWasSaveSuccesful){ return true; }
 
 
     /**

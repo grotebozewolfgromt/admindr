@@ -439,6 +439,7 @@ class detailsave_usersroles extends TCRUDDetailSaveController
             }
             $objUsers->saveToDBAll(true);
         
+            return true;
         }
 
 

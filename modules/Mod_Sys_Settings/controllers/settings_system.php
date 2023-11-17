@@ -316,6 +316,8 @@ class settings_system extends TCRUDDetailSaveController
     {
         //refresh the settings in the session array
         settingsReload();
+
+        return true;
     }
 
 

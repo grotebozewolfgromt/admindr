@@ -538,16 +538,21 @@ abstract class TCRUDDetailSaveController
      * is called BEFORE a record is saved
      * this method has to send the proper error messages to the user!!
      * 
-     * @return boolean it will NOT SAVE
+     * THIS METHOD NEEDS TO RETURN TRUE, OTHERWISE IT WILL NOT SAVE!!
+     * 
+     * @return boolean true = save, false = no save
      */
     abstract public function onSavePre();
     
   
     /**
      * is called AFTER a record is saved
+     * this method has to send the proper error messages to the user!!
+     * 
+     * THIS METHOD NEEDS TO RETURN TRUE, OTHERWISE IT WILL NOT SAVE!!
      * 
      * @param boolean $bWasSaveSuccesful did saveToDB() return false or true?
-     * @return boolean returns true on success otherwise false
+     * @return boolean true = save, false = no save
      */
     abstract public function onSavePost($bWasSaveSuccesful);    
 

@@ -42,3 +42,4 @@ form_field_deliverystateregion;State/region;State/region
 form_field_deliverycountry;Country;Country
 form_field_notes;Notes (only seen by you);Notes (only seen by you)
 pagetitle_detailsave_contact_edit;Edit contact: [contact];Edit contact: [contact]
+pagetitle_detailsave_contact_new;Create new contact;Create new contact

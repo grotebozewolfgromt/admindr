@@ -125,7 +125,7 @@ class detailsave_installedmodules extends TCRUDDetailSaveController
      * 
      * @param boolean $bWasSaveSuccesful did saveToDB() return false or true?
      */
-    public function onSavePost($bWasSaveSuccesful){}
+    public function onSavePost($bWasSaveSuccesful){ return true; }
 
     /**
      * is called when this controller is created,
