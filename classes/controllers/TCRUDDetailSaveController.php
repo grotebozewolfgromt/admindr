@@ -416,7 +416,7 @@ abstract class TCRUDDetailSaveController
                             logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'auth() for saving NEW record FAILED');
                     }
 
-                    if (!$this->onSavePost($bSaveSuccess))
+                    if (!$this->onSavePost($bSaveSuccess)) 
                     {
                         $bSaveSuccess = false;
                         logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, 'onSavePost() FAILED');
