@@ -921,7 +921,7 @@ function getFingerprintBrowser($bIncludeIPAddress = true)
     $sFingerprint .=  $arrLangParts[0];
 
 //@todo remove --> there is a bug that sometimes generates 2 different fingerprints on different page loads for the same browser, this function logs that in order to see the difference
-logDebug('lib_sysinet: getFingerprintBrowser()','fingerprintginger: '.$sFingerprint);    
+// logDebug('lib_sysinet: getFingerprintBrowser()','fingerprintginger: '.$sFingerprint);    
 
     return md5($sFingerprint);
 }

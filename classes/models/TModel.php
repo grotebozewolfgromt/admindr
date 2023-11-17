@@ -3146,7 +3146,7 @@ abstract class TModel
 			{
 				//transactie starten
 				if ($bStartOwnDatabaseTransaction)
-						$objConn->startTransaction();
+					$objConn->startTransaction();
 				
 				$this->resetRecordPointer();                                                    
 				while($this->next())

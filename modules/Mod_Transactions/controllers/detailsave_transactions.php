@@ -350,7 +350,8 @@ class detailsave_transactions extends TCRUDDetailSaveController
             $this->objTransactionLines->limit(1000);
             $this->objTransactionLines->loadFromDB();
         }
-        //fields are actually set in the template
+        //the actual field values are set in the template
+
 
         //===== NOTES ====
 
