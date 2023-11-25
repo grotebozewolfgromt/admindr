@@ -50,11 +50,12 @@ class TCurrency extends TDecimal
     const DECIMALPRECISIONDEFAULT = 4; //so it can be used by other classes
 
     /**
-     * when you want to input 6 euro, you can use: __construct('6',0) --> no digits after decimal
-     * when you want to input 6,23 euro, use: __construct ('6.23',2)
+     * when you want to input 6, you can use: __construct('6',0) or __construct('6.00',0)
+     * when you want to input 6,23, use: __construct ('6.23',2)
      * 
      * 
      * @param string $sValue the dot (.) is the decimal separator
+     * @param string $iDecimalPrecision sets the internal precision for the whole object (not only the parameter)
      */
     public function __construct($sValue, $iDecimalPrecision = TCurrency::DECIMALPRECISIONDEFAULT) 
     {

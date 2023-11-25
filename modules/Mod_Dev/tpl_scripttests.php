@@ -13,6 +13,7 @@ use dr\classes\models\TSysCountries;
 use dr\classes\patterns\TSpamDetector;
 use dr\classes\patterns\TWeightedAverageScore;
 use dr\classes\models\TSysContacts;
+use dr\classes\types\TCurrency;
 use dr\classes\types\TDateTime;
 use dr\modules\Mod_Transactions\models\TTransactions;
 use dr\modules\Mod_Transactions\models\TTransactionsTypes;
@@ -24,11 +25,12 @@ include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_misc.php');
 include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_security.php');
 
 
-$obj = new TTransactionsTypes();
-$obj->install();
+// $obj = new TTransactionsTypes();
+// $obj->install();
 
 
-
+$objNum = new TCurrency('6.00', 4);
+vardumpdie($objNum);
 
 
 
