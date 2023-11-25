@@ -1,17 +1,5 @@
 UNIQUE ID KEY;DEFAULT ENGLISH;TRANSLATION FOREIGN LANGUAGE
-modulename_menu;Invoices + orders;Invoices + orders
-overview_column_dtDateFinalized;Date;Date
-overview_column_sIncrementNumber;Inc No;Inc No
-overview_column_sFirstNameInitials;Company;Company
-overview_column_sLastName;Name;Name
-overview_column_sEAE;Email;Email
-overview_column_crTotalPriceInclVAT;Total;Total
-tab_title_transactions;Transactions;Transactions
-tabsheets_module_name_Transactions;Transactions;Transactions
-tabsheets_module_explanation_Manage all invoices and orders;Manage all invoices and orders;Manage all invoices and orders
-tabsheets_module_name_Trans. Types;Trans. Types;Trans. Types
-tabsheets_module_explanation_Manage types of transactions;Manage types of transactions;Manage types of transactions
-pagetitle_detailsave_transactions_new;Create new transaction;Create new transaction
+pagetitle_detailsave_transactions_edit;Edit transaction;Edit transaction
 detailsave_transactions_section_details_name;Details;Details
 detailsave_transactions_field_transactiontype_description;Transaction type;Transaction type
 detailsave_transactions_field_currency_description;Currency;Currency
@@ -20,38 +8,24 @@ detailsave_transactions_field_purchaseorderno_description;Purchase order number;
 detailsave_transactions_section_lines_name;Lines;Lines
 detailsave_transactions_field_quantity_description;Quantity;Quantity
 detailsave_transactions_field_description_description;Description;Description
-detailsave_transactions_field_vatpercentage_description;VAT Percentage;VAT Percentage
-detailsave_transactions_field_purchasepriceexclvat_description;Purchase price (excl VAT);Purchase price (excl VAT)
-detailsave_transactions_field_discountprice_description;Discount (excl VAT);Discount (excl VAT)
-detailsave_transactions_field_unitpriceexclvat_description;Unit price (excl VAT);Unit price (excl VAT)
+detailsave_transactions_field_vatpercentage_description;VAT %;VAT %
+detailsave_transactions_field_purchasepriceexclvat_description;Purchase price *;Purchase price *
+detailsave_transactions_field_discountprice_description;Discount *;Discount *
+detailsave_transactions_field_unitpriceexclvat_description;Unit price *;Unit price *
+detailsave_transactions_button_addline;Add line +;Add line +
 detailsave_transactions_section_notes_name;Notes;Notes
 detailsave_transactions_field_internalnotes_description;Internal notes - only visible to you;Internal notes - only visible to you
 detailsave_transactions_field_externalnotes_description;External notes - shown on invoice;External notes - shown on invoice
 detailsave_transactions_section_history_name;History;History
-pagetitle_detailsave_transactions_edit;Edit transaction;Edit transaction
+modulename_menu;Invoices + orders;Invoices + orders
+overview_column_dtDateFinalized;Date;Date
+overview_column_sIncrementNumber;Inc No;Inc No
+overview_column_sFirstNameInitials;Company;Company
+overview_column_sLastName;Name;Name
+overview_column_sEAE;Email;Email
 overview_column_crMETATotalPriceInclVAT;Total;Total
-detailsave_transactions_button_addline;Add line +;Add line +
-list_column_sName;Type name;Type name
-list_column_bIsStock;Stock;Stock
-list_column_bIsFinancial;Financial;Financial
-list_column_bIsDefaultInvoice;Invoice;Invoice
-list_column_bIsDefaultOrder;Order;Order
-list_column_sColorBackground;Color;Color
-list_column_iNewNumberIncrement;Increment;Increment
-list_column_iPaymentMadeWithinDays;Pay days;Pay days
-list_column_i_volgorde;Order;Order
-tab_title_transactiontypes;Transaction types;Transaction types
-form_field_name;Name;Name
-form_field_isstock;Stock managing transaction (stock reduced or increased when transaction completed);Stock managing transaction (stock reduced or increased when transaction completed)
-form_field_isfinancial;Is financial transaction;Is financial transaction
-form_field_isdefaultselected;Is selected by default (in user interface elements);Is selected by default (in user interface elements)
-form_field_isdefaultinvoice;Is default invoice (when an invoice (in webshop) is needed, this type is selected);Is default invoice (when an invoice (in webshop) is needed, this type is selected)
-form_field_isdefaultorder;Is default order (when an order (in webshop) is needed, this type is selected);Is default order (when an order (in webshop) is needed, this type is selected)
-form_field_colorforeground;Foreground color (hexadecimal value from #00000 to #FFFFFF) (including #-sign);Foreground color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)
-form_field_colorbackground;Background color (hexadecimal value from #00000 to #FFFFFF) (including #-sign);Background color (hexadecimal value from #00000 to #FFFFFF) (including #-sign)
-form_field_newincrementednumber;New transaction starts at number;New transaction starts at number
-form_field_addressseller;Address seller;Address seller
-form_field_vatno;VAT number seller;VAT number seller
-form_field_paymentwithindays;Must be payed within (amount of days);Must be payed within (amount of days)
-pagetitle_detailsave_transactionstypes_edit;Edit transaction type: [name];Edit transaction type: [name]
-pagetitle_detailsave_transactionstypes_new;Create transaction type;Create transaction type
+tab_title_transactions;Transactions;Transactions
+tabsheets_module_name_Transactions;Transactions;Transactions
+tabsheets_module_explanation_Manage all invoices and orders;Manage all invoices and orders;Manage all invoices and orders
+tabsheets_module_name_Trans. Types;Trans. Types;Trans. Types
+tabsheets_module_explanation_Manage types of transactions;Manage types of transactions;Manage types of transactions
