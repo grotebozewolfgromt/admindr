@@ -38,7 +38,7 @@ use dr\modules\Mod_Sys_Modules\Mod_Sys_Modules;
                             if ($bAllowInstall)
                             {
                                 ?>                            
-                                    <input type="button" onclick="window.location.href = '<?php echo $sURLDetailPage; ?>';" value="<?php echo transm($sCurrentModule, 'item_uploadmodule', 'upload module'); ?>" class="button_normal">
+                                    <input type="button" onclick="window.location.href = '<?php echo $sURLDetailPage; ?>';" value="<?php echo transm($sCurrentModule, 'item_uploadmodule', 'upload'); ?>" class="button_normal">
                                 <?php
                             }
                         ?>   

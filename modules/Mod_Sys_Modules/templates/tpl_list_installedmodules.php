@@ -28,7 +28,7 @@
     //reasons why specifying them here:
     //-you can change the order of the columns super easy (without programming bugs)
     //-maintainance / preventing bugs
-    $iColumnCount = 7;
+    $iColumnCount = 8;
     
     $iColumnIndexIcon = 0;
     $iColumnIndexNameTranslated = 1;
@@ -37,7 +37,8 @@
     // $iColumnIndexEnabled = 4;
     $iColumnIndexVisible = 4;
     $iColumnIndexDirExists = 5;
-    $iColumnIndexOrder  = 6;
+    $iColumnIndexSettings = 6;
+    $iColumnIndexOrder  = 7;
     
     $arrDBColumnNamesIndices = array();
     $arrDBColumnNamesIndices[$iColumnIndexNameTranslated] = $arrTableColumnsShow[0]; //appoint the indexes of $arrTableColumnsShow to the columns
@@ -193,6 +194,9 @@
                                 case $iColumnIndexDirExists: //directory exists
                                     $sColumnHead = transm($sCurrentModule, 'overview_column_checks', 'checks'); //translate the column name
                                     break;
+                                case $iColumnIndexSettings: //settings
+                                    $sColumnHead = transm($sCurrentModule, 'overview_column_settings', 'settings'); //translate the column name
+                                    break;
                                 default:
                                     $sColumnHead = transm($sCurrentModule, 'overview_column_unknown', '[unknown]'); //translate the column name                               
                             }                                
@@ -204,7 +208,7 @@
                     }
                 ?>
                 <th>
-                    <input type="button" onclick="window.location.href = '<?php echo $sURLUploadModule; ?>';" value="<?php echo transm($sCurrentModule, 'item_uploadmodule', 'upload module'); ?>" class="button_normal">
+                    <input type="button" onclick="window.location.href = '<?php echo $sURLUploadModule; ?>';" value="<?php echo transm($sCurrentModule, 'item_uploadmodule', 'upload'); ?>" class="button_normal">
                 </th>                              
             </tr>
         </thead>
@@ -411,7 +415,15 @@
                                                 $sColumnValue.= '<img alt="'.transcms('boolean_no', 'no').'" src="'.GLOBAL_PATH_WWW_CMS_IMAGES.'/icon-checked-false32x32.png">&nbsp;';
                                                 $sColumnValue.= transm($sCurrentModule, 'cmsmodulelist_moduleexists_index_no', 'index file missing');                                                
                                             }
-                                            break;                                        
+                                            break; 
+                                        case $iColumnIndexSettings: //settings
+                                            $sModuleLongName = '\\dr\\modules\\'.$sInternalModuleName.'\\'.$sInternalModuleName;
+                                            $objModule = new $sModuleLongName();                   
+                                            if ($objModule->getURLSettingsCMS())                        
+                                                $sColumnValue = '<a href="'.$objModule->getURLSettingsCMS().'">settings</a>';
+                                            else
+                                                $sColumnValue = '&nbsp;';
+                                            break;
                                     }
                                      
                                      

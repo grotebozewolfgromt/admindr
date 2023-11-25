@@ -135,6 +135,7 @@ todo: background uploading files/images
 	getIsVisible() ==> isVisibleCMS
 	abstract getSettingsURLCMS() added
 	add PERM_OP_CHANGESETTINGS
+-overzicht modules met settings scherm werkt
 
 
 
