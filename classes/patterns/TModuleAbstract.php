@@ -36,7 +36,12 @@ use dr\classes\models\TSysTableVersions;
  * 12 aug 2014: TModule: viewsCMS verwijderd
  * 9 mei 2019: aanpasssingen voor de cms 4 reboot
  * 9 mei 2019: TModule -> TModuleAbstract
- * 
+ * 25 nov 2023: 	
+ *      getAuthor() is not abstract anymore 
+ *      getVersion() is not abstract anymore
+ *      getIsVisible() ==> isVisibleCMS
+ *      abstract getSettingsURLCMS() added
+ *      add PERM_OP_CHANGESETTINGS
  * 
  * @author d. renirie
  */
@@ -59,30 +64,12 @@ abstract class TModuleAbstract
     const PERM_OP_CHECKINOUT    = AUTH_OPERATION_CHECKINOUT;
     const PERM_OP_LOCKUNLOCK    = AUTH_OPERATION_LOCKUNLOCK;
     const PERM_OP_CHANGEORDER   = AUTH_OPERATION_CHANGEORDER;
+    // const PERM_OP_CHANGESETTINGS = AUTH_OPERATION_CHANGESETTINGS;
 
 
-    public function __construct()
-    {}
+    // public function __construct()
+    // {}
     
-
-    /**
-     * who made it?
-     * @return string
-     */
-    public function getAuthor()
-    {
-        return 'Dennis Renirie';
-    }
-  
-    /**
-     * versi0n 1,2,3 etc
-     * 
-     * @return int
-     */
-    public function getVersion()
-    {
-       return 1; 
-    }
 
     
     /**
@@ -377,7 +364,7 @@ abstract class TModuleAbstract
         $objTempNewMod->newRecord();
         $objTempNewMod->setNameInternal(get_class_short($this));
         $objTempNewMod->setCategoryID($iCatID);
-        $objTempNewMod->setVisible($this->getIsVisible());
+        $objTempNewMod->setVisible($this->isVisibleCMS());
         $objTempNewMod->setNameDefault($this->getNameDefault());
         if (!$objTempNewMod->saveToDB())
             return false;
@@ -413,6 +400,14 @@ abstract class TModuleAbstract
         return true;
     }
   
+
+    public function getNameInternal()
+    {
+        return get_class_short($this);
+    }
+
+
+
     /**
      * handle all the actions when a cron job is called
      * 
@@ -464,13 +459,35 @@ abstract class TModuleAbstract
      */
     abstract public function getSettingsEntries();
 
-    
     /**
-     * is module visible in menus?
+     * who made it?
+     * @return string
+     */
+    abstract public function getAuthor();
+  
+    /**
+     * versi0n 1,2,3 etc needed for database refactoring.
+     * when you are doing a database structur change, increment the version number by 1
+     * (we use integers for fast, easy and reliable comparing between version numbers)
+     * 
+     * @return int
+     */
+    abstract public function getVersion();
+
+
+    /**
+     * is module visible in CMS menus?
      *
      * @return boolean 
      */
-    abstract public function getIsVisible();
+    abstract public function isVisibleCMS();
+
+    /**
+     * is module visible in menus in the frontend of the site?
+     *
+     * @return boolean 
+     */
+    abstract public function isVisibleFrontEnd();    
 
     /**
      * get the default (non-internal) name for the module.
@@ -481,9 +498,15 @@ abstract class TModuleAbstract
      */
     abstract public function getNameDefault();
 
-    public function getNameInternal()
-    {
-        return get_class_short($this);
-    }
+
+    /**
+     * returns the url to the settings page in the cms
+     * when '' is returned the setting screen is assumed not to exist
+     * 
+     * @return string
+     */
+    abstract public function getURLSettingsCMS();
+
+    
 }
 ?>

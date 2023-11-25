@@ -29,14 +29,14 @@ include_once(GLOBAL_PATH_LOCAL_LIBRARIES.DIRECTORY_SEPARATOR.'lib_security.php')
 // $obj->install();
 
 
-$objNum = new TCurrency('6.00', 4);
-vardumpdie($objNum);
+// $objNum = new TCurrency('6.00', 4);
+// vardump($objNum);
 
 
 
 
 
-die();
+// die();
 
 
 

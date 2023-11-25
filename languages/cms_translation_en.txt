@@ -45,3 +45,5 @@ message_saverecord_error;Save error: record NOT saved!!;Save error: record NOT s
 form_error_alphabetic;Only alphabetical characters allowed;Only alphabetical characters allowed
 form_error_onlynumeric;Only numeric allowed;Only numeric allowed
 form_error_colorinvalid;Color needs to in Hex values (from #00000 to #FFFFFF), [value] given.;Color needs to in Hex values (from #00000 to #FFFFFF), [value] given.
+overview_bulkactions_uninstall;uninstall;uninstall
+overview_bulkactions;Bulk actions;Bulk actions

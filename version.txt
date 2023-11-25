@@ -129,6 +129,13 @@ todo: background uploading files/images
 25 nov 2023
 ===========
 -changes to Tcurrency TDecimal TFloat
+-changes to modulesabstract class
+	getAuthor() is not abstract anymore
+	getVersion() is not abstract anymore
+	getIsVisible() ==> isVisibleCMS
+	abstract getSettingsURLCMS() added
+	add PERM_OP_CHANGESETTINGS
+
 
 
 9 nov 2023

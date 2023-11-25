@@ -188,11 +188,12 @@ define('AUTH_OPERATION_EXECUTE', 'execute');
 define('AUTH_OPERATION_CHECKINOUT', 'check-in check-out');//needs to be variable-safe (space is replaced by dash (-))
 define('AUTH_OPERATION_LOCKUNLOCK', 'lock unlock');//needs to be variable-safe (space is replaced by dash (-))
 define('AUTH_OPERATION_CHANGEORDER', 'change order');//needs to be variable-safe (space is replaced by dash (-))
+// define('AUTH_OPERATION_CHANGESETTINGS', 'change settings');//needs to be variable-safe (space is replaced by dash (-))
 
 define('AUTH_MODULE_CMS', 'cms');// what represents the system in the authorise resources? (that part of the resource is called "module"). for example: cms/settings/view
 
-define('AUTH_CATEGORY_SYSSETTINGS', 'settings');// what represents the system in the authorise resources? (that part of the resource is called "module"). for example: cms/settings/view
-define('AUTH_OPERATION_SYSSETTINGS_VIEW', 'view settings');//view settings //needs to be variable-safe (space is replaced by dash (-))
+define('AUTH_CATEGORY_SYSSETTINGS', 'system settings');// what represents the system in the authorise resources? (that part of the resource is called "module"). for example: cms/settings/view
+define('AUTH_OPERATION_SYSSETTINGS_VIEW', 'view system settings');//view settings //needs to be variable-safe (space is replaced by dash (-))
 // define('AUTH_OPERATION_SYSSETTINGS_VIEWSYSTEM', 'view system');//view settings of user itself //needs to be variable-safe (space is replaced by dash (-))
 // define('AUTH_OPERATION_SYSSETTINGS_VIEWUSER', 'view user');//view settings of user itself //needs to be variable-safe (space is replaced by dash (-))
 // define('AUTH_OPERATION_SYSSETTINGS_CHANGESYSTEM', 'change system');//change settings system-wide //needs to be variable-safe (space is replaced by dash (-))

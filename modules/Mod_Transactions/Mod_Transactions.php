@@ -110,16 +110,6 @@ class Mod_Transactions extends TModuleAbstract
     }     
 
     /**
-     * is module visible in menus?
-     *
-     * @return boolean 
-     */
-    public function getIsVisible()
-    {
-        return true;
-    }
-
-    /**
      * get the default (non-internal) name for the module.
      * This is de DEFAULT ENGLISH translation as it is passed to the
      * transm() function
@@ -144,5 +134,59 @@ class Mod_Transactions extends TModuleAbstract
     public function getSettingsEntries()
     {
         return array();
+    }    
+
+    /**
+     * who made it?
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return 'Dennis Renirie';
+    }
+
+    /**
+     * versi0n 1,2,3 etc needed for database refactoring.
+     * when you are doing a database structur change, increment the version number by 1
+     * (we use integers for fast, easy and reliable comparing between version numbers)
+     * 
+     * @return int
+     */
+    public function getVersion()
+    {
+         return 1;
+    }
+
+    /**
+     * returns the url to the settings page in the cms
+     * when '' is returned the setting screen is assumed not to exist
+     * 
+     * @return string
+     */
+    public function getURLSettingsCMS()
+    {
+        return 'settings';
+    }
+
+
+    /**
+     * is module visible in CMS menus?
+     *
+     * @return boolean 
+     */
+    public function isVisibleCMS()
+    {
+        return true;
+    }
+
+
+    /**
+     * is module visible in menus in the frontend of the site?
+     *
+     * @return boolean 
+     */
+    public function isVisibleFrontEnd()
+    {
+        return false;
     }    
 }
