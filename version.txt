@@ -126,6 +126,11 @@ todo: background uploading files/images
 -there is a running issue automatically logging out: this has to do with the browserfingerprint which returns sometimes a different fingerprint. The debugLog() logs the generated fingerprints
 
 
+25 nov 2023
+===========
+-changes to Tcurrency TDecimal TFloat
+
+
 9 nov 2023
 =======
 versie conflict niet opgelost

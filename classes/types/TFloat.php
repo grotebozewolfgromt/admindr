@@ -8,10 +8,10 @@ use dr\classes\patterns\TObject;
  * helper class for floats, for example to compare floats.
  * 
  * This class represents a float, double or real value.
+ * 
+ * The precision in this class is only used for comparing floats
  *
- * 
- * the precision is used for comparing
- * 
+ * TFloat is a float helper class and has nothing to do TDecimal or TCurrency.
  * 
  * 20 juli 2012: TFloat created
  * 20 juli 2012: TFloat heeft inhoud gekregen

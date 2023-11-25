@@ -62,9 +62,9 @@ function typeToStr($sLibTypesConstant = TP_INTEGER)
 		case TP_OBJECT:
 			return 'object (type)';
 		case TP_DECIMAL:
-			return 'decimal (type)';
+			return 'decimal (type)'; //technically currency and decimal are the same. We make a distinction because of display and input. an amount wil be displayed and inputted as '1' instead of '1.00', while that would be the desired behavior for money
 		case TP_CURRENCY:
-			return 'currency (type)';
+			return 'currency (type)'; //technically currency and decimal are the same. We make a distinction because of display and input. an amount wil be displayed and inputted as '1' instead of '1.00', while that would be the desired behavior for money
 		case CT_VARCHAR:
 			return 'varchar (column type)';			
 		case CT_INTEGER:

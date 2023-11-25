@@ -5,11 +5,17 @@ namespace dr\classes\types;
 /**
  * Description of TDecimal
  *
- * When you want speed, you need to use the php native float type (or TFloat), if you need precision or want to store floats in a database you need this class.
+ * When you want speed, you need to use the php native float type, if you need precision or want to store floats in a database you need this class.
  * For setting values and calculations there is a lot of overhead. 
  * This class uses slow string manipulation, type juggling and converting a lot
  * in stead of using processor native calulations.
  * This class is accurate but not very efficient (in terms of speed)
+ * 
+ * TFloat is a float helper class and has nothing to do TDecimal or TCurrency.
+ * 
+ * The difference between TDecimal or TCurrency:
+ * technically they are the same, but for input and display reasons it is useful to separate them.
+ * i.e. an amount is represented by '3', while a currency is represented by '3.00' for readability and input sake
  * 
  * floats zijn onbetrouwbaar in verband met hun bit representatie
  * bijvoorbeeld voor geld is dit een groot probleem, omdat je rare afrondingsfouten krijgt. 
@@ -36,8 +42,8 @@ class TDecimal
     
     
     /**
-     * als je 6 euro wilt invoeren: __construct(6,0) --> geen cijfers achter de komma)
-     * als je 6,23 euro wilt invoeren: __construct (623,2)
+     * when you want to input 6 euro, you can use: __construct('6',0) --> no digits after decimal
+     * when you want to input 6,23 euro, use: __construct ('6.23',2)
      * 
      * 
      * @param string $sValue the dot (.) is the decimal separator
@@ -51,7 +57,7 @@ class TDecimal
         {
             // Looks like we're running on a 32-bit build of PHP.  This could cause problems when exceeding limits
             //throw new \Exception("TDecimal uses 64-bit integers, but it looks like we're running on a version of PHP that doesn't support 64-bit integers (PHP_INT_MAX=" . ((string) PHP_INT_MAX) . ").");
-            //error_log("TDecimal uses 64-bit integers, but it looks like we're running on a version of PHP that doesn't support 64-bit integers (PHP_INT_MAX=" . ((string) PHP_INT_MAX) . ").");
+            logError(__CLASS__.': '.__FUNCTION__.': '.__LINE__, "TDecimal uses 64-bit integers, but it looks like we're running on a version of PHP that doesn't support 64-bit integers (PHP_INT_MAX=" . ((string) PHP_INT_MAX) . ").");
         }               
     }      
     
@@ -88,7 +94,7 @@ class TDecimal
             {
                 $sThousandSeparator = $objApplication->getCountrySettings()->getCountrySetting(TCountrySettings::SEPARATOR_THOUSAND);
                 $sDecimalSeparator = $objApplication->getCountrySettings()->getCountrySetting(TCountrySettings::SEPARATOR_DECIMAL);
-                $fRealValue = $this->getValueInternal() / $this->getMultiplyFactor($this->getDecimalPrecision());
+                $fRealValue = $this->getValueAsInt() / $this->getMultiplyFactor($this->getDecimalPrecision());
                 
                 return number_format($fRealValue, $this->getDecimalPrecision(), $sDecimalSeparator, $sThousandSeparator);                 
             }
@@ -138,7 +144,7 @@ class TDecimal
      * 
      * @return int
      */
-    public function getValueInternal()
+    protected function getValueAsInt()
     {
         return $this->iInternalValue;
     }
@@ -154,7 +160,7 @@ class TDecimal
      */    
     public function getValue()
     {
-        $sStringZonderKomma = (string)$this->getValueInternal();              
+        $sStringZonderKomma = (string)$this->getValueAsInt();              
         $sVoorDeKomma = substr($sStringZonderKomma, 0, strlen($sStringZonderKomma)-$this->getDecimalPrecision());
         if ($sVoorDeKomma == '')
             $sVoorDeKomma = '0';
@@ -174,20 +180,22 @@ class TDecimal
      */
     public function setValue($sValue)
     {       
+        $iDecimalPrecision = 0;
+        $iStringWithoutDecimalSep = 0;
         $sValue = filterValidFloat($sValue);
         
-        //hoeveel cijfers achter de komma ?
-        $iPosDecimalSep = strpos($sValue, '.'); //positie van de komma
+        //how many digits after separator?
+        $iPosDecimalSep = strpos($sValue, '.'); //position of decimal separator
 
-        if ($iPosDecimalSep === false) //komma niet gevonden
+        if ($iPosDecimalSep === false) //decimal seperator not found
         {
-            $this->setValueInternal((int)$sValue, 0);
+            $this->setValueAsInt((int)$sValue, 0);
         }
         else
         {
             $iStringWithoutDecimalSep = (int)str_replace('.', '', $sValue);
-            $iDecimalPrecision = strlen($sValue) - ($iPosDecimalSep + 1); //+1 omdat de eerste positie index 0 heeft
-            $this->setValueInternal($iStringWithoutDecimalSep, $iDecimalPrecision);
+            $iDecimalPrecision = strlen($sValue) - ($iPosDecimalSep + 1); //+1 because first index is 0
+            $this->setValueAsInt($iStringWithoutDecimalSep, $iDecimalPrecision);
         }       
    }
     
@@ -199,20 +207,20 @@ class TDecimal
      */
     public function getValueAsFloat()
     {
-        return $this->getValueInternal() / $this->getMultiplyFactor($this->getDecimalPrecision());
+        return $this->getValueAsInt() / $this->getMultiplyFactor($this->getDecimalPrecision());
     }
 
     
     /**
-     * het setten van de waarde
-     * setValueInternal($iValue = 10000, $iDecimalPrecision = 4) betekent ��� 1,0000
+     * setting the internal value
+     * setValueAsInt($iValue = 10000, $iDecimalPrecision = 4) means 1,0000
      * 
-     * LET OP!! afronding als de precisie ($iDecimalPrecision) groter is dan de interne precisie, er wordt dan afgerond naar de interne precisie
+     * WARNING!! will be rounded when $iDecimalPrecision is bigger than internal precision
      * 
-     * @param int $iValue integer zonder komma!!!
-     * @param int $iDecimalPrecision --> only for $iValue. it doest NOT set the internal decimal precision
+     * @param int $iValue integer without decimal separator
+     * @param int $iDecimalPrecision decimal precision for the function parameter. it doest NOT change the internal decimal precision of this class
      */
-    public function setValueInternal($iValue, $iDecimalPrecision = TDecimal::DECIMALPRECISIONDEFAULT)
+    protected function setValueAsInt($iValue, $iDecimalPrecision = TDecimal::DECIMALPRECISIONDEFAULT)
     {        
         if ($this->getDecimalPrecision() >= $iDecimalPrecision) //als de interne precisie groter is of gelijk aan die van de waarde dan vermenigvuldigen met precisieverschil
             $this->iInternalValue = $iValue * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $iDecimalPrecision);        
@@ -231,7 +239,7 @@ class TDecimal
      */
     public function setValueAsFloat($fValue, $iDecimalPrecision = TDecimal::DECIMALPRECISIONDEFAULT)
     {
-        $this->setValueInternal((int)round($fValue * $this->getMultiplyFactor($iDecimalPrecision)), $iDecimalPrecision);
+        $this->setValueAsInt((int)round($fValue * $this->getMultiplyFactor($iDecimalPrecision)), $iDecimalPrecision);
     }
     
     /**
@@ -266,22 +274,22 @@ class TDecimal
      */
     public function add(TDecimal $objAdd)
     {
-        $iValueThis = $this->getValueInternal();// default
-        $iValueAdd = $objAdd->getValueInternal();// default
+        $iValueThis = $this->getValueAsInt();// default
+        $iValueAdd = $objAdd->getValueAsInt();// default
         $iHighestPrecision = $this->getDecimalPrecision(); //default
 
         
         //eerst precisie gelijktrekken op niveau van de hoogste precisie
         if ($this->getDecimalPrecision() >= $objAdd->getDecimalPrecision()) //$this grootste precisie ?
         {
-            $iValueThis = $this->getValueInternal(); //hoogste precisie
-            $iValueAdd = $objAdd->getValueInternal() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objAdd->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueThis = $this->getValueAsInt(); //hoogste precisie
+            $iValueAdd = $objAdd->getValueAsInt() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objAdd->getDecimalPrecision()); //omrekenen laagste precisie
             $iHighestPrecision = $this->getDecimalPrecision();            
         }
         else //$objEqualTo grootste precisie
         {
-            $iValueThis = $this->getValueInternal() * $this->getMultiplyFactorDifference($objAdd->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
-            $iValueAdd = $objAdd->getValueInternal(); //hoogste precisie
+            $iValueThis = $this->getValueAsInt() * $this->getMultiplyFactorDifference($objAdd->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueAdd = $objAdd->getValueAsInt(); //hoogste precisie
             $iHighestPrecision = $objAdd->getDecimalPrecision();            
         }
         
@@ -289,7 +297,7 @@ class TDecimal
         $iSum = $iValueThis + $iValueAdd;
         
         //nu pas setten (en dus afronden)
-        $this->setValueInternal($iSum, $iHighestPrecision); 
+        $this->setValueAsInt($iSum, $iHighestPrecision); 
          
     }
 
@@ -301,8 +309,8 @@ class TDecimal
     {
         if (is_int($iValue))
         {
-            $iSum = $this->getValueInternal() + (int)($this->getMultiplyFactor($this->getDecimalPrecision()) * $iValue);
-            $this->setValueInternal($iSum, $this->getDecimalPrecision());
+            $iSum = $this->getValueAsInt() + (int)($this->getMultiplyFactor($this->getDecimalPrecision()) * $iValue);
+            $this->setValueAsInt($iSum, $this->getDecimalPrecision());
         }
     }
 
@@ -318,21 +326,21 @@ class TDecimal
      */
     public function subtract(TDecimal $objSubtract)
     {
-        $iValueThis = $this->getValueInternal();// default
-        $iValueSubtract = $objSubtract->getValueInternal();// default
+        $iValueThis = $this->getValueAsInt();// default
+        $iValueSubtract = $objSubtract->getValueAsInt();// default
         $iHighestPrecision = $this->getDecimalPrecision(); //default
         
         //eerst precisie gelijktrekken op niveau van de hoogste precisie
         if ($this->getDecimalPrecision() >= $objSubtract->getDecimalPrecision()) //$this grootste precisie ?
         {
-            $iValueThis = $this->getValueInternal(); //hoogste precisie
-            $iValueSubtract = $objSubtract->getValueInternal() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objSubtract->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueThis = $this->getValueAsInt(); //hoogste precisie
+            $iValueSubtract = $objSubtract->getValueAsInt() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objSubtract->getDecimalPrecision()); //omrekenen laagste precisie
             $iHighestPrecision = $this->getDecimalPrecision();
         }
         else //$objEqualTo grootste precisie
         {
-            $iValueThis = $this->getValueInternal() * $this->getMultiplyFactorDifference($objSubtract->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
-            $iValueSubtract = $objSubtract->getValueInternal(); //hoogste precisie
+            $iValueThis = $this->getValueAsInt() * $this->getMultiplyFactorDifference($objSubtract->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueSubtract = $objSubtract->getValueAsInt(); //hoogste precisie
             $iHighestPrecision = $objSubtract->getDecimalPrecision();            
         }
         
@@ -340,7 +348,7 @@ class TDecimal
         $iSum = $iValueThis - $iValueSubtract;
         
         //nu pas setten (en dus afronden)
-        $this->setValueInternal($iSum, $iHighestPrecision); 
+        $this->setValueAsInt($iSum, $iHighestPrecision); 
          
     }
     
@@ -356,21 +364,21 @@ class TDecimal
      */
     public function multiply(TDecimal $objMultiplyBy)
     {
-        $iValueThis = $this->getValueInternal();// default
-        $iValueMultiply = $objMultiplyBy->getValueInternal();// default
+        $iValueThis = $this->getValueAsInt();// default
+        $iValueMultiply = $objMultiplyBy->getValueAsInt();// default
         $iHighestPrecision = $this->getDecimalPrecision(); //default
         
         //eerst precisie gelijktrekken op niveau van de hoogste precisie
         if ($this->getDecimalPrecision() >= $objMultiplyBy->getDecimalPrecision()) //$this grootste precisie ?
         {
-            $iValueThis = $this->getValueInternal(); //hoogste precisie
-            $iValueMultiply = $objMultiplyBy->getValueInternal() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objMultiplyBy->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueThis = $this->getValueAsInt(); //hoogste precisie
+            $iValueMultiply = $objMultiplyBy->getValueAsInt() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objMultiplyBy->getDecimalPrecision()); //omrekenen laagste precisie
             $iHighestPrecision = $this->getDecimalPrecision();
         }
         else //$objEqualTo grootste precisie
         {
-            $iValueThis = $this->getValueInternal() * $this->getMultiplyFactorDifference($objMultiplyBy->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
-            $iValueMultiply = $objMultiplyBy->getValueInternal(); //hoogste precisie
+            $iValueThis = $this->getValueAsInt() * $this->getMultiplyFactorDifference($objMultiplyBy->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueMultiply = $objMultiplyBy->getValueAsInt(); //hoogste precisie
             $iHighestPrecision = $objMultiplyBy->getDecimalPrecision();
         }
         
@@ -379,7 +387,7 @@ class TDecimal
   
         
         //nu pas setten (en dus afronden)
-        $this->setValueInternal($iSum, $iHighestPrecision * 2);  //2x de hoogste precisie omdat je 2 getallen met elkaar gaat vermenigvuldigen op de hoogste precisie
+        $this->setValueAsInt($iSum, $iHighestPrecision * 2);  //2x de hoogste precisie omdat je 2 getallen met elkaar gaat vermenigvuldigen op de hoogste precisie
     }    
 
     /**
@@ -406,21 +414,21 @@ class TDecimal
      */
     public function divide(TDecimal $objDivideBy)
     {
-        $iValueThis = $this->getValueInternal();// default
-        $iValueDivide = $objDivideBy->getValueInternal();// default
+        $iValueThis = $this->getValueAsInt();// default
+        $iValueDivide = $objDivideBy->getValueAsInt();// default
         $iHighestPrecision = $this->getDecimalPrecision(); //default
         
         //eerst precisie gelijktrekken op niveau van de hoogste precisie
         if ($this->getDecimalPrecision() >= $objDivideBy->getDecimalPrecision()) //$this grootste precisie ?
         {
-            $iValueThis = $this->getValueInternal(); //hoogste precisie
-            $iValueDivide = $objDivideBy->getValueInternal() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objDivideBy->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueThis = $this->getValueAsInt(); //hoogste precisie
+            $iValueDivide = $objDivideBy->getValueAsInt() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objDivideBy->getDecimalPrecision()); //omrekenen laagste precisie
             $iHighestPrecision = $this->getDecimalPrecision();
         }
         else //$objEqualTo grootste precisie
         {
-            $iValueThis = $this->getValueInternal() * $this->getMultiplyFactorDifference($objDivideBy->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
-            $iValueDivide = $objDivideBy->getValueInternal(); //hoogste precisie
+            $iValueThis = $this->getValueAsInt() * $this->getMultiplyFactorDifference($objDivideBy->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueDivide = $objDivideBy->getValueAsInt(); //hoogste precisie
             $iHighestPrecision = $objDivideBy->getDecimalPrecision();
         }
         
@@ -458,14 +466,14 @@ class TDecimal
         //vergelijken met de grootste precisie van (bepalen welke klasse de grootste precisie heeft)
         if ($this->getDecimalPrecision() >= $objEqualTo->getDecimalPrecision()) //$this grootste precisie ?
         {
-            $iValueThis = $this->getValueInternal(); //hoogste precisie
-            $iValueEqualTo = $objEqualTo->getValueInternal() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objEqualTo->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueThis = $this->getValueAsInt(); //hoogste precisie
+            $iValueEqualTo = $objEqualTo->getValueAsInt() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objEqualTo->getDecimalPrecision()); //omrekenen laagste precisie
             return ($iValueThis == $iValueEqualTo);
         }
         else //$objEqualTo grootste precisie
         {
-            $iValueThis = $this->getValueInternal() * $this->getMultiplyFactorDifference($objEqualTo->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
-            $iValueEqualTo = $objEqualTo->getValueInternal(); //hoogste precisie
+            $iValueThis = $this->getValueAsInt() * $this->getMultiplyFactorDifference($objEqualTo->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueEqualTo = $objEqualTo->getValueAsInt(); //hoogste precisie
             return ($iValueThis == $iValueEqualTo);
         }
         
@@ -486,14 +494,14 @@ class TDecimal
         //vergelijken met de grootste precisie van (bepalen welke klasse de grootste precisie heeft)
         if ($this->getDecimalPrecision() >= $objOther->getDecimalPrecision()) //$this grootste precisie ?
         {
-            $iValueThis = $this->getValueInternal(); //hoogste precisie
-            $iValueOther = $objOther->getValueInternal() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objOther->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueThis = $this->getValueAsInt(); //hoogste precisie
+            $iValueOther = $objOther->getValueAsInt() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objOther->getDecimalPrecision()); //omrekenen laagste precisie
             return ($iValueThis > $iValueOther);
         }
         else //$objEqualTo grootste precisie
         {
-            $iValueThis = $this->getValueInternal() * $this->getMultiplyFactorDifference($objOther->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
-            $iValueOther = $objOther->getValueInternal(); //hoogste precisie
+            $iValueThis = $this->getValueAsInt() * $this->getMultiplyFactorDifference($objOther->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueOther = $objOther->getValueAsInt(); //hoogste precisie
             return ($iValueThis > $iValueOther);
         }
         
@@ -515,14 +523,14 @@ class TDecimal
         //vergelijken met de grootste precisie van (bepalen welke klasse de grootste precisie heeft)
         if ($this->getDecimalPrecision() >= $objOther->getDecimalPrecision()) //$this grootste precisie ?
         {
-            $iValueThis = $this->getValueInternal(); //hoogste precisie
-            $iValueOther = $objOther->getValueInternal() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objOther->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueThis = $this->getValueAsInt(); //hoogste precisie
+            $iValueOther = $objOther->getValueAsInt() * $this->getMultiplyFactorDifference($this->getDecimalPrecision(), $objOther->getDecimalPrecision()); //omrekenen laagste precisie
             return ($iValueThis < $iValueOther);
         }
         else //$objEqualTo grootste precisie
         {
-            $iValueThis = $this->getValueInternal() * $this->getMultiplyFactorDifference($objOther->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
-            $iValueOther = $objOther->getValueInternal(); //hoogste precisie
+            $iValueThis = $this->getValueAsInt() * $this->getMultiplyFactorDifference($objOther->getDecimalPrecision(), $this->getDecimalPrecision()); //omrekenen laagste precisie
+            $iValueOther = $objOther->getValueAsInt(); //hoogste precisie
             return ($iValueThis < $iValueOther);
         }
         
